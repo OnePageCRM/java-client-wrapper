@@ -4,6 +4,7 @@ import com.onepagecrm.OnePageCRM;
 import com.onepagecrm.exceptions.OnePageException;
 import com.onepagecrm.models.Action;
 import com.onepagecrm.models.User;
+import com.onepagecrm.models.serializers.DateSerializer;
 import com.onepagecrm.net.request.Request;
 
 import java.io.FileInputStream;
@@ -49,17 +50,14 @@ public class ActionDateTimeDriver {
 
         LOG.info("Logged in User : " + loggedInUser);
 
+        // Fri, 01 Jul 2016 08:00:00 GMT = 1467360000 = Fri, 01 Jul 2016 9:00:00 AM (IST)
+        Date firstJulyAt9Am = DateSerializer.fromTimestamp(String.valueOf(1467360000));
+
         new Action()
                 .setText("This one will be added")
                 .setStatus(Action.Status.DATE_TIME)
-                .setDate(new Date())
-                .setContactId("5774e13c00d4afe3fb314f58")
-                .setAssigneeId(loggedInUser.getId())
-                .save();
-
-        new Action()
-                .setText("Should throw exception")
-                .setStatus(Action.Status.DATE_TIME)
+                .setDate(firstJulyAt9Am)
+                .setExactTime(firstJulyAt9Am)
                 .setContactId("5774e13c00d4afe3fb314f58")
                 .setAssigneeId(loggedInUser.getId())
                 .save();

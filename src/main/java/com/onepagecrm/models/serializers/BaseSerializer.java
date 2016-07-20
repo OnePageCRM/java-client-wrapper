@@ -84,6 +84,7 @@ public class BaseSerializer {
     public static final String PREDEFINED_ACTION_TAG = "predefined_action";
     public static final String PREDEFINED_ACTIONS_TAG = "predefined_actions";
     public static final String EXACT_TIME_TAG = "exact_time";
+    public static final String EXACT_TIME_INT_TAG = "exact_time_int";
 
     // CLOSED SALES CYCLE.
     public static final String CLOSED_SALES_TAG = "closed_sales";

@@ -156,9 +156,14 @@ public class ActionSerializer extends BaseSerializer {
                     break;
                 case DATE_TIME:
                     addJsonStringValue(
-                            DateSerializer.toFormattedDateTimeString(action.getDate()),
+                            DateSerializer.toFormattedDateString(action.getDate()),
                             actionObject,
                             DATE_TAG
+                    );
+                    addJsonLongValue(
+                            DateSerializer.toTimestamp(action.getExactTime()),
+                            actionObject,
+                            EXACT_TIME_INT_TAG
                     );
                     break;
                 case WAITING:
