@@ -1,67 +1,470 @@
 {
   "status": 0,
   "message": "OK",
-  "timestamp": 1459259259,
+  "timestamp": 1470407105,
   "data": {
     "deals": [
       {
         "deal": {
-          "id": "56fa82159007ba1965000000",
+          "id": "56fa80f200d4afa0360004b0",
+          "contact_id": "56fa805fefa9dd4d3502ab2b",
+          "owner_id": "556cb8b61787fa02e000047e",
+          "owner": {
+            "id": "556cb8b61787fa02e000047e",
+            "name": "Cillian Myles",
+            "email": "cillian.college@gmail.com"
+          },
+          "name": "Big deal",
+          "text": "Deal note for Big deal. This is the biggest deal note that you have ever seen in this app. I am even going to add some more text to this note right here. Let's see if we can read this or if it ellipsizes. Now it must surely ellipsize. Please please please.",
+          "date": "2016-08-02",
           "contact_info": {
-            "contact_name": "Java Wrapper",
+            "contact_name": "Software Developer",
             "company": "OnePageCRM"
           },
           "author": "Cillian M.",
-          "contact_id": "56fa81eb9007ba07fc000080",
-          "owner_id": "559cd1866f6e656707000001",
-          "text": "Deal note for Big deal",
-          "name": "Big deal",
-          "date": "2016-03-29",
-          "months": 1,
-          "amount": 20400,
+          "amount": 2000,
+          "months": 12,
+          "total_amount": 24000,
           "status": "pending",
-          "stage": 50,
-          "expected_close_date": "2016-03-29",
-          "total_amount": 20400,
-          "modified_at": "2016-03-29T13:24:37.801Z",
-          "created_at": "2016-03-29T13:24:37.801Z",
-          "has_related_notes": false,
-          "close_date": null,
-          "attachments": []
+          "has_related_notes": true,
+          "attachments": [],
+          "created_at": "2016-03-29T13:19:46Z",
+          "modified_at": "2016-08-03T09:34:04Z",
+          "stage": 25,
+          "expected_close_date": "2016-03-29"
         },
-        "related_notes": []
+        "related_notes": [
+          {
+            "note": {
+              "id": "5797684000d4af9ae51cf2fd",
+              "author": "Cillian M.",
+              "contact_id": "56fa805fefa9dd4d3502ab2b",
+              "text": "Some other note related to this deal",
+              "date": "2016-07-26",
+              "attachments": [],
+              "linked_deal_id": "56fa80f200d4afa0360004b0",
+              "created_at": "2016-07-26T13:40:16Z",
+              "modified_at": "2016-07-26T13:40:16Z"
+            }
+          },
+          {
+            "note": {
+              "id": "5797683200d4af9ae51cf2ed",
+              "author": "Cillian M.",
+              "contact_id": "56fa805fefa9dd4d3502ab2b",
+              "text": "Another linked note",
+              "date": "2016-07-26",
+              "attachments": [],
+              "linked_deal_id": "56fa80f200d4afa0360004b0",
+              "created_at": "2016-07-26T13:40:02Z",
+              "modified_at": "2016-07-26T13:40:02Z"
+            }
+          },
+          {
+            "note": {
+              "id": "57629c8600d4af786ee92e44",
+              "author": "Cillian M.",
+              "contact_id": "56fa805fefa9dd4d3502ab2b",
+              "text": "Linked to the deal",
+              "date": "2016-06-16",
+              "attachments": [],
+              "linked_deal_id": "56fa80f200d4afa0360004b0",
+              "created_at": "2016-06-16T12:33:10Z",
+              "modified_at": "2016-06-16T12:33:10Z"
+            }
+          }
+        ]
       },
       {
         "deal": {
-          "id": "56fa82d09007ba1965000005",
+          "id": "56fa813000d4afc98c000001",
+          "contact_id": "56fa805fefa9dd4d3502ab25",
+          "owner_id": "556cb8b61787fa02e000047e",
+          "owner": {
+            "id": "556cb8b61787fa02e000047e",
+            "name": "Cillian Myles",
+            "email": "cillian.college@gmail.com"
+          },
+          "name": "Falcon 9",
+          "text": "Deal note for Falcon 9",
+          "date": "2016-03-29",
           "contact_info": {
             "contact_name": "Elon Musk",
             "company": "SpaceX"
           },
           "author": "Cillian M.",
-          "contact_id": "56fa81eb9007ba07fc00007a",
-          "owner_id": "559cd1866f6e656707000001",
-          "text": "Deal note for Falcon 9",
-          "name": "Falcon 9",
-          "date": "2016-03-29",
-          "months": 1,
           "amount": 200400,
-          "status": "pending",
-          "stage": 75,
-          "expected_close_date": "2016-03-30",
+          "months": 1,
           "total_amount": 200400,
-          "modified_at": "2016-03-29T13:27:44.685Z",
-          "created_at": "2016-03-29T13:27:44.685Z",
+          "status": "pending",
           "has_related_notes": false,
-          "close_date": null,
-          "attachments": []
-        },
-        "related_notes": []
+          "attachments": [],
+          "created_at": "2016-03-29T13:20:48Z",
+          "modified_at": "2016-03-29T13:20:48Z",
+          "stage": 75,
+          "expected_close_date": "2016-03-30"
+        }
+      },
+      {
+        "deal": {
+          "id": "57612abce5ffaa145cf0ec3a",
+          "contact_id": "56fa8060efa9dd4d3502ab32",
+          "owner_id": "556cb8b61787fa02e000047e",
+          "owner": {
+            "id": "556cb8b61787fa02e000047e",
+            "name": "Cillian Myles",
+            "email": "cillian.college@gmail.com"
+          },
+          "name": "Test",
+          "text": "Testing here",
+          "date": "2016-08-02",
+          "contact_info": {
+            "contact_name": "Tiger Woods",
+            "company": "Myles Inc."
+          },
+          "author": "Cillian M.",
+          "amount": 28,
+          "months": 1,
+          "total_amount": 28,
+          "status": "pending",
+          "has_related_notes": false,
+          "attachments": [],
+          "created_at": "2016-06-15T10:15:24Z",
+          "modified_at": "2016-08-02T14:30:17Z",
+          "stage": 10,
+          "expected_close_date": "2016-06-15"
+        }
+      },
+      {
+        "deal": {
+          "id": "577bb5e300d4af48df3c2fe2",
+          "contact_id": "56fa805fefa9dd4d3502ab2b",
+          "owner_id": "556cb8b61787fa02e000047e",
+          "owner": {
+            "id": "556cb8b61787fa02e000047e",
+            "name": "Cillian Myles",
+            "email": "cillian.college@gmail.com"
+          },
+          "name": "Test",
+          "text": "",
+          "date": "2016-07-20",
+          "contact_info": {
+            "contact_name": "Software Developer",
+            "company": "OnePageCRM"
+          },
+          "author": "Cillian M.",
+          "amount": 21.99,
+          "months": 1,
+          "total_amount": 21.99,
+          "status": "pending",
+          "has_related_notes": false,
+          "attachments": [],
+          "created_at": "2016-07-05T13:28:03Z",
+          "modified_at": "2016-07-20T10:54:50Z",
+          "stage": 50,
+          "expected_close_date": "2016-07-05"
+        }
+      },
+      {
+        "deal": {
+          "id": "5788ba74e5ffaa768c0c0a39",
+          "contact_id": "576268ee00d4af786ee8e5d3",
+          "owner_id": "556cb8b61787fa02e000047e",
+          "owner": {
+            "id": "556cb8b61787fa02e000047e",
+            "name": "Cillian Myles",
+            "email": "cillian.college@gmail.com"
+          },
+          "name": "Any deal",
+          "text": "",
+          "date": "2016-07-14",
+          "contact_info": {
+            "contact_name": " AAA",
+            "company": "Big Comp."
+          },
+          "author": "Cillian M.",
+          "amount": 13.86,
+          "months": 1,
+          "total_amount": 13.86,
+          "status": "pending",
+          "has_related_notes": false,
+          "attachments": [],
+          "created_at": "2016-07-15T10:27:00Z",
+          "modified_at": "2016-07-15T10:27:00Z",
+          "stage": 25,
+          "expected_close_date": "2016-07-15"
+        }
+      },
+      {
+        "deal": {
+          "id": "57962cf3e5ffaa30dceb1c81",
+          "contact_id": "57962cdbe5ffaa30dceb1c7f",
+          "owner_id": "556cb8b61787fa02e000047e",
+          "owner": {
+            "id": "556cb8b61787fa02e000047e",
+            "name": "Cillian Myles",
+            "email": "cillian.college@gmail.com"
+          },
+          "name": "Some",
+          "text": "",
+          "date": "2016-07-25",
+          "contact_info": {
+            "contact_name": "New Contact2",
+            "company": ""
+          },
+          "author": "Cillian M.",
+          "amount": 12.34,
+          "months": 1,
+          "total_amount": 12.34,
+          "status": "pending",
+          "has_related_notes": false,
+          "attachments": [],
+          "created_at": "2016-07-25T15:14:59Z",
+          "modified_at": "2016-07-25T15:14:59Z",
+          "stage": 10,
+          "expected_close_date": "2016-07-25"
+        }
+      },
+      {
+        "deal": {
+          "id": "579b3f64e5ffaa4ae9c686d1",
+          "contact_id": "579b3f3fe5ffaa5d54c68692",
+          "owner_id": "556cb8b61787fa02e000047e",
+          "owner": {
+            "id": "556cb8b61787fa02e000047e",
+            "name": "Cillian Myles",
+            "email": "cillian.college@gmail.com"
+          },
+          "name": "I don't know",
+          "text": "",
+          "date": "2016-07-28",
+          "contact_info": {
+            "contact_name": "Progress Tester",
+            "company": ""
+          },
+          "author": "Cillian M.",
+          "amount": 12.33,
+          "months": 1,
+          "total_amount": 12.33,
+          "status": "pending",
+          "has_related_notes": false,
+          "attachments": [],
+          "created_at": "2016-07-29T11:35:00Z",
+          "modified_at": "2016-07-29T11:35:00Z",
+          "stage": 10,
+          "expected_close_date": "2016-07-29"
+        }
+      },
+      {
+        "deal": {
+          "id": "57a47c20e5ffaa354a25c5d1",
+          "contact_id": "56fa805fefa9dd4d3502aaf8",
+          "owner_id": "556cb8b61787fa02e000047e",
+          "owner": {
+            "id": "556cb8b61787fa02e000047e",
+            "name": "Cillian Myles",
+            "email": "cillian.college@gmail.com"
+          },
+          "name": "Dvdv",
+          "text": "",
+          "date": "2016-08-05",
+          "contact_info": {
+            "contact_name": "Jane Doe",
+            "company": "Big Company Inc."
+          },
+          "author": "Cillian M.",
+          "amount": 23,
+          "months": 1,
+          "total_amount": 23,
+          "status": "pending",
+          "has_related_notes": false,
+          "attachments": [],
+          "created_at": "2016-08-05T11:44:32Z",
+          "modified_at": "2016-08-05T11:44:32Z",
+          "stage": 10,
+          "expected_close_date": "2016-08-02"
+        }
+      },
+      {
+        "deal": {
+          "id": "57a47bd1e5ffaa354a25c5cb",
+          "contact_id": "56fa805fefa9dd4d3502aaf8",
+          "owner_id": "556cb8b61787fa02e000047e",
+          "owner": {
+            "id": "556cb8b61787fa02e000047e",
+            "name": "Cillian Myles",
+            "email": "cillian.college@gmail.com"
+          },
+          "name": "Cc",
+          "text": "",
+          "date": "2016-08-05",
+          "contact_info": {
+            "contact_name": "Jane Doe",
+            "company": "Big Company Inc."
+          },
+          "author": "Cillian M.",
+          "amount": 390,
+          "months": 1,
+          "total_amount": 390,
+          "status": "pending",
+          "has_related_notes": false,
+          "attachments": [],
+          "created_at": "2016-08-05T11:43:13Z",
+          "modified_at": "2016-08-05T11:43:13Z",
+          "stage": 50,
+          "expected_close_date": "2016-08-05"
+        }
+      },
+      {
+        "deal": {
+          "id": "578658ef00d4af2878fce79c",
+          "contact_id": "578658ef00d4af2878fce77f",
+          "owner_id": "578658ef00d4af2878fce75e",
+          "owner": {
+            "id": "578658ef00d4af2878fce75e",
+            "name": "Really Really Long First Name Really Really Long Last Name",
+            "email": "cillian.college+dev+really@gmail.com"
+          },
+          "name": "July deal",
+          "text": "Sent him estimate today.. fingers crossed!\n",
+          "date": "2016-07-12",
+          "contact_info": {
+            "contact_name": "Joe Bloggs",
+            "company": "McBeal Solicitors"
+          },
+          "author": "Really Really Long First Name R.",
+          "amount": 5130,
+          "months": 1,
+          "total_amount": 5130,
+          "status": "pending",
+          "has_related_notes": false,
+          "attachments": [],
+          "created_at": "2016-07-13T15:06:23Z",
+          "modified_at": "2016-07-13T15:06:23Z",
+          "stage": 10,
+          "expected_close_date": "2016-08-13"
+        }
+      },
+      {
+        "deal": {
+          "id": "5762c92b00d4afed1ce8de78",
+          "contact_id": "56fa805fefa9dd4d3502ab2b",
+          "owner_id": "556cb8b61787fa02e000047e",
+          "owner": {
+            "id": "556cb8b61787fa02e000047e",
+            "name": "Cillian Myles",
+            "email": "cillian.college@gmail.com"
+          },
+          "name": "Tester2",
+          "text": "",
+          "date": "2016-06-16",
+          "contact_info": {
+            "contact_name": "Software Developer",
+            "company": "OnePageCRM"
+          },
+          "author": "Cillian M.",
+          "amount": 13,
+          "months": 1,
+          "total_amount": 13,
+          "status": "lost",
+          "has_related_notes": false,
+          "attachments": [],
+          "created_at": "2016-06-16T15:43:39Z",
+          "modified_at": "2016-06-16T15:43:39Z",
+          "close_date": "2016-06-16"
+        }
+      },
+      {
+        "deal": {
+          "id": "578658ef00d4af2878fce77c",
+          "contact_id": "578658ef00d4af2878fce762",
+          "owner_id": "578658ef00d4af2878fce75e",
+          "owner": {
+            "id": "578658ef00d4af2878fce75e",
+            "name": "Really Really Long First Name Really Really Long Last Name",
+            "email": "cillian.college+dev+really@gmail.com"
+          },
+          "name": "Industrial panels",
+          "text": "OK.. deal created and sent!!\n",
+          "date": "2016-07-12",
+          "contact_info": {
+            "contact_name": "Jane Doe",
+            "company": "Underwood Coaching"
+          },
+          "author": "Really Really Long First Name R.",
+          "amount": 2650,
+          "months": 1,
+          "total_amount": 2650,
+          "status": "won",
+          "has_related_notes": false,
+          "attachments": [],
+          "created_at": "2016-07-13T15:06:23Z",
+          "modified_at": "2016-07-13T15:06:23Z",
+          "close_date": "2016-07-13"
+        }
+      },
+      {
+        "deal": {
+          "id": "5762c8d500d4af75e1e8fdb8",
+          "contact_id": "56fa805fefa9dd4d3502ab2b",
+          "owner_id": "556cb8b61787fa02e000047e",
+          "owner": {
+            "id": "556cb8b61787fa02e000047e",
+            "name": "Cillian Myles",
+            "email": "cillian.college@gmail.com"
+          },
+          "name": "Tester deal",
+          "text": "Sample text",
+          "date": "2016-07-20",
+          "contact_info": {
+            "contact_name": "Software Developer",
+            "company": "OnePageCRM"
+          },
+          "author": "Cillian M.",
+          "amount": 234.5,
+          "months": 1,
+          "total_amount": 234.5,
+          "status": "won",
+          "has_related_notes": false,
+          "attachments": [],
+          "created_at": "2016-06-16T15:42:13Z",
+          "modified_at": "2016-07-20T10:55:21Z",
+          "close_date": "2016-07-20"
+        }
+      },
+      {
+        "deal": {
+          "id": "57a47b8de5ffaa354a25c5c2",
+          "contact_id": "56fa805fefa9dd4d3502aaf8",
+          "owner_id": "556cb8b61787fa02e000047e",
+          "owner": {
+            "id": "556cb8b61787fa02e000047e",
+            "name": "Cillian Myles",
+            "email": "cillian.college@gmail.com"
+          },
+          "name": "Cold deal",
+          "text": "Chfycyc",
+          "date": "2016-08-05",
+          "contact_info": {
+            "contact_name": "Jane Doe",
+            "company": "Big Company Inc."
+          },
+          "author": "Cillian M.",
+          "amount": 200,
+          "months": 1,
+          "total_amount": 200,
+          "status": "won",
+          "has_related_notes": false,
+          "attachments": [],
+          "created_at": "2016-08-05T11:42:05Z",
+          "modified_at": "2016-08-05T11:42:05Z",
+          "close_date": "2016-08-05"
+        }
       }
     ],
-    "total_count": 2,
+    "total_count": 14,
     "page": 1,
     "max_page": 1,
-    "per_page": 10
+    "per_page": 100
   }
 }

@@ -46,6 +46,21 @@ public class DealStage implements Serializable {
         return percentage == null ? label : String.valueOf(percentage);
     }
 
+    public boolean equals(Object object) {
+        if (object instanceof DealStage) {
+            DealStage toCompare = (DealStage) object;
+            if (this.getUniqueIdentifier() != null && toCompare.getUniqueIdentifier() != null) {
+                return this.getUniqueIdentifier().equals(toCompare.getUniqueIdentifier());
+            }
+        }
+        return false;
+    }
+
+    @Override
+    public String toString() {
+        return getDisplayText();
+    }
+
     public String getStatus() {
         if (getUniqueIdentifier().equalsIgnoreCase(Deal.STATUS_WON)) {
             return Deal.STATUS_WON.toLowerCase();
@@ -58,16 +73,6 @@ public class DealStage implements Serializable {
 
     public Integer getStage() {
         return getPercentage();
-    }
-
-    public boolean equals(Object object) {
-        if (object instanceof DealStage) {
-            DealStage toCompare = (DealStage) object;
-            if (this.getDisplayText() != null && toCompare.getDisplayText() != null) {
-                return this.getDisplayText().equals(toCompare.getDisplayText());
-            }
-        }
-        return false;
     }
 
     public Integer getPercentage() {

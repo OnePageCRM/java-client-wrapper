@@ -17,6 +17,14 @@ public class DealFabricator extends BaseFabricator {
     private static final Logger LOG = Logger.getLogger(DealFabricator.class.getName());
 
     public static Deal single() {
+        return regular();
+    }
+
+    public static Deal regular() {
+        return list().get(1);
+    }
+
+    public static Deal multiMonth() {
         return list().get(0);
     }
 
