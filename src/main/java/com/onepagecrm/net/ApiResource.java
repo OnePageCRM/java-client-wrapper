@@ -9,6 +9,8 @@ public abstract class ApiResource extends BaseResource implements Serializable {
 
     public static final String CHARSET = "UTF-8";
 
+    public static final String LOGIN_ENDPOINT = "login";
+    public static final String BOOTSTRAP_ENDPOINT = "bootstrap";
     public static final String ACTION_STREAM_ENDPOINT = "action_stream";
     public static final String CONTACTS_ENDPOINT = "contacts";
     public static final String CLOSE_SALES_CYCLE_ENDPOINT = "contacts/{id}/close_sales_cycle";
@@ -23,7 +25,6 @@ public abstract class ApiResource extends BaseResource implements Serializable {
     public static final String UNDO_COMPLETION_ENDPOINT = "actions/{id}/undo_completion";
     public static final String PREDEFFINED_ACTIONS_ENDPOINT = "predefined_actions";
     public static final String NOTES_ENDPOINT = "notes";
-    public static final String BOOTSTRAP_ENDPOINT = "bootstrap";
     public static final String DEVICE_ENDPOINT = "firebase";
     public static final String COMPANIES_ENDPOINT = "companies";
     public static final String LINKED_CONTACTS_ENDPOINT = "companies/{id}/linked_contacts";
@@ -32,6 +33,7 @@ public abstract class ApiResource extends BaseResource implements Serializable {
     public static final String ATTACHMENTS_ENDPOINT = "attachments";
 
     public static final String QUERY_PARTIAL = "partial=1";
+    public static final String QUERY_FULL_RESPONSE = "full_response=1";
 
     public abstract String getId();
 

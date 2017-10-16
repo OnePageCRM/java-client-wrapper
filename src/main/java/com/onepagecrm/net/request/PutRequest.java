@@ -19,12 +19,8 @@ public class PutRequest extends SignedRequest {
         this.requestBody = jsonBody;
         setType();
         setEndpointUrl(endpoint);
-        if (query == null) {
-            authenticate();
-        } else {
-            addQuery(query);
-            authenticate();
-        }
+        addQuery(query);
+        authenticate();
     }
 
     public PutRequest(String endpoint) {
@@ -39,11 +35,6 @@ public class PutRequest extends SignedRequest {
     @Override
     public void setType() {
         this.type = Type.PUT;
-    }
-
-    public PutRequest addQuery(String query) {
-        this.endpointUrl += query;
-        return this;
     }
 
     public void authenticate() {

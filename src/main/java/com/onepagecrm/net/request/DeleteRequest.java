@@ -19,22 +19,13 @@ public class DeleteRequest extends SignedRequest {
     public DeleteRequest(String endpoint, String query) {
         setType();
         setEndpointUrl(endpoint);
-        if (query == null) {
-            authenticate();
-        } else {
-            addQuery(query);
-            authenticate();
-        }
+        addQuery(query);
+        authenticate();
     }
 
     @Override
     public void setType() {
         this.type = Type.DELETE;
-    }
-
-    public DeleteRequest addQuery(String query) {
-        this.endpointUrl += query;
-        return this;
     }
 
     public void authenticate() {

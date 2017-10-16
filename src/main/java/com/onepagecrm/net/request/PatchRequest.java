@@ -19,12 +19,8 @@ public class PatchRequest extends SignedRequest {
         this.requestBody = jsonBody;
         setType();
         setEndpointUrl(endpoint);
-        if (query == null) {
-            authenticate();
-        } else {
-            addQuery(query);
-            authenticate();
-        }
+        addQuery(query);
+        authenticate();
     }
 
     public PatchRequest(String endpoint) {
@@ -38,11 +34,6 @@ public class PatchRequest extends SignedRequest {
     @Override
     public void setType() {
         this.type = Type.PATCH;
-    }
-
-    public PatchRequest addQuery(String query) {
-        this.endpointUrl += query;
-        return this;
     }
 
     public void authenticate() {

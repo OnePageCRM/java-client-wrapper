@@ -3,6 +3,7 @@ package com.onepagecrm.net.request;
 import com.onepagecrm.OnePageCRM;
 import com.onepagecrm.exceptions.OnePageException;
 import com.onepagecrm.exceptions.TimeoutException;
+import com.onepagecrm.models.internal.Utilities;
 import com.onepagecrm.models.serializers.BaseSerializer;
 import com.onepagecrm.net.Response;
 
@@ -254,7 +255,19 @@ public abstract class Request {
     public abstract void setType();
 
     public void setEndpointUrl(String endpoint) {
-        endpointUrl = sServerUrlMap.get(OnePageCRM.SERVER) + endpoint + format;
+        setEndpointUrl(endpoint, format);
+    }
+
+    public void setEndpointUrl(String endpoint, String format) {
+        if (Utilities.notNullOrEmpty(endpoint)) {
+            this.endpointUrl = sServerUrlMap.get(OnePageCRM.SERVER) + endpoint + format;
+        }
+    }
+
+    public void addQuery(String query) {
+        if (Utilities.notNullOrEmpty(query)) {
+            this.endpointUrl += query;
+        }
     }
 
     /**

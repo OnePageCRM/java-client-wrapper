@@ -21,12 +21,8 @@ public class PostRequest extends SignedRequest {
         this.requestBody = jsonBody;
         setType();
         setEndpointUrl(endpoint);
-        if (query == null) {
-            authenticate();
-        } else {
-            addQuery(query);
-            authenticate();
-        }
+        addQuery(query);
+        authenticate();
     }
 
     /**
@@ -40,22 +36,13 @@ public class PostRequest extends SignedRequest {
         this.params = paramBody;
         setType();
         setEndpointUrl(endpoint);
-        if (query == null) {
-            authenticate();
-        } else {
-            addQuery(query);
-            authenticate();
-        }
+        addQuery(query);
+        authenticate();
     }
 
     @Override
     public void setType() {
         this.type = Type.POST;
-    }
-
-    public PostRequest addQuery(String query) {
-        this.endpointUrl += query;
-        return this;
     }
 
     public void authenticate() {
