@@ -9,10 +9,7 @@ So far, it only contains a moderately-sized subsection of calls and functions av
 
 - Import the project into your IDE.
 
-- Make sure you include the following jars in the build path:
-  - org.json-20120521.jar 
-  - commons-codec-1.10.jar
-- Both of these can be found in the project directory /jars/.
+
 
 ## Example
 The following is an example of a class which will:
