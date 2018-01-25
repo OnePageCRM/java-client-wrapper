@@ -6,6 +6,17 @@ The project uses Gradle, an advanced, general purpose build management system.  
 ### What can it do?
 This project communicates using the OnePageCRM API.  It can, for example, log in users, obtain details about their account, and perform a range of actions such as adding calls and creating contacts.
 
+List available gradle commands:
+```
+.gradlew tasks
+
+```
+Run all unit tests:
+
+
+
+Create jar file for ue in projects
+
 ## Getting started
 
 - Clone the repository.
@@ -80,13 +91,12 @@ The following is an example of a method which will:
             .setCompanyName("Myles Inc.")
             .setFirstName("Cillian");
             .save();
-    }
+        }
   }
-}
 ```
 
 ## Example
-The following is an example of a code snippet which will:
+The following is an example of a method which will:
 - Log in a user.
 - Pick their first contact.
 - Add a new deal for that contact.
@@ -95,9 +105,7 @@ The following is an example of a code snippet which will:
     public static void main(String[] args) throws OnePageException {
 
         //Login
-        User loggedInUser = User.login(
-                prop.getProperty("username"),
-                prop.getProperty("password"));
+        User loggedInUser = User.login("username", "password");
 
         //Pick the first contact from the Action Stream
         Contact first = loggedInUser.actionStream().get(0);
