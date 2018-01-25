@@ -12,8 +12,9 @@ List available gradle commands:
 ./gradlew tasks
 ```
 Run all unit tests:
->./gradlew test
-
+```
+./gradlew test
+```
 
 Create jar file for use in projects:
 ```
