@@ -9,13 +9,16 @@ This project communicates using the OnePageCRM API.  It can, for example, log in
 List available gradle commands:
 ```
 .gradlew tasks
-
 ```
 Run all unit tests:
+```
+./gradlew test
+```
 
-
-
-Create jar file for ue in projects
+Create jar file for use in projects
+```
+./gradlew jar
+```
 
 ## Getting started
 
