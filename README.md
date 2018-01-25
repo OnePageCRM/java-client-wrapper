@@ -1,7 +1,7 @@
 # OnePageCRM Java API Wrapper
 This project is a comprehensive java API wrapper aimed to abstract some of the difficulties associated with getting started interacting with external APIs, providing you quick and easy access to API resources in useful formats.
 
-The project uses Gradle, an advanced, general purpose build management system.  This allows for streamlined functionality, such as automatically including jars in the build path or running unit tests much more quickly.
+The project uses Gradle, an advanced, general purpose build management system.  This allows for streamlined functionality, such as automatically including jars in the build path or running unit tests much more efficiently.
 
 ### What can it do?
 This project communicates using the OnePageCRM API.  It can, for example, log in users, obtain details about their account, and perform a range of actions such as adding calls and creating contacts.
@@ -16,7 +16,7 @@ Run all unit tests:
 ./gradlew test
 ```
 
-Create jar file for use in projects
+Create jar file for use in projects:
 ```
 ./gradlew jar
 ```
