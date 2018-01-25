@@ -1,7 +1,7 @@
 # OnePageCRM Java API Wrapper
 This project is a comprehensive java API wrapper aimed to abstract some of the difficulties associated with getting started interacting with external APIs, providing you quick and easy access to API resources in useful formats.
 
-The project uses gradle, an advanced, general purpose build management system.  This allows for streamlined functionality, such as automatically including jars in the buid path or running unit tests much more quickly.
+The project uses Gradle, an advanced, general purpose build management system.  This allows for streamlined functionality, such as automatically including jars in the build path or running unit tests much more quickly.
 
 So far, it only contains a moderately-sized subsection of calls and functions available using the API, though more are currently being added.
 
@@ -91,12 +91,16 @@ The following is an example of a code snippet which will:
 - Add a new deal for that contact.
 
 ```java
-    User loggedInUser = User.login(
+    public static void main(String[] args) throws OnePageException {
+        //Login
+        User loggedInUser = User.login(
                 prop.getProperty("username"),
                 prop.getProperty("password"));
 
+        //Pick the first contact from the Action Stream
         Contact first = loggedInUser.actionStream().get(0);
 
+        //Create a new deal
         new Deal()
              .setStage(10)
              .setStatus("pending")
@@ -106,4 +110,5 @@ The following is an example of a code snippet which will:
              .setText("Java Wrapper Deal Text")
              .setName("Java Wrapper Deal Name")
              .save();
+    }
 ```
