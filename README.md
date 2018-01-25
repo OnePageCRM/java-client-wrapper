@@ -5,6 +5,9 @@ The project uses Gradle, an advanced, general purpose build management system.  
 
 So far, it only contains a moderately-sized subsection of calls and functions available using the API, though more are currently being added.
 
+## What can it do?
+This project communicates using the OnePageCRM API.  For example, it can log in users, display details about their account, and perform a variety of actions such as adding calls and creating contacts.
+
 ## Getting started
 
 - Clone the repository.
@@ -12,9 +15,6 @@ So far, it only contains a moderately-sized subsection of calls and functions av
 - Import the project into your IDE.
 
 - Create a config.properties files containing your OnePageCRM username and password.
-
-## What can it do?
-This project communicates using the OnePageCRM API.  For example, it can log in users, display details about their account, and perform a variety of actions such as adding calls and creating contacts.
 
 ## Example
 The following is an example of a method which will:
