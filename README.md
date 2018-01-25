@@ -3,10 +3,8 @@ This project is a comprehensive java API wrapper aimed to abstract some of the d
 
 The project uses Gradle, an advanced, general purpose build management system.  This allows for streamlined functionality, such as automatically including jars in the build path or running unit tests much more quickly.
 
-So far, it only contains a moderately-sized subsection of calls and functions available using the API, though more are currently being added.
-
 ## What can it do?
-This project communicates using the OnePageCRM API.  For example, it can log in users, display details about their account, and perform a variety of actions such as adding calls and creating contacts.
+This project communicates using the OnePageCRM API.  For example, it can log in users, obtain details about their account, and perform a variety of actions such as adding calls and creating contacts.
 
 ## Getting started
 
@@ -14,7 +12,7 @@ This project communicates using the OnePageCRM API.  For example, it can log in 
 
 - Import the project into your IDE.
 
-- Create a config.properties files containing your OnePageCRM username and password.
+- Create a config.properties file containing your OnePageCRM username and password.
 
 ## Example
 The following is an example of a method which will:
