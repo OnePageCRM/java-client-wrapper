@@ -6,15 +6,6 @@ The project uses Gradle, an advanced, general purpose build management system.  
 ### What can it do?
 This project communicates using the OnePageCRM API.  It can, for example, log in users, obtain details about their account, and perform a range of actions such as adding calls and creating contacts.
 
-## Getting started
-
-- Clone the repository.
-
-- Import the project into your IDE.
-
-- Create a config.properties file containing your OnePageCRM username and password.
-
-### Gradle commands
 
 List available gradle commands:
 ```
@@ -29,6 +20,14 @@ Create jar file for use in projects
 ```
 ./gradlew jar
 ```
+
+## Getting started
+
+- Clone the repository.
+
+- Import the project into your IDE.
+
+- Create a config.properties file containing your OnePageCRM username and password.
 
 ## Example
 The following is an example of a method which will:
