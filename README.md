@@ -8,7 +8,7 @@ This project communicates using the OnePageCRM API.  It can, for example, log in
 
 List available gradle commands:
 ```
-.gradlew tasks
+./gradlew tasks
 ```
 Run all unit tests:
 ```
