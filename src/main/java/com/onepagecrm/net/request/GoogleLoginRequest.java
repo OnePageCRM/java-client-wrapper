@@ -3,8 +3,16 @@ package com.onepagecrm.net.request;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+/**
+ * Created by Cillian Myles on 31/01/2018.
+ * Copyright (c) 2018 OnePageCRM. All rights reserved.
+ *
+ * @see {@link GoogleAuthRequest}.
+ */
+@Deprecated
 public class GoogleLoginRequest extends Request {
 
+    @Deprecated
     public GoogleLoginRequest(String oauth2Code, boolean login) {
         setType();
         setEndpointUrl(login ? "google_plus" : "google_plus/signup");
