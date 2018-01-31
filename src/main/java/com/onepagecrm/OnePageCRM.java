@@ -25,6 +25,10 @@ public final class OnePageCRM {
         return instance;
     }
 
+    public static String getEndpointUrl() {
+        return Request.getServerUrl(SERVER);
+    }
+
     public static OnePageCRM setDebug(boolean debug) {
         DEBUG = debug;
         return getInstance();

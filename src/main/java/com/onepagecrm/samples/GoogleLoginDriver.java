@@ -13,9 +13,9 @@ import java.util.logging.Logger;
 /**
  * Created by Cillian Myles <cillian@onepagecrm.com> on 05/10/2016.
  */
-public class API329Driver {
+public class GoogleLoginDriver {
 
-    private static final Logger LOG = Logger.getLogger(API329Driver.class.getName());
+    private static final Logger LOG = Logger.getLogger(GoogleLoginDriver.class.getName());
 
     public static void main(String[] args) throws Exception {
         Properties prop = new Properties();
@@ -41,9 +41,9 @@ public class API329Driver {
             }
         }
 
-        OnePageCRM.setServer(Request.DEV_SERVER);
+        OnePageCRM.setServer(Request.AUTH_SERVER);
 
-        final String oauthCode = "4/hBCg7Ori8Z9KnNq_5hQ7AiNbf9JkALsFSBq62cWAsYs";
+        final String oauthCode = "";
         User.googleLogin(oauthCode);
     }
 }

@@ -1,6 +1,7 @@
 package com.onepagecrm.models;
 
 import com.onepagecrm.exceptions.OnePageException;
+import com.onepagecrm.models.internal.LoginData;
 import com.onepagecrm.models.internal.Paginator;
 import com.onepagecrm.models.internal.PredefinedActionList;
 import com.onepagecrm.models.internal.Sales;
@@ -8,13 +9,11 @@ import com.onepagecrm.models.serializers.BaseSerializer;
 import com.onepagecrm.models.serializers.CompanyListSerializer;
 import com.onepagecrm.models.serializers.ContactListSerializer;
 import com.onepagecrm.models.serializers.DealListSerializer;
-import com.onepagecrm.models.serializers.LoginSerializer;
 import com.onepagecrm.models.serializers.UserSerializer;
+import com.onepagecrm.net.API;
 import com.onepagecrm.net.ApiResource;
 import com.onepagecrm.net.Response;
 import com.onepagecrm.net.request.GetRequest;
-import com.onepagecrm.net.request.GoogleLoginRequest;
-import com.onepagecrm.net.request.LoginRequest;
 import com.onepagecrm.net.request.Request;
 
 import java.io.Serializable;
@@ -48,39 +47,33 @@ public class User extends ApiResource implements Serializable {
 
     private Sales sales;
 
+    /* Auth-related API methods */
+
     public static User login(String username, String password) throws OnePageException {
-        return login(username, password, false).getUser();
+        return API.Auth.login(username, password);
     }
 
-    public static StartupObject login(String username, String password, boolean fullResponse) throws OnePageException {
-        Request request = new LoginRequest(username, password, fullResponse);
-        Response response = request.send();
-        return LoginSerializer.fromString(response.getResponseBody(), fullResponse);
+    public static StartupData startup(String username, String password, boolean fullResponse) throws OnePageException {
+        return API.Auth.startup(new LoginData(username, password, fullResponse));
+    }
+
+    public StartupData startup() throws OnePageException {
+        return API.Auth.startup();
     }
 
     public static User googleLogin(String authCode) throws OnePageException {
-        Request request = new GoogleLoginRequest(authCode, true);
-        Response response = request.send();
-        return LoginSerializer.fromString(response.getResponseBody());
+        return API.Auth.googleLogin(authCode);
     }
 
     public static User googleSignup(String authCode) throws OnePageException {
-        Request request = new GoogleLoginRequest(authCode, false);
-        Response response = request.send();
-        return LoginSerializer.fromString(response.getResponseBody());
+        return API.Auth.googleSignup(authCode);
     }
 
     public User bootstrap() throws OnePageException {
-        Request request = new GetRequest(BOOTSTRAP_ENDPOINT);
-        Response response = request.send();
-        return LoginSerializer.fromString(response.getResponseBody());
+        return API.Auth.bootstrap();
     }
 
-    public StartupObject startup() throws OnePageException {
-        Request request = new GetRequest(STARTUP_ENDPOINT);
-        Response response = request.send();
-        return LoginSerializer.fromString(response.getResponseBody(), true);
-    }
+    /* Other API methods (TO BE MOVED OUT to API.Namespace eventually) */
 
     public ContactList actionStream() throws OnePageException {
         return getContacts(ACTION_STREAM_ENDPOINT, Query.queryDefault());

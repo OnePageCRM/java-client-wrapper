@@ -117,7 +117,7 @@ public class MultipartUpload {
             connection.setRequestProperty("Content-Type", "multipart/form-data; boundary=" + boundary);
 
             // -------------------------------
-            LOG.info("*************************************");
+            LOG.info(Utilities.repeatedString("*", 40));
             LOG.info("--- REQUEST ---");
             LOG.info("Type: " + connection.getRequestMethod());
             LOG.info("Url: " + connection.getURL());
@@ -178,7 +178,7 @@ public class MultipartUpload {
             LOG.info("Code: " + connection.getResponseCode());
             LOG.info("Message: " + connection.getResponseMessage());
             LOG.info("Body: " + result);
-            LOG.info("*************************************");
+            LOG.info(Utilities.repeatedString("*", 40));
             // -------------------------------
 
             // Parse XML response and add to S3FileRef data.
