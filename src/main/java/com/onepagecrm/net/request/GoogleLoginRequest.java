@@ -7,7 +7,7 @@ import org.json.JSONObject;
  * Created by Cillian Myles on 31/01/2018.
  * Copyright (c) 2018 OnePageCRM. All rights reserved.
  *
- * @see {@link GoogleAuthRequest}.
+ * @see GoogleAuthRequest
  */
 @Deprecated
 public class GoogleLoginRequest extends Request {

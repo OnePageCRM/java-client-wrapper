@@ -7,10 +7,7 @@ import com.onepagecrm.models.internal.LoginData;
 import com.onepagecrm.models.serializers.LoginDataSerializer;
 import com.onepagecrm.models.serializers.LoginSerializer;
 import com.onepagecrm.models.serializers.StartupDataSerializer;
-import com.onepagecrm.net.request.GetRequest;
-import com.onepagecrm.net.request.GoogleLoginRequest;
-import com.onepagecrm.net.request.LoginRequest;
-import com.onepagecrm.net.request.Request;
+import com.onepagecrm.net.request.*;
 
 import static com.onepagecrm.net.ApiResource.BOOTSTRAP_ENDPOINT;
 import static com.onepagecrm.net.ApiResource.STARTUP_ENDPOINT;
@@ -49,15 +46,36 @@ public interface API {
             Response response = request.send();
             return StartupDataSerializer.fromString(response.getResponseBody());
         }
+    }
 
-        public static com.onepagecrm.models.User googleLogin(String authCode) throws OnePageException {
-            Request request = new GoogleLoginRequest(authCode, true);
+    abstract class Google {
+
+        public static LoginData authenticate(String oauth2Code) throws OnePageException {
+            Request request = new GoogleAuthRequest(oauth2Code);
+            Response response = request.send();
+            return LoginDataSerializer.fromString(response.getResponseBody());
+        }
+
+        public static LoginData signup(String oauth2Code, String serverId) throws OnePageException {
+            Request request = new GoogleAuthRequest(oauth2Code, serverId);
+            Response response = request.send();
+            return LoginDataSerializer.fromString(response.getResponseBody());
+        }
+    }
+
+    @Deprecated
+    abstract class GoogleOld {
+
+        @Deprecated
+        public static com.onepagecrm.models.User login(String oauth2Code) throws OnePageException {
+            Request request = new GoogleLoginRequest(oauth2Code, true);
             Response response = request.send();
             return LoginSerializer.fromString(response.getResponseBody());
         }
 
-        public static com.onepagecrm.models.User googleSignup(String authCode) throws OnePageException {
-            Request request = new GoogleLoginRequest(authCode, false);
+        @Deprecated
+        public static com.onepagecrm.models.User signup(String oauth2Code) throws OnePageException {
+            Request request = new GoogleLoginRequest(oauth2Code, false);
             Response response = request.send();
             return LoginSerializer.fromString(response.getResponseBody());
         }
@@ -94,6 +112,22 @@ public interface API {
 
         public static StartupData fullRefresh() throws OnePageException {
             return API.Auth.startup();
+        }
+
+        public static StartupData googleLogin(String oath2Code) throws OnePageException {
+            OnePageCRM.setServer(Request.AUTH_SERVER);
+            LoginData loginData = Google.authenticate(oath2Code);
+            OnePageCRM.setServer(Request.CUSTOM_URL_SERVER);
+            OnePageCRM.setCustomUrl(loginData.getEndpointUrl());
+            return Auth.startup(loginData.setFullResponse(true));
+        }
+
+        public static StartupData googleSignup(String oath2Code, String serverId) throws OnePageException {
+            OnePageCRM.setServer(Request.AUTH_SERVER);
+            LoginData loginData = Google.signup(oath2Code, serverId);
+            OnePageCRM.setServer(Request.CUSTOM_URL_SERVER);
+            OnePageCRM.setCustomUrl(loginData.getEndpointUrl());
+            return Auth.startup(loginData.setFullResponse(true));
         }
     }
 }

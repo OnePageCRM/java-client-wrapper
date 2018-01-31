@@ -377,6 +377,7 @@ public class BaseSerializer {
     public static final String LOGIN_PARAMS_TAG = "login_params";
     public static final String SAML_RESPONSE_TAG = "SAMLResponse";
     public static final String RELAY_STATE_TAG = "RelayState";
+    public static final String ENDPOINT_TAG = "endpoint";
 
 
     /**
