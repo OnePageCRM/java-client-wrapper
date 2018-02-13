@@ -1,8 +1,19 @@
 package com.onepagecrm;
 
+import com.onepagecrm.exceptions.OnePageException;
 import com.onepagecrm.models.Account;
+import com.onepagecrm.models.AppServer;
+import com.onepagecrm.models.serializers.AppServerSerializer;
+import com.onepagecrm.net.Response;
+import com.onepagecrm.net.request.AppServersRequest;
 import com.onepagecrm.net.request.Request;
 
+import java.util.List;
+
+/**
+ * Created by Cillian Myles on 02/02/2018.
+ * Copyright (c) 2018 OnePageCRM. All rights reserved.
+ */
 @SuppressWarnings({"WeakerAccess", "unused", "UnusedReturnValue"})
 public final class OnePageCRM {
 
@@ -23,6 +34,10 @@ public final class OnePageCRM {
             instance = new OnePageCRM();
         }
         return instance;
+    }
+
+    public static String getEndpointUrl() {
+        return Request.getServerUrl(SERVER);
     }
 
     public static OnePageCRM setDebug(boolean debug) {
@@ -63,5 +78,28 @@ public final class OnePageCRM {
     public static OnePageCRM setMobile(boolean mobile) {
         MOBILE = mobile;
         return getInstance();
+    }
+
+    /**
+     * List available servers for sign up / log in - in the multi-server environment.
+     *
+     * @return list of available {@link AppServer servers}.
+     * @throws OnePageException if an error occurs.
+     */
+    public static List<AppServer> availableServers() throws OnePageException {
+        // Take note of the current server.
+        final int oldServerId = OnePageCRM.SERVER;
+        OnePageCRM.setServer(Request.AUTH_SERVER);
+
+        // Request the server details.
+        Request request = new AppServersRequest();
+        Response response = request.send();
+        String body = response.getResponseBody();
+        List<AppServer> servers = AppServerSerializer.fromString(body);
+
+        // Go back to "current" server.
+        OnePageCRM.setServer(oldServerId);
+
+        return servers;
     }
 }
