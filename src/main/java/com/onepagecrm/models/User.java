@@ -5,11 +5,7 @@ import com.onepagecrm.models.internal.LoginData;
 import com.onepagecrm.models.internal.Paginator;
 import com.onepagecrm.models.internal.PredefinedActionList;
 import com.onepagecrm.models.internal.Sales;
-import com.onepagecrm.models.serializers.BaseSerializer;
-import com.onepagecrm.models.serializers.CompanyListSerializer;
-import com.onepagecrm.models.serializers.ContactListSerializer;
-import com.onepagecrm.models.serializers.DealListSerializer;
-import com.onepagecrm.models.serializers.UserSerializer;
+import com.onepagecrm.models.serializers.*;
 import com.onepagecrm.net.API;
 import com.onepagecrm.net.ApiResource;
 import com.onepagecrm.net.Response;
@@ -61,12 +57,14 @@ public class User extends ApiResource implements Serializable {
         return API.Auth.startup();
     }
 
-    public static User googleLogin(String authCode) throws OnePageException {
-        return API.Auth.googleLogin(authCode);
+    @Deprecated
+    public static User googleLogin(String oauth2Code) throws OnePageException {
+        return API.GoogleOld.login(oauth2Code);
     }
 
-    public static User googleSignup(String authCode) throws OnePageException {
-        return API.Auth.googleSignup(authCode);
+    @Deprecated
+    public static User googleSignup(String oauth2Code) throws OnePageException {
+        return API.GoogleOld.signup(oauth2Code);
     }
 
     public User bootstrap() throws OnePageException {
