@@ -10,6 +10,7 @@ import java.io.Serializable;
 public class S3Data implements Serializable {
 
     private Long quota;
+    private Long remaining;
     private String displayQuota;
     private String url;
     private String key;
@@ -41,6 +42,15 @@ public class S3Data implements Serializable {
 
     public S3Data setQuota(Long quota) {
         this.quota = quota;
+        return this;
+    }
+
+    public Long getRemaining() {
+        return remaining;
+    }
+
+    public S3Data setRemaining(Long remaining) {
+        this.remaining = remaining;
         return this;
     }
 

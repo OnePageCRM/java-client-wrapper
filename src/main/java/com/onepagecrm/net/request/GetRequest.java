@@ -16,20 +16,28 @@ public class GetRequest extends SignedRequest {
                 new OnePageAuthData(Account.loggedInUser, Request.GET, endpointUrl, requestBody));
     }
 
+    public GetRequest(String endpoint, String query, boolean externalEndpoint) {
+        getRequest(endpoint, query, externalEndpoint);
+    }
+
     public GetRequest(String endpoint, String query) {
+        getRequest(endpoint, query, false);
+    }
+
+    @Override
+    public void setType() {
+        this.type = Type.GET;
+    }
+
+    private void getRequest(String endpoint, String query, boolean externalEndpoint) {
         setType();
-        setEndpointUrl(endpoint);
+        setEndpointUrl(endpoint, externalEndpoint);
         if (query == null) {
             authenticate();
         } else {
             addQuery(query);
             authenticate();
         }
-    }
-
-    @Override
-    public void setType() {
-        this.type = Type.GET;
     }
 
     public GetRequest addQuery(String query) {

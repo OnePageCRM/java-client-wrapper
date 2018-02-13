@@ -5,6 +5,7 @@ import com.onepagecrm.exceptions.OnePageException;
 import com.onepagecrm.models.Attachment;
 import com.onepagecrm.models.Deal;
 import com.onepagecrm.models.User;
+import com.onepagecrm.models.internal.DeleteResult;
 import com.onepagecrm.models.internal.FileReference;
 import com.onepagecrm.models.internal.S3;
 import com.onepagecrm.models.internal.S3Data;
@@ -46,7 +47,7 @@ public class AttachmentsPh2Driver {
             }
         }
 
-        OnePageCRM.setServer(Request.DEV_SERVER);
+        OnePageCRM.setServer(Request.STAGING_SERVER);
 
         User loggedInUser = User.login(
                 prop.getProperty("username"),
@@ -54,10 +55,10 @@ public class AttachmentsPh2Driver {
 
         LOG.info("Logged in User : " + loggedInUser);
 
-        String contactId = "56fa81eb9007ba07fc000080";
+        final String contactId = "55acc4ee6f6e653fdc000099"; // Java Wrapper
+        final String dealId = "575e8de59007ba0788493bd0"; // Big deal
         S3Form form = S3.form(contactId);
         S3Data data = form.getData();
-        LOG.info("S3 data : " + data);
 
         String fileName = "cillian.jpg";
         String contentType = "image/jpeg";
@@ -71,7 +72,7 @@ public class AttachmentsPh2Driver {
         }
 
         // OPTION 1: data + file
-        S3FileReference uploaded = S3.upload(contactId, data, file);
+        final S3FileReference uploaded = S3.upload(contactId, data, file);
 
         // OPTION 2: form
         //form.setFileReference(file);
@@ -90,16 +91,19 @@ public class AttachmentsPh2Driver {
         //        .setEtag(hardcodedEtag)
         //        .setSize(hardcodedSize);
 
-        LOG.info("" + uploaded.toString());
-
-        Deal reference = new Deal()
-                .setId("59cccf4b9007ba0db50775a0");
+        Deal reference = new Deal().setId(dealId);
 
         Attachment attachment = new Attachment(reference)
                 .setFilename(fileName)
                 .setProvider(Attachment.Provider.AMAZON);
 
-        Attachment saved = attachment.save(contactId, uploaded);
-        LOG.info("SAVED: " + saved);
+        final Attachment saved = attachment.save(contactId, uploaded);
+
+        final DeleteResult deleted = saved.delete();
+
+        LOG.info("S3 data: " + data);
+        LOG.info("Uploaded: " + uploaded);
+        LOG.info("Saved: " + saved);
+        LOG.info("Deleted: " + deleted);
     }
 }

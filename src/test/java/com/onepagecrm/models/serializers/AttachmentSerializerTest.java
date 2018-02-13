@@ -56,8 +56,25 @@ public class AttachmentSerializerTest extends BaseTest {
         assertEquals("ETags must be equal", expected.getEtag(), actual.getEtag());
     }
 
-    public void testUploadS3_failureXML() throws Exception {
+    public void testUploadS3_tooLargeFailureXML() throws Exception {
         String filePath = "./src/test/res/responses/xml/s3_upload_fail_too_large.xml";
+        String failureXml = FileUtilities.getResourceContents(filePath);
+
+        S3FileReference expectedFile = null;
+        Exception expectedException = null;
+
+        try {
+            expectedFile = S3FileReferenceSerializer.fromString(failureXml);
+        } catch (Exception e) {
+            expectedException = e;
+        }
+
+        assertTrue("Exception is never thrown.", expectedFile == null && expectedException != null);
+        assertTrue("Exception is not of expected type.", expectedException instanceof OnePageException);
+    }
+
+    public void testUploadS3_ServerFailureXML() throws Exception {
+        String filePath = "./src/test/res/responses/xml/s3_upload_server_error.xml";
         String failureXml = FileUtilities.getResourceContents(filePath);
 
         S3FileReference expectedFile = null;

@@ -3,6 +3,7 @@ package com.onepagecrm.models;
 import com.onepagecrm.exceptions.OnePageException;
 import com.onepagecrm.models.internal.DeleteResult;
 import com.onepagecrm.models.internal.Paginator;
+import com.onepagecrm.models.serializers.CompanyListSerializer;
 import com.onepagecrm.models.serializers.CompanySerializer;
 import com.onepagecrm.models.serializers.DeleteResultSerializer;
 import com.onepagecrm.models.serializers.LinkedContactSerializer;
@@ -19,6 +20,7 @@ import com.onepagecrm.net.request.Request;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import static com.onepagecrm.models.internal.Utilities.notNullOrEmpty;
 
@@ -100,6 +102,21 @@ public class Company extends ApiResource implements Serializable {
         Company company = CompanySerializer.fromString(responseBody);
         LoginSerializer.updateDynamicResources(responseBody);
         return company;
+    }
+
+    public static CompanyList list() throws OnePageException {
+        return getCompanies(COMPANIES_ENDPOINT, null);
+    }
+
+    public static CompanyList list(Map<String, Object> params) throws OnePageException {
+        return getCompanies(COMPANIES_ENDPOINT, params != null && !params.isEmpty() ? Query.fromParams(params) : null);
+    }
+
+    private static CompanyList getCompanies(String endpoint, String query) throws OnePageException {
+        Request request = new GetRequest(endpoint, query);
+        Response response = request.send();
+        String responseBody = response.getResponseBody();
+        return CompanyListSerializer.fromString(responseBody);
     }
 
     public LinkedContactList getLinkedContacts() throws OnePageException {

@@ -1,7 +1,16 @@
 package com.onepagecrm.models.serializers;
 
+import com.onepagecrm.OnePageCRM;
 import com.onepagecrm.exceptions.OnePageException;
-import com.onepagecrm.models.*;
+import com.onepagecrm.models.Account;
+import com.onepagecrm.models.ContactList;
+import com.onepagecrm.models.DealList;
+import com.onepagecrm.models.Filter;
+import com.onepagecrm.models.LeadSource;
+import com.onepagecrm.models.StartupData;
+import com.onepagecrm.models.Status;
+import com.onepagecrm.models.Tag;
+import com.onepagecrm.models.User;
 import com.onepagecrm.models.internal.ContactsCount;
 import com.onepagecrm.models.internal.PredefinedAction;
 import com.onepagecrm.models.internal.PredefinedActionList;
@@ -26,7 +35,7 @@ public class LoginSerializer extends BaseSerializer {
         return getLoggedInUser(responseBody);
     }
 
-    public static StartupObject fromString(String responseBody, boolean fullResponse) throws OnePageException {
+    public static StartupData fromString(String responseBody, boolean fullResponse) throws OnePageException {
         User user = getLoggedInUser(responseBody);
         ContactList actionStream = null;
         ContactList contacts = null;
@@ -41,7 +50,7 @@ public class LoginSerializer extends BaseSerializer {
                 if (responseObject.has(CONTACT_DATA_TAG)) {
                     contacts = ContactListSerializer.fromJsonObject(responseObject.getJSONObject(CONTACT_DATA_TAG));
                 }
-                if(responseObject.has(DEAL_DATA_TAG)) {
+                if (responseObject.has(DEAL_DATA_TAG)) {
                     deals = DealListSerializer.fromJsonObject(responseObject.getJSONObject(DEAL_DATA_TAG));
                 }
             } catch (JSONException e) {
@@ -49,10 +58,11 @@ public class LoginSerializer extends BaseSerializer {
                 LOG.severe(e.toString());
             }
         }
-        return new StartupObject(user, actionStream, contacts, deals, fullResponse);
+        return new StartupData(OnePageCRM.getEndpointUrl(), user, actionStream, contacts, deals);
     }
 
     public static void updateLoginOnlyResources(String responseBody) {
+        addNewUserInfo(responseBody);
         addFiltersToAccount(responseBody);
         addSettingsToAccount(responseBody);
         addPredefinedActionsToAccount(responseBody);
@@ -98,7 +108,7 @@ public class LoginSerializer extends BaseSerializer {
         return loginObject.toString();
     }
 
-    private static User getLoggedInUser(String responseBody) throws OnePageException {
+    public static User getLoggedInUser(String responseBody) throws OnePageException {
         String parsedResponse;
         OnePageException exception;
 
@@ -151,6 +161,21 @@ public class LoginSerializer extends BaseSerializer {
     private static void addStatuses(JSONArray statusesArray) throws JSONException {
         List<Status> statuses = StatusSerializer.fromJsonArray(statusesArray);
         loggedInUser.getAccount().setStatuses(statuses);
+    }
+
+    private static void addNewUserInfo(String responseBody) {
+        JSONObject responseObject;
+        try {
+            responseObject = new JSONObject(responseBody);
+            if (responseObject.has(NEW_USER_TAG)) {
+                loggedInUser.setNewUser(responseObject.getBoolean(NEW_USER_TAG));
+            } else {
+                loggedInUser.setNewUser(false);
+            }
+        } catch (JSONException e) {
+            LOG.severe("Error parsing New User");
+            LOG.severe(e.toString());
+        }
     }
 
     private static void addLeadSourcesToAccount(String responseBody) {

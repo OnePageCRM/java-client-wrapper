@@ -47,6 +47,7 @@ public class BaseSerializer {
     public static final String SALES_TAG = "sales";
     public static final String ACCOUNT_TAG = "account";
     public static final String SETTINGS_TAG = "settings";
+    public static final String NEW_USER_TAG = "new_user";
 
     // CONTACT TAGS
     public static final String CONTACTS_TAG = "contacts";
@@ -340,6 +341,7 @@ public class BaseSerializer {
 
     // S3 / ATTACHMENTS
     public static final String QUOTA_TAG = "quota";
+    public static final String STORAGE_LEFT_TAG = "storage_left";
     public static final String DISPLAY_QUOTA_TAG = "display_quota";
     public static final String FIELDS_TAG = "fields";
     public static final String KEY_TAG = "key";
@@ -356,6 +358,28 @@ public class BaseSerializer {
     public static final String REFERENCE_ID_TAG = "reference_id";
     public static final String EXTERNAL_URL_TAG = "external_url";
     public static final String LINK_TYPE_TAG = "link_type";
+
+    // NOTIFICATIONS
+    public static final String CONTACT_IDS_TAG = "contact_ids";
+    public static final String ACTION_TYPE_TAG = "action_type";
+    public static final String OPEN_NOTE_TAG = "open_note";
+    public static final String OPEN_CONTACT_TAG = "open_contact";
+
+    // VIDEO LINKS
+    public static final String VIDEO_TUTORIALS_TAG = "video_tutorials";
+    public static final String LINKS_TAG = "links";
+    public static final String LINK_TAG = "link";
+    public static final String RESOLUTION_TAG = "resolution";
+    public static final String VIDEO_NAME_TAG = "name";
+
+    // MULTI SERVER ENVIRONMENT (MSE)
+    public static final String ENDPOINT_URL_TAG = "endpoint_url";
+    public static final String LOGIN_PARAMS_TAG = "login_params";
+    public static final String SAML_RESPONSE_TAG = "SAMLResponse";
+    public static final String RELAY_STATE_TAG = "RelayState";
+    public static final String ENDPOINT_TAG = "endpoint";
+    public static final String ENDPOINTS_TAG = "endpoints";
+    public static final String METADATA_URL_TAG = "metadata_url";
 
     /**
      * Method used to parse the base/start of response.

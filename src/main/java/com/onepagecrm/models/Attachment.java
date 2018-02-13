@@ -1,11 +1,14 @@
 package com.onepagecrm.models;
 
 import com.onepagecrm.exceptions.OnePageException;
+import com.onepagecrm.models.internal.DeleteResult;
 import com.onepagecrm.models.internal.FileRefUtils;
 import com.onepagecrm.models.internal.S3FileReference;
 import com.onepagecrm.models.serializers.AttachmentSerializer;
+import com.onepagecrm.models.serializers.DeleteResultSerializer;
 import com.onepagecrm.net.ApiResource;
 import com.onepagecrm.net.Response;
+import com.onepagecrm.net.request.DeleteRequest;
 import com.onepagecrm.net.request.PostRequest;
 import com.onepagecrm.net.request.PutRequest;
 import com.onepagecrm.net.request.Request;
@@ -153,6 +156,12 @@ public class Attachment extends ApiResource implements Serializable {
         return AttachmentSerializer.fromString(responseBody)
                 .setReferenceId(referenceId)
                 .setReferenceType(referenceType);
+    }
+
+    public DeleteResult delete() throws OnePageException {
+        Request request = new DeleteRequest(addIdToEndpoint(ATTACHMENTS_ENDPOINT), null);
+        Response response = request.send();
+        return DeleteResultSerializer.fromString(this.id, response.getResponseBody());
     }
 
     private String addIdToEndpoint(String endpoint) {

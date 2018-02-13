@@ -10,6 +10,15 @@ dependencies {
     testCompile 'junit:junit:4.12'
 }
 
+sourceSets {
+    main {
+        java {
+            include 'com/onepagecrm/**'
+            exclude 'com/onepagecrm/samples/**'
+        }
+    }
+}
+
 jar {
     manifest {
         attributes 'Created-By': 'Cillian Myles (OnePageCRM)'

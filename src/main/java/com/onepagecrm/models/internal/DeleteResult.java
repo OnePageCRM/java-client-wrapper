@@ -1,8 +1,9 @@
 package com.onepagecrm.models.internal;
 
 /**
- * Created by Cillian Myles <cillian@onepagecrm.com> on 21/11/2016.
+ * @author Cillian Myles <cillian@onepagecrm.com> on 21/11/2016.
  */
+@SuppressWarnings("unused")
 public class DeleteResult {
 
     private final String resourceId;
@@ -19,5 +20,13 @@ public class DeleteResult {
 
     public boolean isDeleted() {
         return deleted;
+    }
+
+    @Override
+    public String toString() {
+        return "DeleteResult{" +
+                "resourceId='" + resourceId + '\'' +
+                ", deleted=" + deleted +
+                '}';
     }
 }

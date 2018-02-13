@@ -47,6 +47,7 @@ public class S3DataSerializer extends BaseSerializer {
 
         return new S3Data()
                 .setQuota(dataObject.optLong(QUOTA_TAG))
+                .setRemaining(dataObject.optLong(STORAGE_LEFT_TAG))
                 .setDisplayQuota(dataObject.optString(DISPLAY_QUOTA_TAG))
                 .setUrl(dataObject.optString(URL_TAG))
                 .setKey(fieldsObject.optString(KEY_TAG))
@@ -64,6 +65,7 @@ public class S3DataSerializer extends BaseSerializer {
         JSONObject dataObject = new JSONObject();
         if (data == null) return dataObject;
         addJsonLongValue(data.getQuota(), dataObject, QUOTA_TAG);
+        addJsonLongValue(data.getRemaining(), dataObject, STORAGE_LEFT_TAG);
         addJsonStringValue(data.getDisplayQuota(), dataObject, DISPLAY_QUOTA_TAG);
         addJsonStringValue(data.getUrl(), dataObject, URL_TAG);
         JSONObject fieldsObject = new JSONObject();

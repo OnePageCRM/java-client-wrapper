@@ -37,16 +37,16 @@ public class BasicAuthData extends AuthData {
      */
     public String calculateSignature() {
         if (OnePageCRM.DEBUG) {
-            LOG.info("*************************************");
+            LOG.info(Utilities.repeatedString("*", 40));
             LOG.info("--- AUTHENTICATION ---");
         }
         final String login = getUserId();
         final String password = getApiKey();
         final String toBeEncoded = String.format(Locale.ENGLISH, "%s:%s", login, password);
         if (OnePageCRM.DEBUG) {
-            LOG.info("login=" + login);
-            LOG.info("password=" + password);
-            LOG.info("toBeEncoded=" + toBeEncoded);
+            LOG.info("login: " + login);
+            LOG.info("password: " + password);
+            LOG.info("toBeEncoded: " + toBeEncoded);
         }
         byte[] encodeAuthBytes = new byte[0];
         try {
@@ -60,8 +60,8 @@ public class BasicAuthData extends AuthData {
         final String encodedAuth = encodeAuthBytes.length == 0 ? "" : new String(encodeAuthBytes);
         final String basicAuth = String.format(Locale.ENGLISH, "Basic %s", encodedAuth);
         if (OnePageCRM.DEBUG) {
-            LOG.info("b64(toBeEncoded)=" + encodedAuth);
-            LOG.info("Authorization=" + basicAuth);
+            LOG.info("b64(toBeEncoded): " + encodedAuth);
+            LOG.info("Authorization: " + basicAuth);
         }
         return basicAuth;
     }

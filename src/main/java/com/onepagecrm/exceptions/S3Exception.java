@@ -6,6 +6,8 @@ import com.onepagecrm.models.internal.S3FileReference;
 import java.util.Locale;
 import java.util.Map;
 
+import static com.onepagecrm.models.internal.Utilities.notNullOrEmpty;
+
 /**
  * @author Cillian Myles <cillian@onepagecrm.com> on 04/10/2017.
  */
@@ -82,5 +84,10 @@ public class S3Exception extends OnePageException {
     public static String tooLargeMessage(long maxSizeBytes) {
         return String.format(Locale.ENGLISH, "File size exceeds limit: %dMB.",
                 FileUtilities.bytesToMb(maxSizeBytes));
+    }
+
+    public static String notEnoughSpaceMessage(String remainingText) {
+        return !notNullOrEmpty(remainingText) ? "You have exceeded your file storage allowance." :
+                String.format(Locale.ENGLISH, "You have exceeded your %s file storage allowance.", remainingText);
     }
 }
