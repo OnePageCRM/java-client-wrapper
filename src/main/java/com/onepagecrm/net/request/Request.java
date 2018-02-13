@@ -5,6 +5,7 @@ import com.onepagecrm.exceptions.InvalidSSLCertException;
 import com.onepagecrm.exceptions.OnePageException;
 import com.onepagecrm.exceptions.OnePageIOException;
 import com.onepagecrm.exceptions.TimeoutException;
+import com.onepagecrm.models.internal.Utilities;
 import com.onepagecrm.models.serializers.BaseSerializer;
 import com.onepagecrm.net.Response;
 
@@ -30,6 +31,7 @@ public abstract class Request {
 
     protected static final Logger LOG = Logger.getLogger(Request.class.getName());
 
+    public static final int AUTH_SERVER = -1;
     public static final int APP_SERVER = 0;
     public static final int DEV_SERVER = 1;
     public static final int STAGING_SERVER = 2;
@@ -53,6 +55,7 @@ public abstract class Request {
     public static final int MOCK_REQUEST_SERVER = 22;
     public static final int CUSTOM_URL_SERVER = 23;
 
+    protected static final String AUTH_NAME = "AUTH";
     protected static final String APP_NAME = "APP";
     protected static final String DEV_NAME = "DEV";
     protected static final String STAGING_NAME = "STAGING";
@@ -75,6 +78,7 @@ public abstract class Request {
     protected static final String NETWORK_DEV_NAME = "NETWORK";
     protected static final String CUSTOM_NAME = "CUSTOM";
 
+    protected static final String AUTH_URL = "http://auth.mse.onepagecrm.eu/api/v3/"; // TODO: update URL before going live
     protected static final String APP_URL = "https://app.onepagecrm.com/api/v3/";
     protected static final String DEV_URL = "http://dev.onepagecrm.com/api/v3/";
     protected static final String STAGING_URL = "http://staging.onepagecrm.com/api/v3/";
@@ -99,10 +103,12 @@ public abstract class Request {
 
     public static void setLocalDevUrl(String customUrl) {
         LOCAL_DEV_URL = customUrl;
+        sServerUrlMap.put(LOCAL_DEV_SERVER, LOCAL_DEV_URL);
     }
 
     public static void setNetworkDevUrl(String customUrl) {
         NETWORK_DEV_URL = customUrl;
+        sServerUrlMap.put(NETWORK_DEV_SERVER, NETWORK_DEV_URL);
     }
 
     public static void setCustomUrl(String customUrl) {
@@ -113,6 +119,7 @@ public abstract class Request {
     private static final Map<Integer, String> sServerNameMap = new HashMap<>();
 
     static {
+        sServerNameMap.put(AUTH_SERVER, AUTH_NAME);
         sServerNameMap.put(APP_SERVER, APP_NAME);
         sServerNameMap.put(DEV_SERVER, DEV_NAME);
         sServerNameMap.put(STAGING_SERVER, STAGING_NAME);
@@ -139,6 +146,7 @@ public abstract class Request {
     private static final Map<Integer, String> sServerUrlMap = new HashMap<>();
 
     static {
+        sServerUrlMap.put(AUTH_SERVER, AUTH_URL);
         sServerUrlMap.put(APP_SERVER, APP_URL);
         sServerUrlMap.put(DEV_SERVER, DEV_URL);
         sServerUrlMap.put(STAGING_SERVER, STAGING_URL);
@@ -165,6 +173,7 @@ public abstract class Request {
     private static final Map<String, Integer> sNameServerMap = new HashMap<>();
 
     static {
+        sNameServerMap.put(AUTH_NAME, AUTH_SERVER);
         sNameServerMap.put(APP_NAME, APP_SERVER);
         sNameServerMap.put(DEV_NAME, DEV_SERVER);
         sNameServerMap.put(STAGING_NAME, STAGING_SERVER);
@@ -188,23 +197,6 @@ public abstract class Request {
         sNameServerMap.put(CUSTOM_NAME, CUSTOM_URL_SERVER);
     }
 
-    public static boolean validServerId(int id) {
-        return sServerUrlMap.get(id) != null;
-    }
-
-    public static String getServerName(int serverId) {
-        return getServerName(serverId, APP_NAME);
-    }
-
-    public static String getServerName(int serverId, String defaultName) {
-        final String safeDefault = sNameServerMap.get(defaultName) != null ? defaultName : APP_NAME;
-        if (serverId < APP_SERVER || serverId > CUSTOM_URL_SERVER) {
-            return safeDefault;
-        }
-        final String matched = sServerNameMap.get(serverId);
-        return matched != null ? matched : safeDefault;
-    }
-
     public static int getServerId(String name) {
         return getServerId(name, APP_SERVER);
     }
@@ -215,6 +207,36 @@ public abstract class Request {
             return safeDefault;
         }
         final Integer matched = sNameServerMap.get(name);
+        return matched != null ? matched : safeDefault;
+    }
+
+    public static boolean validServerId(int id) {
+        return sServerUrlMap.get(id) != null;
+    }
+
+    public static String getServerName(int serverId) {
+        return getServerName(serverId, APP_NAME);
+    }
+
+    public static String getServerName(int serverId, String defaultName) {
+        final String safeDefault = sNameServerMap.get(defaultName) != null ? defaultName : APP_NAME;
+        if (serverId < AUTH_SERVER || serverId > CUSTOM_URL_SERVER) {
+            return safeDefault;
+        }
+        final String matched = sServerNameMap.get(serverId);
+        return matched != null ? matched : safeDefault;
+    }
+
+    public static String getServerUrl(int serverId) {
+        return getServerUrl(serverId, APP_URL);
+    }
+
+    public static String getServerUrl(int serverId, String defaultUrl) {
+        final String safeDefault = sServerUrlMap.containsValue(defaultUrl) ? defaultUrl : APP_URL;
+        if (serverId < AUTH_SERVER || serverId > CUSTOM_URL_SERVER) {
+            return safeDefault;
+        }
+        final String matched = sServerUrlMap.get(serverId);
         return matched != null ? matched : safeDefault;
     }
 
@@ -293,7 +315,7 @@ public abstract class Request {
 
     private Response mockRequest() {
         Response mockResponse = new Response(0, "OK", "MOCKED REQUEST RESPONSE!");
-        LOG.info("*************************************");
+        LOG.info(Utilities.repeatedString("*", 40));
         LOG.info("--- REQUEST ---");
         LOG.info("Type: " + type);
         LOG.info("Url: " + getUrl(this.endpointUrl));
@@ -303,7 +325,7 @@ public abstract class Request {
         LOG.info("Code: " + mockResponse.getResponseCode());
         LOG.info("Message: " + mockResponse.getResponseMessage());
         LOG.info("Body: " + mockResponse.getResponseBody());
-        LOG.info("*************************************");
+        LOG.info(Utilities.repeatedString("*", 40));
         return mockResponse;
     }
 
@@ -410,7 +432,7 @@ public abstract class Request {
         connection.setRequestProperty(USER_AGENT_TAG, userAgent);
         connection.setRequestProperty(CONTENT_TYPE_TAG, CONTENT_TYPE);
 
-        LOG.info("*************************************");
+        LOG.info(Utilities.repeatedString("*", 40));
         LOG.info("--- REQUEST ---");
         LOG.info("Type: " + connection.getRequestMethod());
         LOG.info("Url: " + connection.getURL());
@@ -471,7 +493,7 @@ public abstract class Request {
         LOG.info("Code: " + response.getResponseCode());
         LOG.info("Message: " + response.getResponseMessage());
         LOG.info("Body: " + response.getResponseBody());
-        LOG.info("*************************************");
+        LOG.info(Utilities.repeatedString("*", 40));
     }
 
     private void getResponseCode() throws OnePageException {

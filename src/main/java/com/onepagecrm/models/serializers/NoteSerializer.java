@@ -66,7 +66,7 @@ public class NoteSerializer extends BaseSerializer {
     public static String toJsonObject(Note note) {
         JSONObject noteObject = new JSONObject();
         addJsonStringValue(note.getId(), noteObject, ID_TAG);
-        addJsonStringValue(note.getAuthor(), noteObject, AUTH_KEY_TAG);
+        addJsonStringValue(note.getAuthor(), noteObject, AUTHOR_TAG);
         addJsonStringValue(note.getText(), noteObject, TEXT_TAG);
         addJsonStringValue(note.getContactId(), noteObject, CONTACT_ID_TAG);
         addJsonStringValue(DateSerializer.toFormattedDateTimeString(note.getCreatedAt()), noteObject, CREATED_AT_TAG);

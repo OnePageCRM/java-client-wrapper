@@ -50,6 +50,7 @@ public class BaseSerializer {
     public static final String ACCOUNT_TAG = "account";
     public static final String ACCOUNTS_TAG = "accounts";
     public static final String SETTINGS_TAG = "settings";
+    public static final String NEW_USER_TAG = "new_user";
 
     // CONTACT TAGS
     public static final String CONTACTS_TAG = "contacts";
@@ -373,6 +374,15 @@ public class BaseSerializer {
     public static final String LINK_TAG = "link";
     public static final String RESOLUTION_TAG = "resolution";
     public static final String VIDEO_NAME_TAG = "name";
+
+    // MULTI SERVER ENVIRONMENT (MSE)
+    public static final String ENDPOINT_URL_TAG = "endpoint_url";
+    public static final String LOGIN_PARAMS_TAG = "login_params";
+    public static final String SAML_RESPONSE_TAG = "SAMLResponse";
+    public static final String RELAY_STATE_TAG = "RelayState";
+    public static final String ENDPOINT_TAG = "endpoint";
+    public static final String ENDPOINTS_TAG = "endpoints";
+    public static final String METADATA_URL_TAG = "metadata_url";
 
     /*
      * Some static re-usable variables
