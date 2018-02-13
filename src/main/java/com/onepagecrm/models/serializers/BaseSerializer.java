@@ -378,7 +378,8 @@ public class BaseSerializer {
     public static final String SAML_RESPONSE_TAG = "SAMLResponse";
     public static final String RELAY_STATE_TAG = "RelayState";
     public static final String ENDPOINT_TAG = "endpoint";
-
+    public static final String ENDPOINTS_TAG = "endpoints";
+    public static final String METADATA_URL_TAG = "metadata_url";
 
     /**
      * Method used to parse the base/start of response.
