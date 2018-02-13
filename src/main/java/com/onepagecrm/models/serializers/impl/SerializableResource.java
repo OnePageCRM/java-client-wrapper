@@ -2,7 +2,6 @@ package com.onepagecrm.models.serializers.impl;
 
 import com.onepagecrm.models.BaseResource;
 import com.onepagecrm.models.serializers.BaseSerializer;
-import com.sun.istack.internal.NotNull;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -12,6 +11,7 @@ import java.util.List;
 /**
  * @author Cillian Myles <cillian@onepagecrm.com> on 04/09/2017.
  */
+@SuppressWarnings("WeakerAccess")
 public abstract class SerializableResource<T extends BaseResource> extends BaseSerializer implements Serializable<T> {
 
     protected abstract T singleResource();
@@ -30,7 +30,7 @@ public abstract class SerializableResource<T extends BaseResource> extends BaseS
         return fromJsonObjectImpl(resourceObject);
     }
 
-    protected abstract T fromJsonObjectImpl(@NotNull JSONObject resourceObject);
+    protected abstract T fromJsonObjectImpl(JSONObject resourceObject);
 
     @Override
     public final List<T> fromJsonArray(JSONArray resourceArray) {
@@ -38,7 +38,7 @@ public abstract class SerializableResource<T extends BaseResource> extends BaseS
         return fromJsonArrayImpl(resourceArray);
     }
 
-    protected List<T> fromJsonArrayImpl(@NotNull JSONArray resourceArray) {
+    protected List<T> fromJsonArrayImpl(JSONArray resourceArray) {
         List<T> list = multipleResources();
         for (int i = 0; i < resourceArray.length(); i++) {
             list.add(fromJsonObject(resourceArray.optJSONObject(i)));
@@ -52,7 +52,7 @@ public abstract class SerializableResource<T extends BaseResource> extends BaseS
         return toJsonObjectImpl(resource);
     }
 
-    protected abstract JSONObject toJsonObjectImpl(@NotNull T resource);
+    protected abstract JSONObject toJsonObjectImpl(T resource);
 
     @Override
     public final JSONArray toJsonArray(List<T> resourceList) {
@@ -62,7 +62,7 @@ public abstract class SerializableResource<T extends BaseResource> extends BaseS
         return toJsonArrayImpl(resourceList);
     }
 
-    protected JSONArray toJsonArrayImpl(@NotNull List<T> resourceList) {
+    protected JSONArray toJsonArrayImpl(List<T> resourceList) {
         JSONArray resourceArray = new JSONArray();
         for (T item : resourceList) {
             resourceArray.put(toJsonObject(item));
@@ -78,7 +78,7 @@ public abstract class SerializableResource<T extends BaseResource> extends BaseS
         return toJsonArrayImpl(resourceList, includeObjectKey);
     }
 
-    protected JSONArray toJsonArrayImpl(@NotNull List<T> resourceList, boolean includeObjectKey) {
+    protected JSONArray toJsonArrayImpl(List<T> resourceList, boolean includeObjectKey) {
         JSONArray resourceArray = new JSONArray();
         for (T item : resourceList) {
             JSONObject outerObject = new JSONObject();

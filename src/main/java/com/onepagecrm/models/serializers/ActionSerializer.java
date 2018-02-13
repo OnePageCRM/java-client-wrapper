@@ -2,7 +2,6 @@ package com.onepagecrm.models.serializers;
 
 import com.onepagecrm.models.Action;
 import com.onepagecrm.models.serializers.impl.SerializableAPI;
-import com.sun.istack.internal.NotNull;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -45,7 +44,7 @@ public class ActionSerializer extends SerializableAPI<Action> {
     }
 
     @Override
-    protected Action fromJsonObjectImpl(@NotNull JSONObject actionObject) {
+    protected Action fromJsonObjectImpl(JSONObject actionObject) {
         Action action = new Action();
         String status = null;
         Date exactTime = null;
@@ -106,7 +105,7 @@ public class ActionSerializer extends SerializableAPI<Action> {
     }
 
     @Override
-    protected JSONObject toJsonObjectImpl(@NotNull Action action) {
+    protected JSONObject toJsonObjectImpl(Action action) {
         JSONObject actionObject = new JSONObject();
         addJsonStringValue(action.getId(), actionObject, ID_TAG);
         addJsonStringValue(action.getContactId(), actionObject, CONTACT_ID_TAG);
