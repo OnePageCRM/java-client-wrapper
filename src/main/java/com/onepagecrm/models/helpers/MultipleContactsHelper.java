@@ -13,11 +13,13 @@ import java.util.Map;
 public class MultipleContactsHelper {
 
     public static String toString(List<String> contactIds) {
-        return contactIds == null ? "" : TextHelper.join(",", contactIds);
+        return contactIds == null || contactIds.isEmpty() ? "" :
+                TextHelper.join(",", contactIds);
     }
 
     public static String toString(Map<String, Object> filterParams) {
-        return filterParams == null ? "" : TextHelper.join(",", filterParams.keySet());
+        return filterParams == null || filterParams.isEmpty() ? "" :
+                TextHelper.join(",", filterParams.keySet());
     }
 
     public static List<String> toList(String contactIds) {
