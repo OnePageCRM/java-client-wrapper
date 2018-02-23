@@ -133,6 +133,12 @@ public class ContactSerializer extends BaseSerializer {
                 Date modifiedAt = DateSerializer.fromFormattedString(modifiedAtStr);
                 contact.setModifiedAt(modifiedAt);
             }
+            // Google Contact.
+            if (contactObject.has(GOOGLE_CONTACT_TAG) && !contactObject.isNull(GOOGLE_CONTACT_TAG)) {
+                JSONObject googleContactObject = contactObject.getJSONObject(GOOGLE_CONTACT_TAG);
+                contact.setGoogleId(googleContactObject.getString(GOOGLE_ID_TAG));
+                contact.setGoogleAccountEmail(googleContactObject.getString(GOOGLE_ACCOUNT_EMAIL_TAG));
+            }
             // Tags.
             if (contactObject.has(TAGS_TAG)) {
                 List<String> tagNames = BaseSerializer.toListOfStrings(contactObject.getJSONArray(TAGS_TAG));

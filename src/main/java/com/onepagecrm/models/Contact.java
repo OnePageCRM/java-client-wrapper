@@ -80,6 +80,8 @@ public class Contact extends ApiResource implements Serializable {
     private Company company;
     private List<String> linkedWithIds;
     private String linkedWithName;
+    private String googleId;
+    private String googleAccountEmail;
 
     public Contact save() throws OnePageException {
         return this.isValid() ? update() : create();
@@ -104,6 +106,17 @@ public class Contact extends ApiResource implements Serializable {
                 "?" + EXTRA_FIELDS,
                 ContactSerializer.toJsonObject(this)
         );
+        Response response = request.send();
+        String responseBody = response.getResponseBody();
+        Contact contact = ContactSerializer.fromString(responseBody);
+        LoginSerializer.updateDynamicResources(responseBody);
+        return contact;
+    }
+
+    public Contact saveGoogle() throws OnePageException {
+        Request request = new PostRequest(
+                GOOGLE_CONTACTS_ENDPOINT.replace("{id}", this.id),
+                null);
         Response response = request.send();
         String responseBody = response.getResponseBody();
         Contact contact = ContactSerializer.fromString(responseBody);
@@ -615,6 +628,24 @@ public class Contact extends ApiResource implements Serializable {
     public Contact setLinkedWithId(String linkedWithId) {
         if (this.linkedWithIds == null) this.linkedWithIds = new ArrayList<>();
         this.linkedWithIds.add(linkedWithId);
+        return this;
+    }
+
+    public String getGoogleId() {
+        return googleId;
+    }
+
+    public Contact setGoogleId(String googleId) {
+        this.googleId = googleId;
+        return this;
+    }
+
+    public String getGoogleAccountEmail() {
+        return googleAccountEmail;
+    }
+
+    public Contact setGoogleAccountEmail(String googleAccountEmail) {
+        this.googleAccountEmail = googleAccountEmail;
         return this;
     }
 }
