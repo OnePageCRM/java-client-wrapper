@@ -2,6 +2,7 @@ package com.onepagecrm.models;
 
 import com.onepagecrm.exceptions.InvalidListingTypeException;
 import com.onepagecrm.exceptions.OnePageException;
+import com.onepagecrm.models.helpers.MultipleContactsHelper;
 import com.onepagecrm.models.internal.Paginator;
 import com.onepagecrm.models.serializers.ContactListSerializer;
 
@@ -11,6 +12,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
 
+/**
+ * Created by Cillian Myles on 15/02/2018.
+ * Copyright (c) 2018 OnePageCRM. All rights reserved.
+ */
+@SuppressWarnings({"unused", "WeakerAccess"})
 public class ContactList extends ResourceList<Contact> implements Serializable {
 
     private static final Logger LOG = Logger.getLogger(ContactList.class.getName());
@@ -20,6 +26,7 @@ public class ContactList extends ResourceList<Contact> implements Serializable {
     public static final int AS_LISTING = 1219;
     public static final int AZ_LISTING = 8662;
     public static final int AS_TEAM_LISTING = 2986;
+    public static final int MULTIPLE_CONTACTS_LISTING = 6252;
 
     private int type;
 
@@ -51,6 +58,9 @@ public class ContactList extends ResourceList<Contact> implements Serializable {
                 break;
             case AS_TEAM_LISTING:
                 list = Account.loggedInUser.teamStream(params, (paginator = new Paginator()));
+                break;
+            case MULTIPLE_CONTACTS_LISTING:
+                list = Contact.byIds(MultipleContactsHelper.toString(params));
                 break;
         }
         this.setList(list);
