@@ -116,31 +116,30 @@ public abstract class Request {
     protected static final String NETWORK_DEV_NAME = "NETWORK";
     protected static final String CUSTOM_NAME = "CUSTOM";
 
-    // TODO: remove "/api/v3/" from these urls
-    protected static final String AUTH_DEV_URL = "http://auth.mse.onepagecrm.eu/api/v3/";
-    protected static final String AUTH_PROD_URL = "https://secure.onepagecrm.com/api/v3/";
-    protected static final String APP_US_URL = "https://app.onepagecrm.com/api/v3/";
-    protected static final String APP_EU_URL = "https://eu.onepagecrm.com/api/v3/"; // TODO: update this when EU server live
-    protected static final String DEV_URL = "http://dev.onepagecrm.com/api/v3/";
-    protected static final String STAGING_URL = "http://staging.onepagecrm.com/api/v3/";
-    protected static final String ATLAS_URL = "http://atlas.dev.onepagecrm.com/api/v3/";
-    protected static final String CALYPSO_URL = "http://calypso.dev.onepagecrm.com/api/v3/";
-    protected static final String DEIMOS_URL = "http://deimos.dev.onepagecrm.com/api/v3/";
-    protected static final String GANYMEDE_URL = "http://ganymede.dev.onepagecrm.com/api/v3/";
-    protected static final String DRACO_URL = "http://draco.dev.onepagecrm.com/api/v3/";
-    protected static final String GEMINI_URL = "http://gemini.dev.onepagecrm.com/api/v3/";
-    protected static final String ORION_URL = "http://orion.dev.onepagecrm.com/api/v3/";
-    protected static final String PEGASUS_URL = "http://pegasus.dev.onepagecrm.com/api/v3/";
-    protected static final String PHOBOS_URL = "http://phobos.dev.onepagecrm.com/api/v3/";
-    protected static final String SECURE_URL = "https://secure.dev.onepagecrm.com/api/v3/";
-    protected static final String SIRIUS_URL = "http://sirius.dev.onepagecrm.com/api/v3/";
-    protected static final String TAURUS_URL = "http://taurus.dev.onepagecrm.com/api/v3/";
-    protected static final String TITAN_URL = "http://titan.dev.onepagecrm.com/api/v3/";
-    protected static final String VIRGO_URL = "http://virgo.dev.onepagecrm.com/api/v3/";
-    protected static final String VOYAGER_URL = "http://voyager.dev.onepagecrm.com/api/v3/";
-    protected static String LOCAL_DEV_URL = "http://localhost:3000/api/v3/";
-    protected static String NETWORK_DEV_URL = "http://10.100.0.15/api/v3/";
-    protected static String CUSTOM_URL = "http://10.100.0.15/api/v3/";
+    protected static final String AUTH_DEV_URL = "http://auth.mse.onepagecrm.eu";
+    protected static final String AUTH_PROD_URL = "https://secure.onepagecrm.com";
+    protected static final String APP_US_URL = "https://app.onepagecrm.com";
+    protected static final String APP_EU_URL = "https://eu.onepagecrm.com"; // TODO: update this when EU server live
+    protected static final String DEV_URL = "http://dev.onepagecrm.com";
+    protected static final String STAGING_URL = "http://staging.onepagecrm.com";
+    protected static final String ATLAS_URL = "http://atlas.dev.onepagecrm.com";
+    protected static final String CALYPSO_URL = "http://calypso.dev.onepagecrm.com";
+    protected static final String DEIMOS_URL = "http://deimos.dev.onepagecrm.com";
+    protected static final String GANYMEDE_URL = "http://ganymede.dev.onepagecrm.com";
+    protected static final String DRACO_URL = "http://draco.dev.onepagecrm.com";
+    protected static final String GEMINI_URL = "http://gemini.dev.onepagecrm.com";
+    protected static final String ORION_URL = "http://orion.dev.onepagecrm.com";
+    protected static final String PEGASUS_URL = "http://pegasus.dev.onepagecrm.com";
+    protected static final String PHOBOS_URL = "http://phobos.dev.onepagecrm.com";
+    protected static final String SECURE_URL = "https://secure.dev.onepagecrm.com";
+    protected static final String SIRIUS_URL = "http://sirius.dev.onepagecrm.com";
+    protected static final String TAURUS_URL = "http://taurus.dev.onepagecrm.com";
+    protected static final String TITAN_URL = "http://titan.dev.onepagecrm.com";
+    protected static final String VIRGO_URL = "http://virgo.dev.onepagecrm.com";
+    protected static final String VOYAGER_URL = "http://voyager.dev.onepagecrm.com";
+    protected static String LOCAL_DEV_URL = "http://localhost:3000";
+    protected static String NETWORK_DEV_URL = "http://10.100.0.15";
+    protected static String CUSTOM_URL = "http://10.100.0.15";
 
     public static void setLocalDevUrl(String customUrl) {
         LOCAL_DEV_URL = customUrl;
@@ -287,8 +286,12 @@ public abstract class Request {
         return matched != null ? matched : safeDefault;
     }
 
-    public static final String API_SUB_ENDPOINT = "/api/v3/";
-    public static final String FORMAT = ".json";
+    public static String getServerApiUrl(int serverId) {
+        return getServerUrl(serverId) + "/" + API_SUB_ENDPOINT;
+    }
+
+    public static final String API_SUB_ENDPOINT = "api/v3";
+    public static final String FORMAT_JSON = "json";
 
     protected String endpointUrl;
 
@@ -337,7 +340,7 @@ public abstract class Request {
         if (externalEndpoint) {
             endpointUrl = endpoint;
         } else {
-            endpointUrl = getServerUrl(OnePageCRM.SERVER) + endpoint + FORMAT;
+            endpointUrl = getServerApiUrl(OnePageCRM.SERVER) + "/" + endpoint + "." + FORMAT_JSON;
         }
     }
 
