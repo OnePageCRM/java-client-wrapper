@@ -22,37 +22,79 @@ import java.util.logging.Logger;
 
 import static com.onepagecrm.models.internal.Utilities.notNullOrEmpty;
 
-@SuppressWarnings({"WeakerAccess", "MismatchedQueryAndUpdateOfCollection", "unused"})
+@SuppressWarnings({"WeakerAccess", "MismatchedQueryAndUpdateOfCollection", "unused", "UnusedAssignment"})
 public abstract class Request {
 
     protected static final Logger LOG = Logger.getLogger(Request.class.getName());
 
-    public static final int AUTH_SERVER = -1;
-    public static final int APP_SERVER = 0;
-    public static final int DEV_SERVER = 1;
-    public static final int STAGING_SERVER = 2;
-    public static final int ATLAS_SERVER = 3;
-    public static final int CALYPSO_SERVER = 4;
-    public static final int DEIMOS_SERVER = 5;
-    public static final int DRACO_SERVER = 6;
-    public static final int GANYMEDE_SERVER = 7;
-    public static final int GEMINI_SERVER = 8;
-    public static final int ORION_SERVER = 9;
-    public static final int PEGASUS_SERVER = 10;
-    public static final int PHOBOS_SERVER = 11;
-    public static final int SECURE_SERVER = 12;
-    public static final int SIRIUS_SERVER = 13;
-    public static final int TAURUS_SERVER = 14;
-    public static final int TITAN_SERVER = 15;
-    public static final int VIRGO_SERVER = 16;
-    public static final int VOYAGER_SERVER = 17;
-    public static final int LOCAL_DEV_SERVER = 20;
-    public static final int NETWORK_DEV_SERVER = 21;
-    public static final int MOCK_REQUEST_SERVER = 22;
-    public static final int CUSTOM_URL_SERVER = 23;
+    public static final int AUTH_DEV_SERVER;
+    public static final int AUTH_PROD_SERVER;
+    public static final int APP_US_SERVER;
+    public static final int APP_EU_SERVER;
+    public static final int DEV_SERVER;
+    public static final int STAGING_SERVER;
+    public static final int ATLAS_SERVER;
+    public static final int CALYPSO_SERVER;
+    public static final int DEIMOS_SERVER;
+    public static final int DRACO_SERVER;
+    public static final int GANYMEDE_SERVER;
+    public static final int GEMINI_SERVER;
+    public static final int ORION_SERVER;
+    public static final int PEGASUS_SERVER;
+    public static final int PHOBOS_SERVER;
+    public static final int SECURE_SERVER;
+    public static final int SIRIUS_SERVER;
+    public static final int TAURUS_SERVER;
+    public static final int TITAN_SERVER;
+    public static final int VIRGO_SERVER;
+    public static final int VOYAGER_SERVER;
+    public static final int LOCAL_DEV_SERVER;
+    public static final int NETWORK_DEV_SERVER;
+    public static final int MOCK_REQUEST_SERVER;
+    public static final int CUSTOM_URL_SERVER;
 
-    protected static final String AUTH_NAME = "AUTH";
-    protected static final String APP_NAME = "APP";
+    private static final int MIN;
+    private static final int MAX;
+
+    public static final int DEFAULT_AUTH_SERVER = Request.AUTH_PROD_SERVER;
+
+    static {
+        int counter = 0;
+
+        AUTH_DEV_SERVER = counter++;
+        AUTH_PROD_SERVER = counter++;
+        APP_US_SERVER = counter++;
+        APP_EU_SERVER = counter++;
+        DEV_SERVER = counter++;
+        STAGING_SERVER = counter++;
+        ATLAS_SERVER = counter++;
+        CALYPSO_SERVER = counter++;
+        DEIMOS_SERVER = counter++;
+        DRACO_SERVER = counter++;
+        GANYMEDE_SERVER = counter++;
+        GEMINI_SERVER = counter++;
+        ORION_SERVER = counter++;
+        PEGASUS_SERVER = counter++;
+        PHOBOS_SERVER = counter++;
+        SECURE_SERVER = counter++;
+        SIRIUS_SERVER = counter++;
+        TAURUS_SERVER = counter++;
+        TITAN_SERVER = counter++;
+        VIRGO_SERVER = counter++;
+        VOYAGER_SERVER = counter++;
+        LOCAL_DEV_SERVER = counter++;
+        NETWORK_DEV_SERVER = counter++;
+        MOCK_REQUEST_SERVER = counter++;
+        CUSTOM_URL_SERVER = counter++;
+
+        MIN = AUTH_DEV_SERVER;
+        MAX = CUSTOM_URL_SERVER;
+    }
+
+    protected static final String AUTH_DEV_NAME = "AUTH_DEV";
+    protected static final String AUTH_PROD_NAME = "AUTH_PROD";
+    protected static final String APP_US_NAME = "APP_US";
+    protected static final String APP_EU_NAME = "APP_EU";
     protected static final String DEV_NAME = "DEV";
     protected static final String STAGING_NAME = "STAGING";
     protected static final String ATLAS_NAME = "ATLAS";
@@ -74,8 +116,11 @@ public abstract class Request {
     protected static final String NETWORK_DEV_NAME = "NETWORK";
     protected static final String CUSTOM_NAME = "CUSTOM";
 
-    protected static final String AUTH_URL = "http://auth.mse.onepagecrm.eu/api/v3/"; // TODO: update URL before going live
-    protected static final String APP_URL = "https://app.onepagecrm.com/api/v3/";
+    // TODO: remove "/api/v3/" from these urls
+    protected static final String AUTH_DEV_URL = "http://auth.mse.onepagecrm.eu/api/v3/";
+    protected static final String AUTH_PROD_URL = "https://secure.onepagecrm.com/api/v3/";
+    protected static final String APP_US_URL = "https://app.onepagecrm.com/api/v3/";
+    protected static final String APP_EU_URL = "https://eu.onepagecrm.com/api/v3/"; // TODO: update this when EU server live
     protected static final String DEV_URL = "http://dev.onepagecrm.com/api/v3/";
     protected static final String STAGING_URL = "http://staging.onepagecrm.com/api/v3/";
     protected static final String ATLAS_URL = "http://atlas.dev.onepagecrm.com/api/v3/";
@@ -115,8 +160,10 @@ public abstract class Request {
     private static final Map<Integer, String> sServerNameMap = new HashMap<>();
 
     static {
-        sServerNameMap.put(AUTH_SERVER, AUTH_NAME);
-        sServerNameMap.put(APP_SERVER, APP_NAME);
+        sServerNameMap.put(AUTH_DEV_SERVER, AUTH_DEV_NAME);
+        sServerNameMap.put(AUTH_PROD_SERVER, AUTH_PROD_NAME);
+        sServerNameMap.put(APP_US_SERVER, APP_US_NAME);
+        sServerNameMap.put(APP_EU_SERVER, APP_EU_NAME);
         sServerNameMap.put(DEV_SERVER, DEV_NAME);
         sServerNameMap.put(STAGING_SERVER, STAGING_NAME);
         sServerNameMap.put(ATLAS_SERVER, ATLAS_NAME);
@@ -142,8 +189,10 @@ public abstract class Request {
     private static final Map<Integer, String> sServerUrlMap = new HashMap<>();
 
     static {
-        sServerUrlMap.put(AUTH_SERVER, AUTH_URL);
-        sServerUrlMap.put(APP_SERVER, APP_URL);
+        sServerUrlMap.put(AUTH_DEV_SERVER, AUTH_DEV_URL);
+        sServerUrlMap.put(AUTH_PROD_SERVER, AUTH_PROD_URL);
+        sServerUrlMap.put(APP_US_SERVER, APP_US_URL);
+        sServerUrlMap.put(APP_EU_SERVER, APP_EU_URL);
         sServerUrlMap.put(DEV_SERVER, DEV_URL);
         sServerUrlMap.put(STAGING_SERVER, STAGING_URL);
         sServerUrlMap.put(ATLAS_SERVER, ATLAS_URL);
@@ -169,8 +218,10 @@ public abstract class Request {
     private static final Map<String, Integer> sNameServerMap = new HashMap<>();
 
     static {
-        sNameServerMap.put(AUTH_NAME, AUTH_SERVER);
-        sNameServerMap.put(APP_NAME, APP_SERVER);
+        sNameServerMap.put(AUTH_DEV_NAME, AUTH_DEV_SERVER);
+        sNameServerMap.put(AUTH_PROD_NAME, AUTH_PROD_SERVER);
+        sNameServerMap.put(APP_US_NAME, APP_US_SERVER);
+        sNameServerMap.put(APP_EU_NAME, APP_EU_SERVER);
         sNameServerMap.put(DEV_NAME, DEV_SERVER);
         sNameServerMap.put(STAGING_NAME, STAGING_SERVER);
         sNameServerMap.put(ATLAS_NAME, ATLAS_SERVER);
@@ -194,11 +245,11 @@ public abstract class Request {
     }
 
     public static int getServerId(String name) {
-        return getServerId(name, APP_SERVER);
+        return getServerId(name, APP_US_SERVER);
     }
 
     public static int getServerId(String name, int defaultServer) {
-        final int safeDefault = sServerUrlMap.get(defaultServer) != null ? defaultServer : APP_SERVER;
+        final int safeDefault = sServerUrlMap.get(defaultServer) != null ? defaultServer : APP_US_SERVER;
         if (!notNullOrEmpty(name)) {
             return safeDefault;
         }
@@ -211,12 +262,12 @@ public abstract class Request {
     }
 
     public static String getServerName(int serverId) {
-        return getServerName(serverId, APP_NAME);
+        return getServerName(serverId, APP_US_NAME);
     }
 
     public static String getServerName(int serverId, String defaultName) {
-        final String safeDefault = sNameServerMap.get(defaultName) != null ? defaultName : APP_NAME;
-        if (serverId < AUTH_SERVER || serverId > CUSTOM_URL_SERVER) {
+        final String safeDefault = sNameServerMap.get(defaultName) != null ? defaultName : APP_US_NAME;
+        if (serverId < MIN || serverId > MAX) {
             return safeDefault;
         }
         final String matched = sServerNameMap.get(serverId);
@@ -224,12 +275,12 @@ public abstract class Request {
     }
 
     public static String getServerUrl(int serverId) {
-        return getServerUrl(serverId, APP_URL);
+        return getServerUrl(serverId, APP_US_URL);
     }
 
     public static String getServerUrl(int serverId, String defaultUrl) {
-        final String safeDefault = sServerUrlMap.containsValue(defaultUrl) ? defaultUrl : APP_URL;
-        if (serverId < AUTH_SERVER || serverId > CUSTOM_URL_SERVER) {
+        final String safeDefault = sServerUrlMap.containsValue(defaultUrl) ? defaultUrl : APP_US_URL;
+        if (serverId < MIN || serverId > MAX) {
             return safeDefault;
         }
         final String matched = sServerUrlMap.get(serverId);

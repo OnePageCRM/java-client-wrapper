@@ -24,7 +24,7 @@ public final class OnePageCRM {
     public static String ASSET_PATH = WRAPPER_JSON_PATH;
 
     public static boolean DEBUG = false;
-    public static int SERVER = Request.APP_SERVER;
+    public static int SERVER = Request.APP_US_SERVER;
     public static String SOURCE = "java-wrapper";
     public static boolean COMPLEX_AUTH = false;
     public static boolean MOBILE = false;
@@ -87,9 +87,19 @@ public final class OnePageCRM {
      * @throws OnePageException if an error occurs.
      */
     public static List<AppServer> availableServers() throws OnePageException {
+        return availableServers(Request.DEFAULT_AUTH_SERVER);
+    }
+
+    /**
+     * List available servers for sign up / log in - in the multi-server environment.
+     *
+     * @return list of available {@link AppServer servers}.
+     * @throws OnePageException if an error occurs.
+     */
+    public static List<AppServer> availableServers(int authServerId) throws OnePageException {
         // Take note of the current server.
         final int oldServerId = OnePageCRM.SERVER;
-        OnePageCRM.setServer(Request.AUTH_SERVER);
+        OnePageCRM.setServer(authServerId);
 
         // Request the server details.
         Request request = new AppServersRequest();

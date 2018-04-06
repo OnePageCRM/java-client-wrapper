@@ -7,15 +7,21 @@ import com.onepagecrm.models.internal.LoginData;
 import com.onepagecrm.models.serializers.LoginDataSerializer;
 import com.onepagecrm.models.serializers.LoginSerializer;
 import com.onepagecrm.models.serializers.StartupDataSerializer;
-import com.onepagecrm.net.request.*;
+import com.onepagecrm.net.request.GetRequest;
+import com.onepagecrm.net.request.GoogleAuthRequest;
+import com.onepagecrm.net.request.GoogleLoginRequest;
+import com.onepagecrm.net.request.LoginRequest;
+import com.onepagecrm.net.request.Request;
 
 import static com.onepagecrm.net.ApiResource.BOOTSTRAP_ENDPOINT;
 import static com.onepagecrm.net.ApiResource.STARTUP_ENDPOINT;
+import static com.onepagecrm.net.request.Request.DEFAULT_AUTH_SERVER;
 
 /**
  * Created by Cillian Myles on 02/01/2018.
  * Copyright (c) 2018 OnePageCRM. All rights reserved.
  */
+@SuppressWarnings({"WeakerAccess", "SpellCheckingInspection", "unused"})
 public interface API {
 
     abstract class Auth {
@@ -99,7 +105,11 @@ public interface API {
     abstract class App {
 
         public static StartupData startup(String username, String password) throws OnePageException {
-            OnePageCRM.setServer(Request.AUTH_SERVER);
+            return API.App.startup(DEFAULT_AUTH_SERVER, username, password);
+        }
+
+        public static StartupData startup(int authServerId, String username, String password) throws OnePageException {
+            OnePageCRM.setServer(authServerId);
             LoginData loginData = API.Auth.authenticate(username, password);
             OnePageCRM.setServer(Request.CUSTOM_URL_SERVER);
             OnePageCRM.setCustomUrl(loginData.getEndpointUrl());
@@ -115,7 +125,11 @@ public interface API {
         }
 
         public static StartupData googleLogin(String oath2Code) throws OnePageException {
-            OnePageCRM.setServer(Request.AUTH_SERVER);
+            return API.App.googleLogin(DEFAULT_AUTH_SERVER, oath2Code);
+        }
+
+        public static StartupData googleLogin(int authServerId, String oath2Code) throws OnePageException {
+            OnePageCRM.setServer(authServerId);
             LoginData loginData = API.Google.authenticate(oath2Code);
             OnePageCRM.setServer(Request.CUSTOM_URL_SERVER);
             OnePageCRM.setCustomUrl(loginData.getEndpointUrl());
@@ -123,7 +137,11 @@ public interface API {
         }
 
         public static StartupData googleSignup(String oath2Code, String serverId) throws OnePageException {
-            OnePageCRM.setServer(Request.AUTH_SERVER);
+            return API.App.googleSignup(DEFAULT_AUTH_SERVER, oath2Code, serverId);
+        }
+
+        public static StartupData googleSignup(int authServerId, String oath2Code, String serverId) throws OnePageException {
+            OnePageCRM.setServer(authServerId);
             LoginData loginData = API.Google.signup(oath2Code, serverId);
             OnePageCRM.setServer(Request.CUSTOM_URL_SERVER);
             OnePageCRM.setCustomUrl(loginData.getEndpointUrl());

@@ -3,6 +3,7 @@ package com.onepagecrm.samples;
 import com.onepagecrm.OnePageCRM;
 import com.onepagecrm.exceptions.OnePageException;
 import com.onepagecrm.models.AppServer;
+import com.onepagecrm.net.request.Request;
 
 import java.util.List;
 import java.util.logging.Logger;
@@ -13,7 +14,7 @@ public class MSEServersDriver {
 
     public static void main(String[] args) throws OnePageException {
 
-        List<AppServer> servers = OnePageCRM.availableServers();
+        List<AppServer> servers = OnePageCRM.availableServers(Request.AUTH_DEV_SERVER);
 
         LOG.info("Available servers: " + servers);
 

@@ -42,7 +42,7 @@ public class ActionDateTimeDriver {
             }
         }
 
-        OnePageCRM.setServer(Request.APP_SERVER);
+        OnePageCRM.setServer(Request.APP_US_SERVER);
 
         User loggedInUser = User.login(
                 prop.getProperty("username"),
