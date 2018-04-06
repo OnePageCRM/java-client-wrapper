@@ -287,7 +287,9 @@ public abstract class Request {
         return matched != null ? matched : safeDefault;
     }
 
-    public static String format = ".json";
+    public static final String API_SUB_ENDPOINT = "/api/v3/";
+    public static final String FORMAT = ".json";
+
     protected String endpointUrl;
 
     protected enum Type {
@@ -335,7 +337,7 @@ public abstract class Request {
         if (externalEndpoint) {
             endpointUrl = endpoint;
         } else {
-            endpointUrl = sServerUrlMap.get(OnePageCRM.SERVER) + endpoint + format;
+            endpointUrl = getServerUrl(OnePageCRM.SERVER) + endpoint + FORMAT;
         }
     }
 
