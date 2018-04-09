@@ -28,29 +28,29 @@ public class RequestTest {
 
     @Test
     public void testErrorCases() {
-        assertEquals("Server URLs do not match",
+        assertEquals("Server id less than MIN should default to APP/US",
                 DEFAULT_URL, Request.getServerUrl(Request.MIN - 1));
 
-        assertEquals("Server URLs do not match",
+        assertEquals("Server id more than MAX should default to APP/US",
                 DEFAULT_URL, Request.getServerUrl(Request.MAX + 1));
     }
 
     @Test
-    public void testServerUrlAndApiUrlGeneration() {
+    public void testAppAndApiUrlGeneration() {
         final int randomServerId = TestHelper.randomInRange(Request.MIN, Request.MAX);
-        final String serverUrl = Request.getServerUrl(randomServerId);
+        final String appUrl = Request.getServerUrl(randomServerId);
         final String apiUrl = Request.getServerApiUrl(randomServerId);
 
-        assertTrue("API url should be longer than server url.",
-                apiUrl.length() > serverUrl.length());
+        assertTrue("API url should be longer than APP url.",
+                apiUrl.length() > appUrl.length());
 
-        assertTrue("API url should contain the server url.",
-                apiUrl.contains(serverUrl));
+        assertTrue("API url should contain the APP url.",
+                apiUrl.contains(appUrl));
 
-        assertTrue("API url should start with the server url.",
-                apiUrl.startsWith(serverUrl));
+        assertTrue("API url should start with the APP url.",
+                apiUrl.startsWith(appUrl));
 
-        assertTrue("API url should contain the api & version sub-endpoints.",
+        assertTrue("API url should contain the API & version sub-endpoints.",
                 apiUrl.endsWith(Request.API_SUB_ENDPOINT));
     }
 }
