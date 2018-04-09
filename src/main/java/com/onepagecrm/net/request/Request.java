@@ -116,7 +116,7 @@ public abstract class Request {
     protected static final String NETWORK_DEV_NAME = "NETWORK";
     protected static final String CUSTOM_NAME = "CUSTOM";
 
-    protected static final String AUTH_DEV_URL = "http://auth.mse.onepagecrm.eu";
+    protected static final String AUTH_DEV_URL = "http://sso.dev.onepagecrm.com";
     protected static final String AUTH_PROD_URL = "https://secure.onepagecrm.com";
     protected static final String APP_US_URL = "https://app.onepagecrm.com";
     protected static final String APP_EU_URL = "https://eu.onepagecrm.com"; // TODO: update this when EU server live
