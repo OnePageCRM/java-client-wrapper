@@ -22,7 +22,7 @@ import java.util.logging.Logger;
 
 import static com.onepagecrm.models.internal.Utilities.notNullOrEmpty;
 
-@SuppressWarnings({"WeakerAccess", "MismatchedQueryAndUpdateOfCollection", "unused", "UnusedAssignment"})
+@SuppressWarnings({"WeakerAccess", "MismatchedQueryAndUpdateOfCollection", "unused", "UnusedAssignment", "BooleanMethodIsAlwaysInverted"})
 public abstract class Request {
 
     protected static final Logger LOG = Logger.getLogger(Request.class.getName());
@@ -96,10 +96,10 @@ public abstract class Request {
         UNRESOLVED_SERVER_ID = -99;
     }
 
-    protected static final String AUTH_DEV_NAME = "AUTH_DEV";
-    protected static final String AUTH_PROD_NAME = "AUTH_PROD";
-    protected static final String APP_US_NAME = "APP_US";
-    protected static final String APP_EU_NAME = "APP_EU";
+    protected static final String AUTH_DEV_NAME = "AUTH/DEV";
+    protected static final String AUTH_PROD_NAME = "AUTH/PROD";
+    protected static final String APP_US_NAME = "APP/US";
+    protected static final String APP_EU_NAME = "APP/EU";
     protected static final String DEV_NAME = "DEV";
     protected static final String STAGING_NAME = "STAGING";
     protected static final String ATLAS_NAME = "ATLAS";
@@ -304,7 +304,7 @@ public abstract class Request {
     }
 
     public static boolean validServerId(int id) {
-        return sServerUrlMap.get(id) != null;
+        return id > MIN && id < MAX;
     }
 
     public static String getServerName(int serverId) {
@@ -313,7 +313,7 @@ public abstract class Request {
 
     public static String getServerName(int serverId, String defaultName) {
         final String safeDefault = sNameServerMap.get(defaultName) != null ? defaultName : APP_US_NAME;
-        if (serverId < MIN || serverId > MAX) {
+        if (!validServerId(serverId)) {
             return safeDefault;
         }
         final String matched = sServerNameMap.get(serverId);
@@ -326,7 +326,7 @@ public abstract class Request {
 
     public static String getServerUrl(int serverId, String defaultUrl) {
         final String safeDefault = sServerUrlMap.containsValue(defaultUrl) ? defaultUrl : APP_US_URL;
-        if (serverId < MIN || serverId > MAX) {
+        if (!validServerId(serverId)) {
             return safeDefault;
         }
         final String matched = sServerUrlMap.get(serverId);
@@ -335,6 +335,33 @@ public abstract class Request {
 
     public static String getServerApiUrl(int serverId) {
         return getServerUrl(serverId) + "/" + API_SUB_ENDPOINT;
+    }
+
+    public static boolean isAppServer(int serverId) {
+        return validServerId(serverId)
+                && (serverId == APP_US_SERVER
+                || serverId == APP_EU_SERVER);
+    }
+
+    public static boolean isDevServer(int serverId) {
+        return validServerId(serverId)
+                && (serverId == DEV_SERVER
+                || serverId == STAGING_SERVER
+                || serverId == ATLAS_SERVER
+                || serverId == CALYPSO_SERVER
+                || serverId == DEIMOS_SERVER
+                || serverId == GANYMEDE_SERVER
+                || serverId == DRACO_SERVER
+                || serverId == GEMINI_SERVER
+                || serverId == ORION_SERVER
+                || serverId == PEGASUS_SERVER
+                || serverId == PHOBOS_SERVER
+                || serverId == SECURE_SERVER
+                || serverId == SIRIUS_SERVER
+                || serverId == TAURUS_SERVER
+                || serverId == TITAN_SERVER
+                || serverId == VIRGO_SERVER
+                || serverId == VOYAGER_SERVER);
     }
 
     public static final String API_SUB_ENDPOINT = "api/v3";
