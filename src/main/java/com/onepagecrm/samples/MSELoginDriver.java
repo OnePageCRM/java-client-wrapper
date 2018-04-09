@@ -5,7 +5,6 @@ import com.onepagecrm.exceptions.OnePageException;
 import com.onepagecrm.models.StartupData;
 import com.onepagecrm.models.internal.Utilities;
 import com.onepagecrm.net.API;
-import com.onepagecrm.net.request.Request;
 
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -50,7 +49,6 @@ public class MSELoginDriver {
         OnePageCRM.setDebug(true);
 
         StartupData startupData = API.App.startup(
-                Request.AUTH_DEV_SERVER,
                 prop.getProperty("username"),
                 prop.getProperty("password")
         );

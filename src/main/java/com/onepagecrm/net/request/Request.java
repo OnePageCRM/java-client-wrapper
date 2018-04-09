@@ -55,8 +55,7 @@ public abstract class Request {
 
     public static final int MIN;
     public static final int MAX;
-
-    public static final int DEFAULT_AUTH_SERVER = Request.AUTH_PROD_SERVER;
+    public static final int DEFAULT_AUTH_SERVER;
 
     static {
         int counter = -2;
@@ -89,6 +88,7 @@ public abstract class Request {
 
         MIN = AUTH_DEV_SERVER;
         MAX = CUSTOM_URL_SERVER;
+        DEFAULT_AUTH_SERVER = Request.AUTH_PROD_SERVER;
     }
 
     protected static final String AUTH_DEV_NAME = "AUTH_DEV";
