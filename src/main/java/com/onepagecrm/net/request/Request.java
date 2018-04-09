@@ -56,12 +56,14 @@ public abstract class Request {
     public static final int MIN;
     public static final int MAX;
     public static final int DEFAULT_AUTH_SERVER;
+    public static final int UNRESOLVED_SERVER_ID;
 
     static {
         int counter = -2;
 
         AUTH_DEV_SERVER = counter++;
         AUTH_PROD_SERVER = counter++;
+
         APP_US_SERVER = counter++; // 0 <- **want to always keep as default**
         APP_EU_SERVER = counter++;
         DEV_SERVER = counter++;
@@ -81,6 +83,7 @@ public abstract class Request {
         TITAN_SERVER = counter++;
         VIRGO_SERVER = counter++;
         VOYAGER_SERVER = counter++;
+
         LOCAL_DEV_SERVER = counter++;
         NETWORK_DEV_SERVER = counter++;
         MOCK_REQUEST_SERVER = counter++;
@@ -88,7 +91,9 @@ public abstract class Request {
 
         MIN = AUTH_DEV_SERVER;
         MAX = CUSTOM_URL_SERVER;
-        DEFAULT_AUTH_SERVER = Request.AUTH_PROD_SERVER;
+
+        DEFAULT_AUTH_SERVER = AUTH_PROD_SERVER;
+        UNRESOLVED_SERVER_ID = -99;
     }
 
     protected static final String AUTH_DEV_NAME = "AUTH_DEV";
@@ -243,17 +248,59 @@ public abstract class Request {
         sNameServerMap.put(CUSTOM_NAME, CUSTOM_URL_SERVER);
     }
 
-    public static int getServerId(String name) {
-        return getServerId(name, APP_US_SERVER);
+    private static final Map<String, Integer> sUrlServerMap = new HashMap<>();
+
+    static {
+        sNameServerMap.put(AUTH_DEV_URL, AUTH_DEV_SERVER);
+        sNameServerMap.put(AUTH_PROD_URL, AUTH_PROD_SERVER);
+        sNameServerMap.put(APP_US_URL, APP_US_SERVER);
+        sNameServerMap.put(APP_EU_URL, APP_EU_SERVER);
+        sNameServerMap.put(DEV_URL, DEV_SERVER);
+        sNameServerMap.put(STAGING_URL, STAGING_SERVER);
+        sNameServerMap.put(ATLAS_URL, ATLAS_SERVER);
+        sNameServerMap.put(CALYPSO_URL, CALYPSO_SERVER);
+        sNameServerMap.put(DEIMOS_URL, DEIMOS_SERVER);
+        sNameServerMap.put(GANYMEDE_URL, GANYMEDE_SERVER);
+        sNameServerMap.put(DRACO_URL, DRACO_SERVER);
+        sNameServerMap.put(GEMINI_URL, GEMINI_SERVER);
+        sNameServerMap.put(ORION_URL, ORION_SERVER);
+        sNameServerMap.put(PEGASUS_URL, PEGASUS_SERVER);
+        sNameServerMap.put(PHOBOS_URL, PHOBOS_SERVER);
+        sNameServerMap.put(SECURE_URL, SECURE_SERVER);
+        sNameServerMap.put(SIRIUS_URL, SIRIUS_SERVER);
+        sNameServerMap.put(TAURUS_URL, TAURUS_SERVER);
+        sNameServerMap.put(TITAN_URL, TITAN_SERVER);
+        sNameServerMap.put(VIRGO_URL, VIRGO_SERVER);
+        sNameServerMap.put(VOYAGER_URL, VOYAGER_SERVER);
+        sNameServerMap.put(LOCAL_DEV_URL, LOCAL_DEV_SERVER);
+        sNameServerMap.put(NETWORK_DEV_URL, NETWORK_DEV_SERVER);
+        sNameServerMap.put(CUSTOM_URL, CUSTOM_URL_SERVER);
     }
 
-    public static int getServerId(String name, int defaultServer) {
+    public static int getServerIdFromName(String name) {
+        return getServerIdFromName(name, APP_US_SERVER);
+    }
+
+    public static int getServerIdFromName(String name, int defaultServer) {
         final int safeDefault = sServerUrlMap.get(defaultServer) != null ? defaultServer : APP_US_SERVER;
         if (!notNullOrEmpty(name)) {
             return safeDefault;
         }
         final Integer matched = sNameServerMap.get(name);
         return matched != null ? matched : safeDefault;
+    }
+
+    public static int getServerIdFromUrl(String url) {
+        return getServerIdFromUrl(url, APP_US_SERVER);
+    }
+
+    public static int getServerIdFromUrl(String url, int defaultServer) {
+        // NOTE: we don't return "safe" default here as in other methods.
+        if (!notNullOrEmpty(url)) {
+            return defaultServer;
+        }
+        final Integer matched = sUrlServerMap.get(url);
+        return matched != null ? matched : defaultServer;
     }
 
     public static boolean validServerId(int id) {

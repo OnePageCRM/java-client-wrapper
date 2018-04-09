@@ -105,6 +105,8 @@ public interface API {
 
     abstract class App {
 
+        private static final int UNRESOLVED_SERVER_ID = -99;
+
         public static StartupData startup(String username, String password) throws OnePageException {
             return API.App.startup(DEFAULT_AUTH_SERVER, username, password);
         }
@@ -112,8 +114,7 @@ public interface API {
         public static StartupData startup(int authServerId, String username, String password) throws OnePageException {
             OnePageCRM.setServer(authServerId);
             LoginData loginData = API.Auth.authenticate(username, password);
-            OnePageCRM.setServer(CUSTOM_URL_SERVER);
-            OnePageCRM.setCustomUrl(loginData.getEndpointUrl());
+            processLoginData(loginData);
             return API.Auth.startup(loginData.setFullResponse(true));
         }
 
@@ -132,8 +133,7 @@ public interface API {
         public static StartupData googleLogin(int authServerId, String oath2Code) throws OnePageException {
             OnePageCRM.setServer(authServerId);
             LoginData loginData = API.Google.authenticate(oath2Code);
-            OnePageCRM.setServer(CUSTOM_URL_SERVER);
-            OnePageCRM.setCustomUrl(loginData.getEndpointUrl());
+            processLoginData(loginData);
             return API.Auth.startup(loginData.setFullResponse(true));
         }
 
@@ -144,9 +144,19 @@ public interface API {
         public static StartupData googleSignup(int authServerId, String oath2Code, String serverId) throws OnePageException {
             OnePageCRM.setServer(authServerId);
             LoginData loginData = API.Google.signup(oath2Code, serverId);
-            OnePageCRM.setServer(CUSTOM_URL_SERVER);
-            OnePageCRM.setCustomUrl(loginData.getEndpointUrl());
+            processLoginData(loginData);
             return API.Auth.startup(loginData.setFullResponse(true));
+        }
+
+        private static void processLoginData(LoginData loginData) {
+            if (loginData == null) return;
+            final int serverId = Request.getServerIdFromUrl(loginData.getEndpointUrl(), UNRESOLVED_SERVER_ID);
+            if (serverId != UNRESOLVED_SERVER_ID) {
+                OnePageCRM.setServer(serverId);
+            } else {
+                OnePageCRM.setServer(CUSTOM_URL_SERVER);
+                OnePageCRM.setCustomUrl(loginData.getEndpointUrl());
+            }
         }
     }
 }
