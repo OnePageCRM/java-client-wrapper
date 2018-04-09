@@ -53,17 +53,17 @@ public abstract class Request {
     public static final int MOCK_REQUEST_SERVER;
     public static final int CUSTOM_URL_SERVER;
 
-    private static final int MIN;
-    private static final int MAX;
+    public static final int MIN;
+    public static final int MAX;
 
     public static final int DEFAULT_AUTH_SERVER = Request.AUTH_PROD_SERVER;
 
     static {
-        int counter = 0;
+        int counter = -2;
 
         AUTH_DEV_SERVER = counter++;
         AUTH_PROD_SERVER = counter++;
-        APP_US_SERVER = counter++;
+        APP_US_SERVER = counter++; // 0 <- **want to always keep as default**
         APP_EU_SERVER = counter++;
         DEV_SERVER = counter++;
         STAGING_SERVER = counter++;
