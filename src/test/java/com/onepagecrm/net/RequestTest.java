@@ -53,6 +53,4 @@ public class RequestTest {
         assertTrue("API url should contain the api & version sub-endpoints.",
                 apiUrl.endsWith(Request.API_SUB_ENDPOINT));
     }
-
-
 }
