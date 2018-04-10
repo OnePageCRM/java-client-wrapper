@@ -25,28 +25,36 @@ public class RequestTest {
     private static final String AUTH_URL_PROD = "https://secure.onepagecrm.com";
 
     @Test
-    public void appUsServerIsDefault() {
-        assertEquals("Server URLs do not match",
-                APP_URL_DEFAULT, Request.getServerUrl(APP_SERVER_DEFAULT));
-
-        assertEquals("Server URLs (API) do not match",
-                API_URL_DEFAULT, Request.getServerApiUrl(APP_SERVER_DEFAULT));
+    public void urlMatchingErrorCases_belowMin() {
+        assertEquals("Server id less than MIN should default to APP/US",
+                APP_URL_DEFAULT, Request.getServerUrl(Request.MIN - 1));
     }
 
     @Test
-    public void testErrorCases() {
-        assertEquals("Server id less than MIN should default to APP/US",
-                APP_URL_DEFAULT, Request.getServerUrl(Request.MIN - 1));
-
+    public void urlMatchingErrorCases_aboveMax() {
         assertEquals("Server id more than MAX should default to APP/US",
                 APP_URL_DEFAULT, Request.getServerUrl(Request.MAX + 1));
     }
 
     @Test
-    public void testAppAndApiUrlGeneration() {
-        final int randomServerId = TestHelper.randomInRange(Request.MIN, Request.MAX);
-        final String appUrl = Request.getServerUrl(randomServerId);
-        final String apiUrl = Request.getServerApiUrl(randomServerId);
+    public void testAppAndApiUrlGeneration_min() {
+        testAppAndApiUrlGen(Request.MIN);
+    }
+
+    @Test
+    public void testAppAndApiUrlGeneration_max() {
+        testAppAndApiUrlGen(Request.MAX);
+    }
+
+    @Test
+    public void testAppAndApiUrlGeneration_randomInBetween() {
+        final int randomInBetween = TestHelper.randomInRange((Request.MIN + 1), (Request.MAX - 1));
+        testAppAndApiUrlGen(randomInBetween);
+    }
+
+    private void testAppAndApiUrlGen(int serverId) {
+        final String appUrl = Request.getServerUrl(serverId);
+        final String apiUrl = Request.getServerApiUrl(serverId);
 
         assertTrue("API url should be longer than APP url.",
                 apiUrl.length() > appUrl.length());
@@ -62,14 +70,26 @@ public class RequestTest {
     }
 
     @Test
+    public void testMobileRequirements_defaultAppUrl() {
+        assertEquals("Default App urls do not match",
+                APP_URL_DEFAULT, Request.getServerUrl(APP_SERVER_DEFAULT));
+    }
+
+    @Test
+    public void testMobileRequirements_defaultApiUrl() {
+        assertEquals("Default API urls do not match",
+                API_URL_DEFAULT, Request.getServerApiUrl(APP_SERVER_DEFAULT));
+    }
+
+    @Test
     public void testMobileRequirements_devAuthUrl() {
-        assertEquals("Server URLs do not match",
+        assertEquals("Auth urls do not match",
                 AUTH_URL_DEV, Request.getServerUrl(AUTH_SERVER_DEV));
     }
 
     @Test
     public void testMobileRequirements_prodAuthUrl() {
-        assertEquals("Server URLs do not match",
+        assertEquals("Auth urls do not match",
                 AUTH_URL_PROD, Request.getServerUrl(AUTH_SERVER_PROD));
     }
 }
