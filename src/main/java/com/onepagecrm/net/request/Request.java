@@ -56,7 +56,7 @@ public abstract class Request {
     public static final int MIN;
     public static final int MAX;
     public static final int DEFAULT_AUTH_SERVER;
-    public static final int UNRESOLVED_SERVER_ID;
+    public static final int UNRESOLVED_SERVER;
 
     static {
         int counter = -2;
@@ -93,7 +93,7 @@ public abstract class Request {
         MAX = CUSTOM_URL_SERVER;
 
         DEFAULT_AUTH_SERVER = AUTH_PROD_SERVER;
-        UNRESOLVED_SERVER_ID = -99;
+        UNRESOLVED_SERVER = -99;
     }
 
     protected static final String AUTH_DEV_NAME = "AUTH/DEV";
@@ -304,7 +304,7 @@ public abstract class Request {
     }
 
     public static boolean validServerId(int id) {
-        return id > MIN && id < MAX;
+        return id >= MIN && id <= MAX;
     }
 
     public static String getServerName(int serverId) {
