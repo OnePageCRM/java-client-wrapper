@@ -11,9 +11,10 @@ import static junit.framework.TestCase.assertTrue;
  * Created by Cillian Myles on 09/04/2018.
  * Copyright (c) 2018 OnePageCRM. All rights reserved.
  */
+@SuppressWarnings("unused")
 public class RequestTest {
 
-    // Production (APP/US)
+    // App Server details (APP/US, STAGING, APP/EU)
     private static final int APP_SERVER_DEFAULT = 0;
     private static final String APP_URL_DEFAULT = "https://app.onepagecrm.com";
     private static final String API_URL_DEFAULT = "https://app.onepagecrm.com/api/v3";
@@ -27,7 +28,7 @@ public class RequestTest {
     private static final String API_URL_EU = "https://eu.onepagecrm.com/api/v3";
     private static final String APP_NAME_EU = "APP/EU";
 
-    // Authentication (SSO)
+    // Authentication/SSO details (dev/prod)
     private static final int AUTH_SERVER_DEV = -2;
     private static final int AUTH_SERVER_PROD = -1;
     private static final String AUTH_URL_DEV = "http://sso.dev.onepagecrm.com";
