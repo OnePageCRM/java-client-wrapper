@@ -124,7 +124,7 @@ public abstract class Request {
     protected static final String AUTH_DEV_URL = "http://sso.dev.onepagecrm.com";
     protected static final String AUTH_PROD_URL = "https://secure.onepagecrm.com";
     protected static final String APP_US_URL = "https://app.onepagecrm.com";
-    protected static final String APP_EU_URL = "https://eu.onepagecrm.com"; // TODO: update this when EU server live
+    protected static final String APP_EU_URL = "https://eu.onepagecrm.com";
     protected static final String DEV_URL = "http://dev.onepagecrm.com";
     protected static final String STAGING_URL = "http://staging.onepagecrm.com";
     protected static final String ATLAS_URL = "http://atlas.dev.onepagecrm.com";
@@ -251,30 +251,30 @@ public abstract class Request {
     private static final Map<String, Integer> sUrlServerMap = new HashMap<>();
 
     static {
-        sNameServerMap.put(AUTH_DEV_URL, AUTH_DEV_SERVER);
-        sNameServerMap.put(AUTH_PROD_URL, AUTH_PROD_SERVER);
-        sNameServerMap.put(APP_US_URL, APP_US_SERVER);
-        sNameServerMap.put(APP_EU_URL, APP_EU_SERVER);
-        sNameServerMap.put(DEV_URL, DEV_SERVER);
-        sNameServerMap.put(STAGING_URL, STAGING_SERVER);
-        sNameServerMap.put(ATLAS_URL, ATLAS_SERVER);
-        sNameServerMap.put(CALYPSO_URL, CALYPSO_SERVER);
-        sNameServerMap.put(DEIMOS_URL, DEIMOS_SERVER);
-        sNameServerMap.put(GANYMEDE_URL, GANYMEDE_SERVER);
-        sNameServerMap.put(DRACO_URL, DRACO_SERVER);
-        sNameServerMap.put(GEMINI_URL, GEMINI_SERVER);
-        sNameServerMap.put(ORION_URL, ORION_SERVER);
-        sNameServerMap.put(PEGASUS_URL, PEGASUS_SERVER);
-        sNameServerMap.put(PHOBOS_URL, PHOBOS_SERVER);
-        sNameServerMap.put(SECURE_URL, SECURE_SERVER);
-        sNameServerMap.put(SIRIUS_URL, SIRIUS_SERVER);
-        sNameServerMap.put(TAURUS_URL, TAURUS_SERVER);
-        sNameServerMap.put(TITAN_URL, TITAN_SERVER);
-        sNameServerMap.put(VIRGO_URL, VIRGO_SERVER);
-        sNameServerMap.put(VOYAGER_URL, VOYAGER_SERVER);
-        sNameServerMap.put(LOCAL_DEV_URL, LOCAL_DEV_SERVER);
-        sNameServerMap.put(NETWORK_DEV_URL, NETWORK_DEV_SERVER);
-        sNameServerMap.put(CUSTOM_URL, CUSTOM_URL_SERVER);
+        sUrlServerMap.put(AUTH_DEV_URL, AUTH_DEV_SERVER);
+        sUrlServerMap.put(AUTH_PROD_URL, AUTH_PROD_SERVER);
+        sUrlServerMap.put(APP_US_URL, APP_US_SERVER);
+        sUrlServerMap.put(APP_EU_URL, APP_EU_SERVER);
+        sUrlServerMap.put(DEV_URL, DEV_SERVER);
+        sUrlServerMap.put(STAGING_URL, STAGING_SERVER);
+        sUrlServerMap.put(ATLAS_URL, ATLAS_SERVER);
+        sUrlServerMap.put(CALYPSO_URL, CALYPSO_SERVER);
+        sUrlServerMap.put(DEIMOS_URL, DEIMOS_SERVER);
+        sUrlServerMap.put(GANYMEDE_URL, GANYMEDE_SERVER);
+        sUrlServerMap.put(DRACO_URL, DRACO_SERVER);
+        sUrlServerMap.put(GEMINI_URL, GEMINI_SERVER);
+        sUrlServerMap.put(ORION_URL, ORION_SERVER);
+        sUrlServerMap.put(PEGASUS_URL, PEGASUS_SERVER);
+        sUrlServerMap.put(PHOBOS_URL, PHOBOS_SERVER);
+        sUrlServerMap.put(SECURE_URL, SECURE_SERVER);
+        sUrlServerMap.put(SIRIUS_URL, SIRIUS_SERVER);
+        sUrlServerMap.put(TAURUS_URL, TAURUS_SERVER);
+        sUrlServerMap.put(TITAN_URL, TITAN_SERVER);
+        sUrlServerMap.put(VIRGO_URL, VIRGO_SERVER);
+        sUrlServerMap.put(VOYAGER_URL, VOYAGER_SERVER);
+        sUrlServerMap.put(LOCAL_DEV_URL, LOCAL_DEV_SERVER);
+        sUrlServerMap.put(NETWORK_DEV_URL, NETWORK_DEV_SERVER);
+        sUrlServerMap.put(CUSTOM_URL, CUSTOM_URL_SERVER);
     }
 
     public static int getServerIdFromName(String name) {
