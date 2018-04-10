@@ -16,14 +16,16 @@ public class RequestTest {
     // Production (APP/US)
     private static final int APP_SERVER_DEFAULT = 0;
     private static final String APP_URL_DEFAULT = "https://app.onepagecrm.com";
-    private static final String APP_URL_EU = "https://eu.onepagecrm.com";
-    private static final String APP_URL_STAGING = "http://staging.onepagecrm.com";
     private static final String API_URL_DEFAULT = "https://app.onepagecrm.com/api/v3";
-    private static final String API_URL_EU = "https://eu.onepagecrm.com/api/v3";
-    private static final String API_URL_STAGING = "http://staging.onepagecrm.com/api/v3";
     private static final String APP_NAME_DEFAULT = "APP/US";
-    private static final String APP_NAME_EU = "APP/EU";
+
+    private static final String APP_URL_STAGING = "http://staging.onepagecrm.com";
+    private static final String API_URL_STAGING = "http://staging.onepagecrm.com/api/v3";
     private static final String APP_NAME_STAGING = "STAGING";
+
+    private static final String APP_URL_EU = "https://eu.onepagecrm.com";
+    private static final String API_URL_EU = "https://eu.onepagecrm.com/api/v3";
+    private static final String APP_NAME_EU = "APP/EU";
 
     // Authentication (SSO)
     private static final int AUTH_SERVER_DEV = -2;
