@@ -17,6 +17,7 @@ import static com.onepagecrm.net.ApiResource.BOOTSTRAP_ENDPOINT;
 import static com.onepagecrm.net.ApiResource.STARTUP_ENDPOINT;
 import static com.onepagecrm.net.request.Request.CUSTOM_URL_SERVER;
 import static com.onepagecrm.net.request.Request.DEFAULT_AUTH_SERVER;
+import static com.onepagecrm.net.request.Request.UNRESOLVED_SERVER;
 
 /**
  * Created by Cillian Myles on 02/01/2018.
@@ -105,8 +106,6 @@ public interface API {
 
     abstract class App {
 
-        private static final int UNRESOLVED_SERVER_ID = -99;
-
         public static StartupData startup(String username, String password) throws OnePageException {
             return API.App.startup(DEFAULT_AUTH_SERVER, username, password);
         }
@@ -150,8 +149,8 @@ public interface API {
 
         private static void processLoginData(LoginData loginData) {
             if (loginData == null) return;
-            final int serverId = Request.getServerIdFromUrl(loginData.getEndpointUrl(), UNRESOLVED_SERVER_ID);
-            if (serverId != UNRESOLVED_SERVER_ID) {
+            final int serverId = Request.getServerIdFromUrl(loginData.getEndpointUrl(), UNRESOLVED_SERVER);
+            if (serverId != UNRESOLVED_SERVER) {
                 OnePageCRM.setServer(serverId);
             } else {
                 OnePageCRM.setServer(CUSTOM_URL_SERVER);
