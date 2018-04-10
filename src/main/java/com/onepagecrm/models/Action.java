@@ -16,6 +16,8 @@ import com.onepagecrm.net.request.PutRequest;
 import com.onepagecrm.net.request.Request;
 
 import java.io.Serializable;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Map;
@@ -104,8 +106,34 @@ public class Action extends ApiResource implements Serializable {
     private int dateColor;
     private Integer position;
 
-    /**
-     * API methods
+    // ----------------------------------------
+    // --- TEST !! ---
+
+    private LocalDate j8Date;
+    private LocalDateTime j8ExactTime;
+
+    public LocalDate getJ8Date() {
+        return j8Date;
+    }
+
+    public Action setJ8Date(LocalDate j8Date) {
+        this.j8Date = j8Date;
+        return this;
+    }
+
+    public LocalDateTime getJ8ExactTime() {
+        return j8ExactTime;
+    }
+
+    public Action setJ8ExactTime(LocalDateTime j8ExactTime) {
+        this.j8ExactTime = j8ExactTime;
+        return this;
+    }
+
+    // ----------------------------------------
+
+    /*
+     * API methods.
      */
 
     public Action save() throws OnePageException {
