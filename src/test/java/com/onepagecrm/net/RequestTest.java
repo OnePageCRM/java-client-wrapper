@@ -13,26 +13,33 @@ import static junit.framework.TestCase.assertTrue;
  */
 public class RequestTest {
 
-    private static final int DEFAULT_SERVER_ID = 0;
-    private static final String DEFAULT_URL = "https://app.onepagecrm.com";
-    private static final String DEFAULT_API_URL = "https://app.onepagecrm.com/api/v3";
+    // Production (APP/US)
+    private static final int APP_SERVER_DEFAULT = 0;
+    private static final String APP_URL_DEFAULT = "https://app.onepagecrm.com";
+    private static final String API_URL_DEFAULT = "https://app.onepagecrm.com/api/v3";
+
+    // Authentication (SSO)
+    private static final int AUTH_SERVER_DEV = -2;
+    private static final int AUTH_SERVER_PROD = -1;
+    private static final String AUTH_URL_DEV = "http://sso.dev.onepagecrm.com";
+    private static final String AUTH_URL_PROD = "https://secure.onepagecrm.com";
 
     @Test
     public void appUsServerIsDefault() {
         assertEquals("Server URLs do not match",
-                DEFAULT_URL, Request.getServerUrl(DEFAULT_SERVER_ID));
+                APP_URL_DEFAULT, Request.getServerUrl(APP_SERVER_DEFAULT));
 
         assertEquals("Server URLs (API) do not match",
-                DEFAULT_API_URL, Request.getServerApiUrl(DEFAULT_SERVER_ID));
+                API_URL_DEFAULT, Request.getServerApiUrl(APP_SERVER_DEFAULT));
     }
 
     @Test
     public void testErrorCases() {
         assertEquals("Server id less than MIN should default to APP/US",
-                DEFAULT_URL, Request.getServerUrl(Request.MIN - 1));
+                APP_URL_DEFAULT, Request.getServerUrl(Request.MIN - 1));
 
         assertEquals("Server id more than MAX should default to APP/US",
-                DEFAULT_URL, Request.getServerUrl(Request.MAX + 1));
+                APP_URL_DEFAULT, Request.getServerUrl(Request.MAX + 1));
     }
 
     @Test
@@ -52,5 +59,17 @@ public class RequestTest {
 
         assertTrue("API url should contain the API & version sub-endpoints.",
                 apiUrl.endsWith(Request.API_SUB_ENDPOINT));
+    }
+
+    @Test
+    public void testMobileRequirements_devAuthUrl() {
+        assertEquals("Server URLs do not match",
+                AUTH_URL_DEV, Request.getServerUrl(AUTH_SERVER_DEV));
+    }
+
+    @Test
+    public void testMobileRequirements_prodAuthUrl() {
+        assertEquals("Server URLs do not match",
+                AUTH_URL_PROD, Request.getServerUrl(AUTH_SERVER_PROD));
     }
 }
