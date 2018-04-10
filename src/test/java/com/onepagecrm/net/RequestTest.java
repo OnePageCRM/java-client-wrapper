@@ -16,13 +16,56 @@ public class RequestTest {
     // Production (APP/US)
     private static final int APP_SERVER_DEFAULT = 0;
     private static final String APP_URL_DEFAULT = "https://app.onepagecrm.com";
+    private static final String APP_URL_EU = "https://eu.onepagecrm.com";
+    private static final String APP_URL_STAGING = "http://staging.onepagecrm.com";
     private static final String API_URL_DEFAULT = "https://app.onepagecrm.com/api/v3";
+    private static final String API_URL_EU = "https://eu.onepagecrm.com/api/v3";
+    private static final String API_URL_STAGING = "http://staging.onepagecrm.com/api/v3";
+    private static final String APP_NAME_DEFAULT = "APP/US";
+    private static final String APP_NAME_EU = "APP/EU";
+    private static final String APP_NAME_STAGING = "STAGING";
 
     // Authentication (SSO)
     private static final int AUTH_SERVER_DEV = -2;
     private static final int AUTH_SERVER_PROD = -1;
     private static final String AUTH_URL_DEV = "http://sso.dev.onepagecrm.com";
     private static final String AUTH_URL_PROD = "https://secure.onepagecrm.com";
+
+    @Test
+    public void serverIdMatchingByUrl_appUsServer() {
+        assertEquals("Server id should be that of APP/US",
+                Request.APP_US_SERVER, Request.getServerIdFromUrl(APP_URL_DEFAULT));
+    }
+
+    @Test
+    public void serverIdMatchingByName_appUsServer() {
+        assertEquals("Server id should be that of APP/US",
+                Request.APP_US_SERVER, Request.getServerIdFromName(APP_NAME_DEFAULT));
+    }
+
+    @Test
+    public void serverIdMatchingByUrl_devServer() {
+        assertEquals("Server id should be that of STAGING",
+                Request.STAGING_SERVER, Request.getServerIdFromUrl(APP_URL_STAGING));
+    }
+
+    @Test
+    public void serverIdMatchingByName_devServer() {
+        assertEquals("Server id should be that of STAGING",
+                Request.STAGING_SERVER, Request.getServerIdFromName(APP_NAME_STAGING));
+    }
+
+    @Test
+    public void serverIdMatchingByUrl_appEuServer() {
+        assertEquals("Server id should be that of APP/EU",
+                Request.APP_EU_SERVER, Request.getServerIdFromUrl(APP_URL_EU));
+    }
+
+    @Test
+    public void serverIdMatchingByName_appEuServer() {
+        assertEquals("Server id should be that of APP/EU",
+                Request.APP_EU_SERVER, Request.getServerIdFromName(APP_NAME_EU));
+    }
 
     @Test
     public void urlMatchingErrorCases_belowMin() {
