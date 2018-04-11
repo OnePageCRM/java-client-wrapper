@@ -5,6 +5,10 @@ import com.onepagecrm.models.Action;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.threeten.bp.Instant;
+import org.threeten.bp.LocalDate;
+import org.threeten.bp.LocalDateTime;
+import org.threeten.bp.ZoneId;
 
 import java.util.Date;
 import java.util.LinkedList;
@@ -90,16 +94,24 @@ public class ActionSerializer extends BaseSerializer {
             }
             if (actionObject.has(DATE_TAG)) {
                 if (!actionObject.isNull(DATE_TAG)) {
-                    String dateStr = actionObject.getString(DATE_TAG);
+                    final String dateStr = actionObject.getString(DATE_TAG);
                     exactTime = DateSerializer.fromFormattedString(dateStr);
                     action.setDate(exactTime);
+                    // TEST !!
+                    final LocalDate j8Date = LocalDate.parse(dateStr);
+                    action.setJ8Date(j8Date);
                 }
             }
             if (actionObject.has(EXACT_TIME_TAG)) {
                 if (!actionObject.isNull(EXACT_TIME_TAG)) {
-                    String exactTimeStr = String.valueOf(actionObject.getInt(EXACT_TIME_TAG));
+                    final int exactTimeSecs = actionObject.getInt(EXACT_TIME_TAG);
+                    final String exactTimeStr = String.valueOf(actionObject.getInt(EXACT_TIME_TAG));
                     exactTime = DateSerializer.fromTimestamp(exactTimeStr);
                     action.setExactTime(exactTime);
+                    // TEST !!
+                    final Instant exactTimeInstant = Instant.ofEpochSecond(exactTimeSecs);
+                    final LocalDateTime j8ExactTime = LocalDateTime.ofInstant(exactTimeInstant, ZoneId.of("UTC"));
+                    action.setJ8ExactTime(j8ExactTime);
                 }
             }
             if (actionObject.has(POSITION_TAG)) {
