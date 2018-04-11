@@ -16,6 +16,7 @@ import com.onepagecrm.net.request.PutRequest;
 import com.onepagecrm.net.request.Request;
 import org.threeten.bp.Instant;
 import org.threeten.bp.LocalDate;
+import org.threeten.bp.ZoneId;
 import org.threeten.bp.ZonedDateTime;
 
 import java.io.Serializable;
@@ -124,6 +125,10 @@ public class Action extends ApiResource implements Serializable {
 
     public Instant getJ8ExactTime() {
         return j8ExactTime;
+    }
+
+    public ZonedDateTime getJ8ExactTime(ZoneId zoneId) {
+        return j8ExactTime != null ? ZonedDateTime.ofInstant(j8ExactTime, zoneId) : null;
     }
 
     public Action setJ8ExactTime(Instant j8ExactTime) {
