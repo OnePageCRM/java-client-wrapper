@@ -44,7 +44,7 @@ public class LoginDataSerializer extends BaseSerializer {
         JSONObject loginParamsObject = dataObject.optJSONObject(LOGIN_PARAMS_TAG);
         if (loginParamsObject == null) loginParamsObject = new JSONObject();
         return new LoginData()
-                .setEndpointUrl(dataObject.optString(ENDPOINT_URL_TAG))
+                .setEndpointUrl(EndpointSerializer.base(dataObject.optString(ENDPOINT_URL_TAG)))
                 .setSamlResponse(loginParamsObject.optString(SAML_RESPONSE_TAG))
                 .setRelayState(loginParamsObject.optString(RELAY_STATE_TAG));
     }
