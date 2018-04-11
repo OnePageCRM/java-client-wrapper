@@ -14,6 +14,7 @@ import com.onepagecrm.net.request.GetRequest;
 import com.onepagecrm.net.request.PostRequest;
 import com.onepagecrm.net.request.PutRequest;
 import com.onepagecrm.net.request.Request;
+import org.threeten.bp.Instant;
 import org.threeten.bp.LocalDate;
 import org.threeten.bp.LocalDateTime;
 import org.threeten.bp.ZoneId;
@@ -112,7 +113,8 @@ public class Action extends ApiResource implements Serializable {
     // --- TEST !! ---
 
     private LocalDate j8Date;
-    private LocalDateTime j8ExactTime;
+    private LocalDateTime j8DateTime;
+    private Instant j8Instant;
 
     public LocalDate getJ8Date() {
         return j8Date;
@@ -123,21 +125,30 @@ public class Action extends ApiResource implements Serializable {
         return this;
     }
 
-    public LocalDateTime getJ8ExactTime() {
-        return j8ExactTime;
+    public LocalDateTime getJ8DateTime() {
+        return j8DateTime;
     }
 
-    public ZonedDateTime getJ8ExactTime(ZoneId zoneId) {
-        return j8ExactTime == null ? null : ZonedDateTime.of(j8ExactTime, zoneId);
+    public ZonedDateTime getJ8DateTime(ZoneId zoneId) {
+        return j8DateTime == null ? null : ZonedDateTime.of(j8DateTime, zoneId);
     }
 
-    public Action setJ8ExactTime(LocalDateTime j8ExactTime) {
-        this.j8ExactTime = j8ExactTime;
+    public Action setJ8DateTime(LocalDateTime j8DateTime) {
+        this.j8DateTime = j8DateTime;
         return this;
     }
 
-    public Action setJ8ExactTime(ZonedDateTime j8ExactTime) {
-        this.j8ExactTime = j8ExactTime != null ? j8ExactTime.toLocalDateTime() : null;
+    public Action setJ8DateTime(ZonedDateTime j8ExactTime) {
+        this.j8DateTime = j8ExactTime != null ? j8ExactTime.toLocalDateTime() : null;
+        return this;
+    }
+
+    public Instant getJ8Instant() {
+        return j8Instant;
+    }
+
+    public Action setJ8Instant(Instant j8Instant) {
+        this.j8Instant = j8Instant;
         return this;
     }
 

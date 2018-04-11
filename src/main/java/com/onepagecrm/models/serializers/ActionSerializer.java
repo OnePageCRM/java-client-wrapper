@@ -8,12 +8,13 @@ import org.json.JSONObject;
 import org.threeten.bp.Instant;
 import org.threeten.bp.LocalDate;
 import org.threeten.bp.LocalDateTime;
-import org.threeten.bp.ZoneId;
 
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.logging.Logger;
+
+import static com.onepagecrm.samples.ThreeTenBPDriver.ZONE_ID_UTC;
 
 public class ActionSerializer extends BaseSerializer {
 
@@ -110,8 +111,9 @@ public class ActionSerializer extends BaseSerializer {
                     action.setExactTime(exactTime);
                     // TEST !!
                     final Instant exactTimeInstant = Instant.ofEpochSecond(exactTimeSecs);
-                    final LocalDateTime j8ExactTime = LocalDateTime.ofInstant(exactTimeInstant, ZoneId.of("UTC"));
-                    action.setJ8ExactTime(j8ExactTime);
+                    action.setJ8Instant(exactTimeInstant);
+                    final LocalDateTime j8ExactTime = LocalDateTime.ofInstant(exactTimeInstant, ZONE_ID_UTC);
+                    action.setJ8DateTime(j8ExactTime);
                 }
             }
             if (actionObject.has(POSITION_TAG)) {
