@@ -11,7 +11,6 @@ import com.onepagecrm.models.internal.Utilities;
 import com.onepagecrm.net.API;
 import com.onepagecrm.net.request.Request;
 import org.threeten.bp.ZoneId;
-import org.threeten.bp.ZoneOffset;
 import org.threeten.bp.format.DateTimeFormatter;
 
 import java.io.FileInputStream;
@@ -28,16 +27,13 @@ import java.util.logging.Logger;
  */
 public class ThreeTenBPDriver {
 
-    public static TimeZone TIME_ZONE_UTC = TimeZone.getTimeZone("UTC");
-    public static TimeZone TIME_ZONE_ET = TimeZone.getTimeZone("America/New_York");
-
-    public static final ZoneId ZONE_ID_UTC = ZoneId.of(TIME_ZONE_UTC.getID());
-    public static final ZoneId ZONE_ID_ET = ZoneId.of(TIME_ZONE_ET.getID());
-
-    public static final ZoneOffset ZONE_OFFSET_UTC = ZoneOffset.UTC;
-    public static final ZoneOffset ZONE_OFFSET_ET = ZoneOffset.ofHours(-4); // Doesn't account for DST!!
-
     private static final Logger LOG = Logger.getLogger(Driver.class.getName());
+
+    private static TimeZone TIME_ZONE_UTC = TimeZone.getTimeZone("UTC");
+    private static TimeZone TIME_ZONE_ET = TimeZone.getTimeZone("America/New_York");
+
+    private static final ZoneId ZONE_ID_UTC = ZoneId.of(TIME_ZONE_UTC.getID());
+    private static final ZoneId ZONE_ID_ET = ZoneId.of(TIME_ZONE_ET.getID());
 
     public static void main(String[] args) throws OnePageException {
         Properties prop = new Properties();
@@ -84,30 +80,29 @@ public class ThreeTenBPDriver {
         LOG.info(Utilities.repeatedString("*", 40));
         ContactList searchResults = loggedInUser.searchContacts("Wrapper");
         Action action;
-        for (Contact result : searchResults) {
-            action = result.getNextAction();
+        for (Contact contact : searchResults) {
+            action = contact.getNextAction();
             if (action != null && Action.Status.DATE_TIME.equals(action.getStatus())) {
-                LOG.info("Contact: " + result);
+                LOG.info("Contact: " + contact);
                 LOG.info("Action: " + action);
-                LOG.info("Java8: " + String.format(Locale.ENGLISH,
-                        "{\"date\":\"%s\",\"exact_time\":%d}",
+                LOG.info("Java8: {" + String.format(Locale.ENGLISH,
+                        "\n\t\"date\":\"%s\"," +
+                                "\n\t\"seconds_utc\":%d," +
+                                "\n\t\"millis_utc\":%d," +
+                                "\n\t\"timestamp_utc\":\"%s\"," +
+                                "\n\t\"timestamp_est\":\"%s\"," +
+                                "\n\t\"timestamp_est\":\"%s\"," +
+                                "\n\t\"formatted_utc\":\"%s\"," +
+                                "\n\t\"formatted_est\":\"%s\"" +
+                                "\n}",
                         action.getJ8Date().toString(),
-                        action.getJ8Instant().toEpochMilli() / 1000
-                ));
-                LOG.info("Java8: " + String.format(Locale.ENGLISH,
-                        "{\"date\":\"%s\",\"exact_time\":\"%s\"}",
-                        action.getJ8Date().toString(),
-                        action.getJ8Instant().atZone(ZONE_ID_ET).format(DateTimeFormatter.ISO_INSTANT)
-                ));
-                LOG.info("Java8: " + String.format(Locale.ENGLISH,
-                        "{\"date\":\"%s\",\"exact_time\":\"%s\"}",
-                        action.getJ8Date().toString(),
-                        action.getJ8Instant().atZone(ZONE_ID_ET).toString()
-                ));
-                LOG.info("Java8: " + String.format(Locale.ENGLISH,
-                        "{\"date\":\"%s\",\"exact_time\":\"%s\"}",
-                        action.getJ8Date().toString(),
-                        action.getJ8Instant().atZone(ZONE_ID_ET).format(DateTimeFormatter.ISO_LOCAL_DATE_TIME)
+                        action.getJ8ExactTime().toEpochMilli() / 1000,
+                        action.getJ8ExactTime().toEpochMilli(),
+                        action.getJ8ExactTime().atZone(ZONE_ID_UTC).format(DateTimeFormatter.ISO_INSTANT),
+                        action.getJ8ExactTime().atZone(ZONE_ID_ET).toString(),
+                        action.getJ8ExactTime().atZone(ZONE_ID_ET).format(DateTimeFormatter.ISO_LOCAL_DATE_TIME),
+                        action.getJ8ExactTime().atZone(ZONE_ID_UTC).format(DateTimeFormatter.ofPattern("hh:mma MMM dd, yyyy")),
+                        action.getJ8ExactTime().atZone(ZONE_ID_ET).format(DateTimeFormatter.ofPattern("hh:mma MMM dd, yyyy"))
                 ));
             }
         }
