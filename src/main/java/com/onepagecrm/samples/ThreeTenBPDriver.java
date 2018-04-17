@@ -17,13 +17,16 @@ import java.util.logging.Logger;
  */
 public class ThreeTenBPDriver {
 
-    private static final Logger LOG = Logger.getLogger(Driver.class.getName());
+    private static final Logger LOG = Logger.getLogger(ThreeTenBPDriver.class.getName());
 
-    private static TimeZone TIME_ZONE_UTC = TimeZone.getTimeZone("UTC");
-    private static TimeZone TIME_ZONE_ET = TimeZone.getTimeZone("America/New_York");
+    private static final String TZ_ZONE_ID_UTC = "UTC";
+    private static final String TZ_ZONE_ID_ET = "America/New_York";
 
-    private static final ZoneId ZONE_ID_UTC = ZoneId.of(TIME_ZONE_UTC.getID());
-    private static final ZoneId ZONE_ID_ET = ZoneId.of(TIME_ZONE_ET.getID());
+    private static final ZoneId ZONE_ID_UTC = ZoneId.of(TZ_ZONE_ID_UTC);
+    private static final ZoneId ZONE_ID_ET = ZoneId.of(TZ_ZONE_ID_ET);
+
+    private static TimeZone TIME_ZONE_UTC = TimeZone.getTimeZone(TZ_ZONE_ID_UTC);
+    private static TimeZone TIME_ZONE_ET = TimeZone.getTimeZone(TZ_ZONE_ID_ET);
 
     public static void main(String[] args) throws JSONException {
 
