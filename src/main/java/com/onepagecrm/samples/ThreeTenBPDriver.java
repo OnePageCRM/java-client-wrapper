@@ -1,23 +1,13 @@
 package com.onepagecrm.samples;
 
-import com.onepagecrm.exceptions.OnePageException;
 import com.onepagecrm.models.Action;
-import com.onepagecrm.models.Contact;
-import com.onepagecrm.models.ContactList;
-import com.onepagecrm.models.DealList;
-import com.onepagecrm.models.StartupData;
-import com.onepagecrm.models.User;
-import com.onepagecrm.models.internal.Utilities;
-import com.onepagecrm.net.API;
-import com.onepagecrm.net.request.Request;
+import com.onepagecrm.models.serializers.ActionSerializer;
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.threeten.bp.ZoneId;
 import org.threeten.bp.format.DateTimeFormatter;
 
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.Locale;
-import java.util.Properties;
 import java.util.TimeZone;
 import java.util.logging.Logger;
 
@@ -35,76 +25,57 @@ public class ThreeTenBPDriver {
     private static final ZoneId ZONE_ID_UTC = ZoneId.of(TIME_ZONE_UTC.getID());
     private static final ZoneId ZONE_ID_ET = ZoneId.of(TIME_ZONE_ET.getID());
 
-    public static void main(String[] args) throws OnePageException {
-        Properties prop = new Properties();
-        InputStream input = null;
+    public static void main(String[] args) throws JSONException {
 
-        try {
-            input = new FileInputStream("config.properties");
+        // {"id":"5a573ad79007ba6b0a056a30","assignee_id":"559cd1866f6e656707000001","contact_id":"55acc4ee6f6e653fdc000099","text":"Follow up RE project","status":"date_time","done":false,"created_at":"2018-01-11T10:22:15Z","modified_at":"2018-04-11T09:31:52Z","date":"2018-04-11","exact_time":1523462400}
 
-            // Load the properties file
-            prop.load(input);
+        /*
+         {
+            "date":"2018-04-11",
+            "exact_time":1523462400,
+            "created_at":"2018-01-11T10:22:15Z",
+            "id":"5a573ad79007ba6b0a056a30",
+            "text":"Follow up RE project",
+            "contact_id":"55acc4ee6f6e653fdc000099",
+            "modified_at":"2018-04-11T09:31:52Z",
+            "assignee_id":"559cd1866f6e656707000001",
+            "status":"date_time"
+          }
+         */
 
-        } catch (IOException e) {
-            LOG.severe("Error loading the config.properties file");
-            LOG.severe(e.toString());
-        } finally {
-            if (input != null) {
-                try {
-                    input.close();
-                } catch (IOException e) {
-                    LOG.severe("Error closing the config.properties file");
-                    LOG.severe(e.toString());
-                }
-            }
-        }
+        final String actionJson = "{\"date\":\"2018-04-11\"," +
+                "\"exact_time\":1523462400," +
+                "\"created_at\":\"2018-01-11T10:22:15Z\"," +
+                "\"id\":\"5a573ad79007ba6b0a056a30\"," +
+                "\"text\":\"Follow up RE project\"," +
+                "\"contact_id\":\"55acc4ee6f6e653fdc000099\"," +
+                "\"modified_at\":\"2018-04-11T09:31:52Z\"," +
+                "\"assignee_id\":\"559cd1866f6e656707000001\"," +
+                "\"status\":\"date_time\"}";
 
-        // Note: no need to set server!!
+        final JSONObject actionObject = new JSONObject(actionJson);
 
-        StartupData startupData = API.App.startup(
-                Request.AUTH_DEV_SERVER,
-                prop.getProperty("username"),
-                prop.getProperty("password"));
+        final Action action = ActionSerializer.fromJsonObject(actionObject);
 
-        User loggedInUser = startupData.getUser();
-        ContactList stream = startupData.getStream();
-        ContactList contacts = startupData.getStream();
-        DealList pipeline = startupData.getDeals();
-
-        LOG.info(Utilities.repeatedString("*", 40));
-        LOG.info("User: " + loggedInUser);
-        LOG.info("Stream: " + stream);
-        LOG.info("Contacts: " + contacts);
-        LOG.info("Pipeline: " + pipeline);
-
-        LOG.info(Utilities.repeatedString("*", 40));
-        ContactList searchResults = loggedInUser.searchContacts("Wrapper");
-        Action action;
-        for (Contact contact : searchResults) {
-            action = contact.getNextAction();
-            if (action != null && Action.Status.DATE_TIME.equals(action.getStatus())) {
-                LOG.info("Contact: " + contact);
-                LOG.info("Action: " + action);
-                LOG.info("Java8: {" + String.format(Locale.ENGLISH,
-                        "\n\t\"date\":\"%s\"," +
-                                "\n\t\"seconds_utc\":%d," +
-                                "\n\t\"millis_utc\":%d," +
-                                "\n\t\"timestamp_utc\":\"%s\"," +
-                                "\n\t\"timestamp_est\":\"%s\"," +
-                                "\n\t\"timestamp_est\":\"%s\"," +
-                                "\n\t\"formatted_utc\":\"%s\"," +
-                                "\n\t\"formatted_est\":\"%s\"" +
-                                "\n}",
-                        action.getJ8Date().toString(),
-                        action.getJ8ExactTime().toEpochMilli() / 1000,
-                        action.getJ8ExactTime().toEpochMilli(),
-                        action.getJ8ExactTime().atZone(ZONE_ID_UTC).format(DateTimeFormatter.ISO_INSTANT),
-                        action.getJ8ExactTime().atZone(ZONE_ID_ET).toString(),
-                        action.getJ8ExactTime().atZone(ZONE_ID_ET).format(DateTimeFormatter.ISO_LOCAL_DATE_TIME),
-                        action.getJ8ExactTime().atZone(ZONE_ID_UTC).format(DateTimeFormatter.ofPattern("hh:mma MMM dd, yyyy")),
-                        action.getJ8ExactTime().atZone(ZONE_ID_ET).format(DateTimeFormatter.ofPattern("hh:mma MMM dd, yyyy"))
-                ));
-            }
-        }
+        LOG.info("Action: " + action);
+        LOG.info("Java8: {" + String.format(Locale.ENGLISH,
+                "\n\t\"date\":\"%s\"," +
+                        "\n\t\"seconds_utc\":%d," +
+                        "\n\t\"millis_utc\":%d," +
+                        "\n\t\"timestamp_utc\":\"%s\"," +
+                        "\n\t\"timestamp_est\":\"%s\"," +
+                        "\n\t\"timestamp_est\":\"%s\"," +
+                        "\n\t\"formatted_utc\":\"%s\"," +
+                        "\n\t\"formatted_est\":\"%s\"" +
+                        "\n}",
+                action.getJ8Date().toString(),
+                action.getJ8ExactTime().toEpochMilli() / 1000,
+                action.getJ8ExactTime().toEpochMilli(),
+                action.getJ8ExactTime().atZone(ZONE_ID_UTC).format(DateTimeFormatter.ISO_INSTANT),
+                action.getJ8ExactTime().atZone(ZONE_ID_ET).toString(),
+                action.getJ8ExactTime().atZone(ZONE_ID_ET).format(DateTimeFormatter.ISO_LOCAL_DATE_TIME),
+                action.getJ8ExactTime().atZone(ZONE_ID_UTC).format(DateTimeFormatter.ofPattern("hh:mma MMM dd, yyyy")),
+                action.getJ8ExactTime().atZone(ZONE_ID_ET).format(DateTimeFormatter.ofPattern("hh:mma MMM dd, yyyy"))
+        ));
     }
 }
