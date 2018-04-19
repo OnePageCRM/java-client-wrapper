@@ -11,29 +11,29 @@ import static org.junit.Assert.assertNull;
  * Created by Cillian Myles on 17/04/2018.
  * Copyright (c) 2018 OnePageCRM. All rights reserved.
  */
-public class InstantSerializerTest extends DateTimeSerializerTestHelper {
+public class InstantSerializerTest extends DateTimeTestHelper {
 
     // Thu, 01 Jan 1970 00:00:00 UTC = 0
     private Long timeNo1Secs;
-    private Long timeNo1Ms;
+    private Long timeNo1Millis;
     private Instant timeNo1Instant;
     private String timeNo1Formatted;
 
     // Fri, 01 Jul 2016 08:00:00 UTC = 1467360000
     private Long timeNo2Secs;
-    private Long timeNo2Ms;
+    private Long timeNo2MMillis;
     private Instant timeNo2Instant;
     private String timeNo2Formatted;
 
     @Before
     public void setUp() throws Exception {
         timeNo1Secs = 0L;
-        timeNo1Ms = timeNo1Secs * 1000;
+        timeNo1Millis = timeNo1Secs * 1000;
         timeNo1Instant = Instant.ofEpochSecond(timeNo1Secs);
         timeNo1Formatted = "1970-01-01T00:00:00Z";
 
         timeNo2Secs = 1467360000L;
-        timeNo2Ms = timeNo2Secs * 1000;
+        timeNo2MMillis = timeNo2Secs * 1000;
         timeNo2Instant = Instant.ofEpochSecond(timeNo2Secs);
         timeNo2Formatted = "2016-07-01T08:00:00Z";
     }
@@ -64,8 +64,8 @@ public class InstantSerializerTest extends DateTimeSerializerTestHelper {
 
     @Test
     public void testConversion_MillisToInstant() throws Exception {
-        assertEquals(timeNo1Instant, InstantSerializer.getInstance().ofMillis(timeNo1Ms));
-        assertEquals(timeNo2Instant, InstantSerializer.getInstance().ofMillis(timeNo2Ms));
+        assertEquals(timeNo1Instant, InstantSerializer.getInstance().ofMillis(timeNo1Millis));
+        assertEquals(timeNo2Instant, InstantSerializer.getInstance().ofMillis(timeNo2MMillis));
         assertNull(InstantSerializer.getInstance().ofMillis(null));
     }
 
@@ -78,8 +78,8 @@ public class InstantSerializerTest extends DateTimeSerializerTestHelper {
 
     @Test
     public void testConversion_InstantToMillis() throws Exception {
-        assertEquals(timeNo1Ms, InstantSerializer.getInstance().millis(timeNo1Instant));
-        assertEquals(timeNo2Ms, InstantSerializer.getInstance().millis(timeNo2Instant));
+        assertEquals(timeNo1Millis, InstantSerializer.getInstance().millis(timeNo1Instant));
+        assertEquals(timeNo2MMillis, InstantSerializer.getInstance().millis(timeNo2Instant));
         assertNull(InstantSerializer.getInstance().millis(null));
     }
 }

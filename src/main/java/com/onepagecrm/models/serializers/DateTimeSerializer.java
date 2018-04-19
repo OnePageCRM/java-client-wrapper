@@ -1,5 +1,6 @@
 package com.onepagecrm.models.serializers;
 
+import org.threeten.bp.ZoneId;
 import org.threeten.bp.format.DateTimeFormatter;
 import org.threeten.bp.jdk8.DefaultInterfaceTemporalAccessor;
 
@@ -9,7 +10,9 @@ import org.threeten.bp.jdk8.DefaultInterfaceTemporalAccessor;
  */
 public abstract class DateTimeSerializer<T extends DefaultInterfaceTemporalAccessor> {
 
-    public static final String PATTERN_DATE_DEFAULT = "yyyy-MM-dd";
+    public static final String PATTERN_DATE = "yyyy-MM-dd";
+    public static final String PATTERN_DATE_DEFAULT = PATTERN_DATE;
+    // TODO: add more patterns
 
     public abstract DateTimeFormatter defaultFormatter();
 
@@ -19,9 +22,19 @@ public abstract class DateTimeSerializer<T extends DefaultInterfaceTemporalAcces
         return parse(t, defaultFormatter());
     }
 
-    public abstract String format(T t, DateTimeFormatter formatter);
+    public abstract ZoneId defaultZoneId();
+
+    public abstract String format(T t, ZoneId zoneId, DateTimeFormatter formatter);
+
+    public String format(T t, ZoneId zoneId) {
+        return format(t, zoneId, defaultFormatter());
+    }
+
+    public String format(T t, DateTimeFormatter formatter) {
+        return format(t, defaultZoneId(), formatter);
+    }
 
     public String format(T t) {
-        return format(t, defaultFormatter());
+        return format(t, defaultZoneId(), defaultFormatter());
     }
 }

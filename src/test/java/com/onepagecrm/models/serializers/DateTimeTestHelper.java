@@ -8,7 +8,7 @@ import java.util.TimeZone;
  * Created by Cillian Myles on 17/04/2018.
  * Copyright (c) 2018 OnePageCRM. All rights reserved.
  */
-public abstract class DateTimeSerializerTestHelper {
+public abstract class DateTimeTestHelper {
 
     protected static final String TZ_ZONE_ID_UTC = "UTC";
     protected static final String TZ_ZONE_ID_ET = "America/New_York";

@@ -2,8 +2,8 @@ package com.onepagecrm.models.serializers;
 
 import com.onepagecrm.models.helpers.TextHelper;
 import org.threeten.bp.LocalDate;
+import org.threeten.bp.ZoneId;
 import org.threeten.bp.format.DateTimeFormatter;
-
 
 /**
  * Created by Cillian Myles on 17/04/2018.
@@ -38,7 +38,7 @@ public class LocalDateSerializer extends DateTimeSerializer<LocalDate> {
     @Override
     public LocalDate parse(String date, DateTimeFormatter formatter) {
         if (TextHelper.isEmpty(date)) {
-            throw new IllegalArgumentException("String to parsed cannot be null or empty.");
+            return null;
         }
         if (formatter == null) {
             throw new IllegalArgumentException("DateTimeFormatter object cannot be null.");
@@ -47,13 +47,28 @@ public class LocalDateSerializer extends DateTimeSerializer<LocalDate> {
     }
 
     @Override
+    public ZoneId defaultZoneId() {
+        throw new IllegalArgumentException("LocalDateSerializer should be time zone agnostic.");
+    }
+
+    @Override
+    public String format(LocalDate localDate) {
+        return format(localDate, defaultFormatter());
+    }
+
+    @Override
     public String format(LocalDate date, DateTimeFormatter formatter) {
         if (date == null) {
-            throw new IllegalArgumentException("LocalDate to be formatted cannot be null.");
+            return null;
         }
         if (formatter == null) {
             throw new IllegalArgumentException("DateTimeFormatter object cannot be null.");
         }
         return date.format(formatter);
+    }
+
+    @Override
+    public String format(LocalDate localDate, ZoneId zoneId, DateTimeFormatter formatter) {
+        throw new IllegalArgumentException("LocalDateSerializer should be time zone agnostic.");
     }
 }

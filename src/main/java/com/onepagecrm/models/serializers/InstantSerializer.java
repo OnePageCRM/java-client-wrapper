@@ -47,7 +47,8 @@ public class InstantSerializer extends DateTimeSerializer<Instant> {
         return ZonedDateTime.parse(instant, formatter.withZone(defaultZoneId())).toInstant();
     }
 
-    private ZoneId defaultZoneId() {
+    @Override
+    public ZoneId defaultZoneId() {
         return ZoneId.of("UTC");
     }
 
@@ -56,6 +57,7 @@ public class InstantSerializer extends DateTimeSerializer<Instant> {
         return format(instant, defaultZoneId(), formatter);
     }
 
+    @Override
     public String format(Instant instant, ZoneId zoneId, DateTimeFormatter formatter) {
         if (instant == null) {
             return null;
