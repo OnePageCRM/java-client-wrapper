@@ -3,6 +3,7 @@ package com.onepagecrm.models.serializers;
 import org.junit.Before;
 import org.junit.Test;
 import org.threeten.bp.Instant;
+import org.threeten.bp.ZoneId;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
@@ -47,6 +48,19 @@ public class InstantSerializerTest extends DateTimeTestHelper {
     }
 
     @Test
+    public void testZoneId_DefaultsMatch() throws Exception {
+        ZoneId zoneId = null;
+        Exception exception = null;
+        try {
+            zoneId = InstantSerializer.getInstance().defaultZoneId();
+        } catch (Exception e) {
+            exception = e;
+        }
+        assertNull("No exception should be thrown", exception);
+        assertEquals("Default ZoneId does not match", ZONE_ID_UTC, zoneId);
+    }
+
+    @Test
     public void testFormatting_InstantToString() throws Exception {
         assertEquals(timeNo1Formatted, InstantSerializer.getInstance().format(timeNo1Instant));
         assertEquals(timeNo2Formatted, InstantSerializer.getInstance().format(timeNo2Instant));
@@ -54,6 +68,8 @@ public class InstantSerializerTest extends DateTimeTestHelper {
     }
 
     // TODO: test formatting with time zone data
+
+    // TODO: add error cases for parsing
 
     @Test
     public void testConversion_SecondsToInstant() throws Exception {
