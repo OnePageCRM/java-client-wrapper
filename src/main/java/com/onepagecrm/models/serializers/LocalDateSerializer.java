@@ -31,8 +31,23 @@ public class LocalDateSerializer extends DateTimeSerializer<LocalDate> {
     }
 
     @Override
+    public ZoneId defaultZoneId() {
+        throw new IllegalArgumentException("LocalDateSerializer should be time zone agnostic.");
+    }
+
+    @Override
     public DateTimeFormatter defaultFormatter() {
         return DateTimeFormatter.ISO_LOCAL_DATE;
+    }
+
+    @Override
+    public LocalDate parse(String date, ZoneId zoneId, DateTimeFormatter formatter) {
+        throw new IllegalArgumentException("LocalDateSerializer should be time zone agnostic.");
+    }
+
+    @Override
+    public LocalDate parse(String date, ZoneId zoneId) {
+        return parse(date, zoneId, defaultFormatter());
     }
 
     @Override
@@ -47,13 +62,18 @@ public class LocalDateSerializer extends DateTimeSerializer<LocalDate> {
     }
 
     @Override
-    public ZoneId defaultZoneId() {
+    public LocalDate parse(String date) {
+        return parse(date, defaultFormatter());
+    }
+
+    @Override
+    public String format(LocalDate localDate, ZoneId zoneId, DateTimeFormatter formatter) {
         throw new IllegalArgumentException("LocalDateSerializer should be time zone agnostic.");
     }
 
     @Override
-    public String format(LocalDate localDate) {
-        return format(localDate, defaultFormatter());
+    public String format(LocalDate localDate, ZoneId zoneId) {
+        return format(localDate, zoneId, defaultFormatter());
     }
 
     @Override
@@ -68,7 +88,7 @@ public class LocalDateSerializer extends DateTimeSerializer<LocalDate> {
     }
 
     @Override
-    public String format(LocalDate localDate, ZoneId zoneId, DateTimeFormatter formatter) {
-        throw new IllegalArgumentException("LocalDateSerializer should be time zone agnostic.");
+    public String format(LocalDate localDate) {
+        return format(localDate, defaultFormatter());
     }
 }

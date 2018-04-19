@@ -1,5 +1,6 @@
 package com.onepagecrm.models.serializers;
 
+import com.onepagecrm.models.helpers.TextHelper;
 import org.threeten.bp.ZoneId;
 import org.threeten.bp.ZonedDateTime;
 import org.threeten.bp.format.DateTimeFormatter;
@@ -30,23 +31,49 @@ public class ZonedDateTimeSerializer extends DateTimeSerializer<ZonedDateTime> {
     }
 
     @Override
-    public DateTimeFormatter defaultFormatter() {
-        return DateTimeFormatter.ofPattern(DateTimeSerializer.PATTERN_FRIENDLY_TIME_DATE_YEAR);
-    }
-
-    @Override
-    public ZonedDateTime parse(String t, DateTimeFormatter formatter) {
-        throw new IllegalArgumentException("ZonedDateTime should only be used for formatting/displaying.");
-    }
-
-    @Override
     public ZoneId defaultZoneId() {
         throw new IllegalArgumentException("ZonedDateTime should already have time zone data.");
     }
 
     @Override
-    public String format(ZonedDateTime zonedDateTime) {
-        return format(zonedDateTime, defaultFormatter());
+    public DateTimeFormatter defaultFormatter() {
+        return DateTimeSerializer.FORMATTER_FRIENDLY_TIME_DATE_YEAR;
+    }
+
+    @Override
+    public ZonedDateTime parse(String zonedDateTime, ZoneId zoneId, DateTimeFormatter formatter) {
+        if (TextHelper.isEmpty(zonedDateTime)) {
+            return null;
+        }
+        if (zoneId == null) {
+            throw new IllegalArgumentException("ZonedDateTime needs ZoneId info.");
+        }
+        return ZonedDateTime.parse(zonedDateTime, formatter);
+    }
+
+    @Override
+    public ZonedDateTime parse(String zonedDateTime, ZoneId zoneId) {
+        return parse(zonedDateTime, zoneId, defaultFormatter());
+    }
+
+    @Override
+    public ZonedDateTime parse(String zonedDateTime, DateTimeFormatter formatter) {
+        throw new IllegalArgumentException("ZonedDateTime should only be used for formatting/displaying.");
+    }
+
+    @Override
+    public ZonedDateTime parse(String zonedDateTime) {
+        return parse(zonedDateTime, defaultFormatter());
+    }
+
+    @Override
+    public String format(ZonedDateTime zonedDateTime, ZoneId zoneId, DateTimeFormatter formatter) {
+        throw new IllegalArgumentException("ZonedDateTime should already have time zone data.");
+    }
+
+    @Override
+    public String format(ZonedDateTime zonedDateTime, ZoneId zoneId) {
+        return format(zonedDateTime, zoneId, defaultFormatter());
     }
 
     @Override
@@ -61,7 +88,7 @@ public class ZonedDateTimeSerializer extends DateTimeSerializer<ZonedDateTime> {
     }
 
     @Override
-    public String format(ZonedDateTime zonedDateTime, ZoneId zoneId, DateTimeFormatter formatter) {
-        throw new IllegalArgumentException("ZonedDateTime should already have time zone data.");
+    public String format(ZonedDateTime zonedDateTime) {
+        return format(zonedDateTime, defaultFormatter());
     }
 }

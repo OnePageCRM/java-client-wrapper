@@ -3,6 +3,7 @@ package com.onepagecrm.models.serializers;
 import com.onepagecrm.models.helpers.TextHelper;
 import org.threeten.bp.Instant;
 import org.threeten.bp.ZoneId;
+import org.threeten.bp.ZoneOffset;
 import org.threeten.bp.ZonedDateTime;
 import org.threeten.bp.format.DateTimeFormatter;
 
@@ -32,8 +33,18 @@ public class InstantSerializer extends DateTimeSerializer<Instant> {
     }
 
     @Override
+    public ZoneId defaultZoneId() {
+        return ZoneId.of(ZoneOffset.UTC.getId());
+    }
+
+    @Override
     public DateTimeFormatter defaultFormatter() {
         return DateTimeFormatter.ISO_INSTANT;
+    }
+
+    @Override
+    public Instant parse(String instant) {
+        return parse(instant, defaultFormatter());
     }
 
     @Override
@@ -48,8 +59,8 @@ public class InstantSerializer extends DateTimeSerializer<Instant> {
     }
 
     @Override
-    public ZoneId defaultZoneId() {
-        return ZoneId.of("UTC");
+    public Instant parse(String instant, ZoneId zoneId, DateTimeFormatter formatter) {
+        throw new IllegalArgumentException("Instant should already have time zone data.");
     }
 
     @Override

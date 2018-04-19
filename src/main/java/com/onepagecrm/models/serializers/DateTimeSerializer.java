@@ -36,15 +36,23 @@ public abstract class DateTimeSerializer<T extends DefaultInterfaceTemporalAcces
     public static final DateTimeFormatter FORMATTER_FRIENDLY_TIME_DATE_YEAR = ofPattern(PATTERN_FRIENDLY_TIME_DATE_YEAR);
     public static final DateTimeFormatter FORMATTER_FRIENDLY_TIME_AM_PM_DATE_YEAR = ofPattern(PATTERN_FRIENDLY_TIME_AM_PM_DATE_YEAR);
 
+    public abstract ZoneId defaultZoneId();
+
     public abstract DateTimeFormatter defaultFormatter();
 
-    public abstract T parse(String t, DateTimeFormatter formatter);
+    public abstract T parse(String t, ZoneId zoneId, DateTimeFormatter formatter);
 
-    public T parse(String t) {
-        return parse(t, defaultFormatter());
+    public T parse(String t, ZoneId zoneId) {
+        return parse(t, zoneId, defaultFormatter());
     }
 
-    public abstract ZoneId defaultZoneId();
+    public T parse(String t, DateTimeFormatter formatter) {
+        return parse(t, defaultZoneId(), formatter);
+    }
+
+    public T parse(String t) {
+        return parse(t, defaultZoneId(), defaultFormatter());
+    }
 
     public abstract String format(T t, ZoneId zoneId, DateTimeFormatter formatter);
 

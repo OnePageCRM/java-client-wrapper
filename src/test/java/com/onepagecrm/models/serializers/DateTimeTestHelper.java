@@ -10,7 +10,7 @@ import java.util.TimeZone;
  */
 public abstract class DateTimeTestHelper {
 
-    protected static final String TZ_ZONE_ID_UTC = "UTC";
+    protected static final String TZ_ZONE_ID_UTC = "Z";
     protected static final String TZ_ZONE_ID_ET = "America/New_York";
 
     protected static final ZoneId ZONE_ID_UTC = ZoneId.of(TZ_ZONE_ID_UTC);
