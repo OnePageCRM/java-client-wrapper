@@ -1,6 +1,7 @@
 package com.onepagecrm.models.serializers;
 
 import com.onepagecrm.models.helpers.TextHelper;
+import org.threeten.bp.LocalDateTime;
 import org.threeten.bp.ZoneId;
 import org.threeten.bp.ZonedDateTime;
 import org.threeten.bp.format.DateTimeFormatter;
@@ -48,7 +49,10 @@ public class ZonedDateTimeSerializer extends DateTimeSerializer<ZonedDateTime> {
         if (zoneId == null) {
             throw new IllegalArgumentException("ZonedDateTime needs ZoneId info");
         }
-        return ZonedDateTime.parse(zonedDateTime, formatter);
+        if (formatter == null) {
+            throw new IllegalArgumentException("ZonedDateTime needs format info");
+        }
+        return ZonedDateTime.of(LocalDateTime.parse(zonedDateTime, formatter), zoneId);
     }
 
     @Override

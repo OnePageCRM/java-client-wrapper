@@ -15,12 +15,15 @@ public abstract class DateTimeTestHelper {
 
     public static final String TZ_ZONE_ID_UTC = "Z";
     public static final String TZ_ZONE_ID_ET = "America/New_York";
+    public static final String TZ_ZONE_ID_EU = "Europe/Dublin";
 
     public static final ZoneId ZONE_ID_UTC = ZoneId.of(TZ_ZONE_ID_UTC);
     public static final ZoneId ZONE_ID_ET = ZoneId.of(TZ_ZONE_ID_ET);
+    public static final ZoneId ZONE_ID_EU = ZoneId.of(TZ_ZONE_ID_EU);
 
     public static final TimeZone TIME_ZONE_UTC = TimeZone.getTimeZone(TZ_ZONE_ID_UTC);
     public static final TimeZone TIME_ZONE_ET = TimeZone.getTimeZone(TZ_ZONE_ID_ET);
+    public static final TimeZone TIME_ZONE_EU = TimeZone.getTimeZone(TZ_ZONE_ID_EU);
 
     public static final DateTimeFormatter FORMAT_LOCAL_DATE = DateTimeSerializer.FORMATTER_DATE;
     public static final DateTimeFormatter FORMAT_INSTANT = DateTimeSerializer.FORMATTER_DATE_TIME;
