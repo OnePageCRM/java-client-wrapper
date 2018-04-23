@@ -1,5 +1,7 @@
-package com.onepagecrm.models.serializers;
+package com.onepagecrm.models.serializers.time;
 
+import com.onepagecrm.models.serializers.InstantSerializer;
+import com.onepagecrm.models.serializers.LocalDateSerializer;
 import org.junit.Before;
 import org.junit.Test;
 import org.threeten.bp.LocalDate;

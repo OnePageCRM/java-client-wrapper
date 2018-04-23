@@ -1,5 +1,6 @@
-package com.onepagecrm.models.serializers;
+package com.onepagecrm.models.serializers.time;
 
+import com.onepagecrm.models.serializers.DateTimeSerializer;
 import org.threeten.bp.ZoneId;
 import org.threeten.bp.format.DateTimeFormatter;
 
