@@ -40,14 +40,6 @@ public class InstantSerializerTest extends DateTimeTestHelper {
     }
 
     @Test
-    public void testParsing_StringToInstant() throws Exception {
-        assertEquals(timeNo1Instant, InstantSerializer.getInstance().parse(timeNo1Formatted));
-        assertEquals(timeNo2Instant, InstantSerializer.getInstance().parse(timeNo2Formatted));
-        assertNull(InstantSerializer.getInstance().parse(null));
-        assertNull(InstantSerializer.getInstance().parse(""));
-    }
-
-    @Test
     public void testZoneId_DefaultsMatch() throws Exception {
         ZoneId zoneId = null;
         Exception exception = null;
@@ -61,41 +53,119 @@ public class InstantSerializerTest extends DateTimeTestHelper {
     }
 
     @Test
-    public void testFormatting_InstantToString() throws Exception {
-        assertEquals(timeNo1Formatted, InstantSerializer.getInstance().format(timeNo1Instant));
-        assertEquals(timeNo2Formatted, InstantSerializer.getInstance().format(timeNo2Instant));
-        assertNull(InstantSerializer.getInstance().format(null));
+    public void testParsing_StringToInstant_WithZoneIdAndFormat() throws Exception {
+
     }
 
-    // TODO: test formatting with time zone data
+    @Test
+    public void testParsing_StringToInstant_WithZoneId() throws Exception {
 
-    // TODO: add error cases for parsing
+    }
+
+    @Test
+    public void testParsing_StringToInstant_WithFormat() throws Exception {
+
+    }
+
+    @Test
+    public void testParsing_StringToInstant_Default() throws Exception {
+        assertEquals("Parsed Instant does not match",
+                timeNo1Instant,
+                InstantSerializer.getInstance().parse(timeNo1Formatted));
+
+        assertEquals("Parsed Instant does not match",
+                timeNo2Instant,
+                InstantSerializer.getInstance().parse(timeNo2Formatted));
+
+        assertNull("Parsed Instant should be null",
+                InstantSerializer.getInstance().parse(null));
+
+        assertNull("Parsed Instant should be null",
+                InstantSerializer.getInstance().parse(""));
+    }
+
+    @Test
+    public void testFormatting_InstantToString_WithZoneIdAndFormat() throws Exception {
+
+    }
+
+    @Test
+    public void testFormatting_InstantToString_WithZone() throws Exception {
+
+    }
+
+    @Test
+    public void testFormatting_InstantToString_WithFormat() throws Exception {
+
+    }
+
+    @Test
+    public void testFormatting_InstantToString_Default() throws Exception {
+        assertEquals("Formatted Instant does not match",
+                timeNo1Formatted,
+                InstantSerializer.getInstance().format(timeNo1Instant));
+
+        assertEquals("Formatted Instant does not match",
+                timeNo2Formatted,
+                InstantSerializer.getInstance().format(timeNo2Instant));
+
+        assertNull("Formatted Instant should be null",
+                InstantSerializer.getInstance().format(null));
+    }
 
     @Test
     public void testConversion_SecondsToInstant() throws Exception {
-        assertEquals(timeNo1Instant, InstantSerializer.getInstance().ofSeconds(timeNo1Secs));
-        assertEquals(timeNo2Instant, InstantSerializer.getInstance().ofSeconds(timeNo2Secs));
-        assertNull(InstantSerializer.getInstance().ofSeconds(null));
+        assertEquals("Generated Instant does not match",
+                timeNo1Instant,
+                InstantSerializer.getInstance().ofSeconds(timeNo1Secs));
+
+        assertEquals("Generated Instant does not match",
+                timeNo2Instant,
+                InstantSerializer.getInstance().ofSeconds(timeNo2Secs));
+
+        assertNull("Generated Instant should be null",
+                InstantSerializer.getInstance().ofSeconds(null));
     }
 
     @Test
     public void testConversion_MillisToInstant() throws Exception {
-        assertEquals(timeNo1Instant, InstantSerializer.getInstance().ofMillis(timeNo1Millis));
-        assertEquals(timeNo2Instant, InstantSerializer.getInstance().ofMillis(timeNo2MMillis));
-        assertNull(InstantSerializer.getInstance().ofMillis(null));
+        assertEquals("Generated Instant does not match",
+                timeNo1Instant,
+                InstantSerializer.getInstance().ofMillis(timeNo1Millis));
+
+        assertEquals("Generated Instant does not match",
+                timeNo2Instant,
+                InstantSerializer.getInstance().ofMillis(timeNo2MMillis));
+
+        assertNull("Generated Instant should be null",
+                InstantSerializer.getInstance().ofMillis(null));
     }
 
     @Test
     public void testConversion_InstantToSeconds() throws Exception {
-        assertEquals(timeNo1Secs, InstantSerializer.getInstance().seconds(timeNo1Instant));
-        assertEquals(timeNo2Secs, InstantSerializer.getInstance().seconds(timeNo2Instant));
-        assertNull(InstantSerializer.getInstance().seconds(null));
+        assertEquals("Converted Instant does not match",
+                timeNo1Secs,
+                InstantSerializer.getInstance().seconds(timeNo1Instant));
+
+        assertEquals("Converted Instant does not match",
+                timeNo2Secs,
+                InstantSerializer.getInstance().seconds(timeNo2Instant));
+
+        assertNull("Converted Instant should be null",
+                InstantSerializer.getInstance().seconds(null));
     }
 
     @Test
     public void testConversion_InstantToMillis() throws Exception {
-        assertEquals(timeNo1Millis, InstantSerializer.getInstance().millis(timeNo1Instant));
-        assertEquals(timeNo2MMillis, InstantSerializer.getInstance().millis(timeNo2Instant));
-        assertNull(InstantSerializer.getInstance().millis(null));
+        assertEquals("Converted Instant does not match",
+                timeNo1Millis,
+                InstantSerializer.getInstance().millis(timeNo1Instant));
+
+        assertEquals("Converted Instant does not match",
+                timeNo2MMillis,
+                InstantSerializer.getInstance().millis(timeNo2Instant));
+
+        assertNull("Converted Instant should be null",
+                InstantSerializer.getInstance().millis(null));
     }
 }

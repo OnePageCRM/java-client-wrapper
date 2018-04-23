@@ -73,10 +73,12 @@ public class LocalDateSerializerTest extends DateTimeTestHelper {
 
     @Test
     public void testParsing_StringToLocalDate_WithFormat() throws Exception {
-        assertEquals("Parsed LocalDate does not match", dateNo1LocalDate,
+        assertEquals("Parsed LocalDate does not match",
+                dateNo1LocalDate,
                 LocalDateSerializer.getInstance().parse(dateNo1Formatted, FORMAT_LOCAL_DATE));
 
-        assertEquals("Parsed LocalDate does not match", dateNo2LocalDate,
+        assertEquals("Parsed LocalDate does not match",
+                dateNo2LocalDate,
                 LocalDateSerializer.getInstance().parse(dateNo2Formatted, FORMAT_LOCAL_DATE));
 
         assertNull("Parsed LocalDate should be null",
@@ -88,10 +90,12 @@ public class LocalDateSerializerTest extends DateTimeTestHelper {
 
     @Test
     public void testParsing_StringToLocalDate_Default() throws Exception {
-        assertEquals("Parsed LocalDate does not match", dateNo1LocalDate,
+        assertEquals("Parsed LocalDate does not match",
+                dateNo1LocalDate,
                 LocalDateSerializer.getInstance().parse(dateNo1Formatted));
 
-        assertEquals("Parsed LocalDate does not match", dateNo2LocalDate,
+        assertEquals("Parsed LocalDate does not match",
+                dateNo2LocalDate,
                 LocalDateSerializer.getInstance().parse(dateNo2Formatted));
 
         assertNull("Parsed LocalDate should be null",
@@ -129,10 +133,12 @@ public class LocalDateSerializerTest extends DateTimeTestHelper {
 
     @Test
     public void testFormatting_LocalDateToString_WithFormat() throws Exception {
-        assertEquals("Formatted LocalDate does not match", dateNo1Formatted,
+        assertEquals("Formatted LocalDate does not match",
+                dateNo1Formatted,
                 LocalDateSerializer.getInstance().format(dateNo1LocalDate, FORMAT_LOCAL_DATE));
 
-        assertEquals("Formatted LocalDate does not match", dateNo2Formatted,
+        assertEquals("Formatted LocalDate does not match",
+                dateNo2Formatted,
                 LocalDateSerializer.getInstance().format(dateNo2LocalDate, FORMAT_LOCAL_DATE));
 
         assertNull("Formatted LocalDate should be null",
@@ -141,10 +147,12 @@ public class LocalDateSerializerTest extends DateTimeTestHelper {
 
     @Test
     public void testFormatting_LocalDateToString_Default() throws Exception {
-        assertEquals("Formatted LocalDate does not match", dateNo1Formatted,
+        assertEquals("Formatted LocalDate does not match",
+                dateNo1Formatted,
                 LocalDateSerializer.getInstance().format(dateNo1LocalDate));
 
-        assertEquals("Formatted LocalDate does not match", dateNo2Formatted,
+        assertEquals("Formatted LocalDate does not match",
+                dateNo2Formatted,
                 LocalDateSerializer.getInstance().format(dateNo2LocalDate));
 
         assertNull("Formatted LocalDate should be null",
