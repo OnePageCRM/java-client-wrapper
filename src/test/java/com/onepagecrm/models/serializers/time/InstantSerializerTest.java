@@ -7,6 +7,7 @@ import org.threeten.bp.Instant;
 import org.threeten.bp.ZoneId;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 
 /**
@@ -55,17 +56,45 @@ public class InstantSerializerTest extends DateTimeTestHelper {
 
     @Test
     public void testParsing_StringToInstant_WithZoneIdAndFormat() throws Exception {
-
+        Instant time = null;
+        Exception exception = null;
+        try {
+            time = InstantSerializer.getInstance().parse(timeNo1Formatted, ZONE_ID_UTC, FORMAT_INSTANT);
+        } catch (Exception e) {
+            exception = e;
+        }
+        assertNull("Expected exception to be thrown", time);
+        assertNotNull("Expected exception to be thrown", exception);
     }
 
     @Test
     public void testParsing_StringToInstant_WithZoneId() throws Exception {
-
+        Instant time = null;
+        Exception exception = null;
+        try {
+            time = InstantSerializer.getInstance().parse(timeNo1Formatted, ZONE_ID_UTC);
+        } catch (Exception e) {
+            exception = e;
+        }
+        assertNull("Expected exception to be thrown", time);
+        assertNotNull("Expected exception to be thrown", exception);
     }
 
     @Test
     public void testParsing_StringToInstant_WithFormat() throws Exception {
+        assertEquals("Parsed Instant does not match",
+                timeNo1Instant,
+                InstantSerializer.getInstance().parse(timeNo1Formatted, FORMAT_INSTANT));
 
+        assertEquals("Parsed Instant does not match",
+                timeNo2Instant,
+                InstantSerializer.getInstance().parse(timeNo2Formatted, FORMAT_INSTANT));
+
+        assertNull("Parsed Instant should be null",
+                InstantSerializer.getInstance().parse(null, FORMAT_INSTANT));
+
+        assertNull("Parsed Instant should be null",
+                InstantSerializer.getInstance().parse("", FORMAT_INSTANT));
     }
 
     @Test
@@ -87,17 +116,44 @@ public class InstantSerializerTest extends DateTimeTestHelper {
 
     @Test
     public void testFormatting_InstantToString_WithZoneIdAndFormat() throws Exception {
+        assertEquals("Formatted Instant does not match",
+                timeNo1Formatted,
+                InstantSerializer.getInstance().format(timeNo1Instant));
 
+        assertEquals("Formatted Instant does not match",
+                timeNo2Formatted,
+                InstantSerializer.getInstance().format(timeNo2Instant));
+
+        assertNull("Formatted Instant should be null",
+                InstantSerializer.getInstance().format(null));
     }
 
     @Test
     public void testFormatting_InstantToString_WithZone() throws Exception {
+        assertEquals("Formatted Instant does not match",
+                timeNo1Formatted,
+                InstantSerializer.getInstance().format(timeNo1Instant, ZONE_ID_UTC));
 
+        assertEquals("Formatted Instant does not match",
+                timeNo2Formatted,
+                InstantSerializer.getInstance().format(timeNo2Instant, ZONE_ID_UTC));
+
+        assertNull("Formatted Instant should be null",
+                InstantSerializer.getInstance().format(null, ZONE_ID_UTC));
     }
 
     @Test
     public void testFormatting_InstantToString_WithFormat() throws Exception {
+        assertEquals("Formatted Instant does not match",
+                timeNo1Formatted,
+                InstantSerializer.getInstance().format(timeNo1Instant, FORMAT_INSTANT));
 
+        assertEquals("Formatted Instant does not match",
+                timeNo2Formatted,
+                InstantSerializer.getInstance().format(timeNo2Instant, FORMAT_INSTANT));
+
+        assertNull("Formatted Instant should be null",
+                InstantSerializer.getInstance().format(null, FORMAT_INSTANT));
     }
 
     @Test
