@@ -6,6 +6,7 @@ import org.threeten.bp.LocalDate;
 import org.threeten.bp.ZoneId;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 
 /**
@@ -32,14 +33,6 @@ public class LocalDateSerializerTest extends DateTimeTestHelper {
     }
 
     @Test
-    public void testParsing_StringToLocalDate() throws Exception {
-        assertEquals(dateNo1LocalDate, LocalDateSerializer.getInstance().parse(dateNo1Formatted));
-        assertEquals(dateNo2LocalDate, LocalDateSerializer.getInstance().parse(dateNo2Formatted));
-        assertNull(LocalDateSerializer.getInstance().parse(null));
-        assertNull(LocalDateSerializer.getInstance().parse(""));
-    }
-
-    @Test
     public void testZoneId_DefaultsMatch() throws Exception {
         ZoneId zoneId = null;
         Exception exception = null;
@@ -53,11 +46,108 @@ public class LocalDateSerializerTest extends DateTimeTestHelper {
     }
 
     @Test
-    public void testFormatting_LocalDateToString() throws Exception {
-        assertEquals(dateNo1Formatted, LocalDateSerializer.getInstance().format(dateNo1LocalDate));
-        assertEquals(dateNo2Formatted, LocalDateSerializer.getInstance().format(dateNo2LocalDate));
-        assertNull(LocalDateSerializer.getInstance().format(null));
+    public void testParsing_StringToLocalDate_WithZoneIdAndFormat() throws Exception {
+        LocalDate date = null;
+        Exception exception = null;
+        try {
+            date = LocalDateSerializer.getInstance().parse(dateNo1Formatted, ZONE_ID_UTC, FORMAT_LOCAL_DATE);
+        } catch (Exception e) {
+            exception = e;
+        }
+        assertNull("Expected exception to be thrown", date);
+        assertNotNull("Expected exception to be thrown", exception);
     }
 
-    // TODO: add error cases for parsing
+    @Test
+    public void testParsing_StringToLocalDate_WithZoneId() throws Exception {
+        LocalDate date = null;
+        Exception exception = null;
+        try {
+            date = LocalDateSerializer.getInstance().parse(dateNo1Formatted, ZONE_ID_UTC);
+        } catch (Exception e) {
+            exception = e;
+        }
+        assertNull("Expected exception to be thrown", date);
+        assertNotNull("Expected exception to be thrown", exception);
+    }
+
+    @Test
+    public void testParsing_StringToLocalDate_WithFormat() throws Exception {
+        assertEquals("Parsed LocalDate does not match", dateNo1LocalDate,
+                LocalDateSerializer.getInstance().parse(dateNo1Formatted, FORMAT_LOCAL_DATE));
+
+        assertEquals("Parsed LocalDate does not match", dateNo2LocalDate,
+                LocalDateSerializer.getInstance().parse(dateNo2Formatted, FORMAT_LOCAL_DATE));
+
+        assertNull("Parsed LocalDate should be null",
+                LocalDateSerializer.getInstance().parse(null, FORMAT_LOCAL_DATE));
+
+        assertNull("Parsed LocalDate should be null",
+                LocalDateSerializer.getInstance().parse("", FORMAT_LOCAL_DATE));
+    }
+
+    @Test
+    public void testParsing_StringToLocalDate_Default() throws Exception {
+        assertEquals("Parsed LocalDate does not match", dateNo1LocalDate,
+                LocalDateSerializer.getInstance().parse(dateNo1Formatted));
+
+        assertEquals("Parsed LocalDate does not match", dateNo2LocalDate,
+                LocalDateSerializer.getInstance().parse(dateNo2Formatted));
+
+        assertNull("Parsed LocalDate should be null",
+                LocalDateSerializer.getInstance().parse(null));
+
+        assertNull("Parsed LocalDate should be null",
+                LocalDateSerializer.getInstance().parse(""));
+    }
+
+    @Test
+    public void testFormatting_LocalDateToString_WithZoneIdAndFormat() throws Exception {
+        String formatted = null;
+        Exception exception = null;
+        try {
+            formatted = LocalDateSerializer.getInstance().format(dateNo1LocalDate, ZONE_ID_UTC, FORMAT_LOCAL_DATE);
+        } catch (Exception e) {
+            exception = e;
+        }
+        assertNull("Expected exception to be thrown", formatted);
+        assertNotNull("Expected exception to be thrown", exception);
+    }
+
+    @Test
+    public void testFormatting_LocalDateToString_WithZoneId() throws Exception {
+        String formatted = null;
+        Exception exception = null;
+        try {
+            formatted = LocalDateSerializer.getInstance().format(dateNo1LocalDate, ZONE_ID_UTC);
+        } catch (Exception e) {
+            exception = e;
+        }
+        assertNull("Expected exception to be thrown", formatted);
+        assertNotNull("Expected exception to be thrown", exception);
+    }
+
+    @Test
+    public void testFormatting_LocalDateToString_WithFormat() throws Exception {
+        assertEquals("Formatted LocalDate does not match", dateNo1Formatted,
+                LocalDateSerializer.getInstance().format(dateNo1LocalDate, FORMAT_LOCAL_DATE));
+
+        assertEquals("Formatted LocalDate does not match", dateNo2Formatted,
+                LocalDateSerializer.getInstance().format(dateNo2LocalDate, FORMAT_LOCAL_DATE));
+
+        assertNull("Formatted LocalDate should be null",
+                LocalDateSerializer.getInstance().format(null, FORMAT_LOCAL_DATE));
+    }
+
+    @Test
+    public void testFormatting_LocalDateToString_Default() throws Exception {
+        assertEquals("Formatted LocalDate does not match", dateNo1Formatted,
+                LocalDateSerializer.getInstance().format(dateNo1LocalDate));
+
+        assertEquals("Formatted LocalDate does not match", dateNo2Formatted,
+                LocalDateSerializer.getInstance().format(dateNo2LocalDate));
+
+        assertNull("Formatted LocalDate should be null",
+                LocalDateSerializer.getInstance().format(null));
+    }
 }
