@@ -32,7 +32,7 @@ public class LocalDateSerializer extends DateTimeSerializer<LocalDate> {
 
     @Override
     public ZoneId defaultZoneId() {
-        throw new IllegalArgumentException("LocalDateSerializer should be time zone agnostic.");
+        throw new IllegalStateException("LocalDateSerializer should be time zone agnostic");
     }
 
     @Override
@@ -42,7 +42,7 @@ public class LocalDateSerializer extends DateTimeSerializer<LocalDate> {
 
     @Override
     public LocalDate parse(String date, ZoneId zoneId, DateTimeFormatter formatter) {
-        throw new IllegalArgumentException("LocalDateSerializer should be time zone agnostic.");
+        throw new IllegalStateException("LocalDateSerializer should be time zone agnostic");
     }
 
     @Override
@@ -56,7 +56,7 @@ public class LocalDateSerializer extends DateTimeSerializer<LocalDate> {
             return null;
         }
         if (formatter == null) {
-            throw new IllegalArgumentException("DateTimeFormatter object cannot be null.");
+            throw new IllegalArgumentException("DateTimeFormatter object cannot be null");
         }
         return LocalDate.parse(date, formatter);
     }
@@ -68,7 +68,7 @@ public class LocalDateSerializer extends DateTimeSerializer<LocalDate> {
 
     @Override
     public String format(LocalDate localDate, ZoneId zoneId, DateTimeFormatter formatter) {
-        throw new IllegalArgumentException("LocalDateSerializer should be time zone agnostic.");
+        throw new IllegalStateException("LocalDateSerializer should be time zone agnostic");
     }
 
     @Override
@@ -82,7 +82,7 @@ public class LocalDateSerializer extends DateTimeSerializer<LocalDate> {
             return null;
         }
         if (formatter == null) {
-            throw new IllegalArgumentException("DateTimeFormatter object cannot be null.");
+            throw new IllegalArgumentException("DateTimeFormatter object cannot be null");
         }
         return date.format(formatter);
     }

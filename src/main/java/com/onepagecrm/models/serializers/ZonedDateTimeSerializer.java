@@ -32,7 +32,7 @@ public class ZonedDateTimeSerializer extends DateTimeSerializer<ZonedDateTime> {
 
     @Override
     public ZoneId defaultZoneId() {
-        throw new IllegalArgumentException("ZonedDateTime should already have time zone data.");
+        throw new IllegalStateException("ZonedDateTime should already have time zone data");
     }
 
     @Override
@@ -46,7 +46,7 @@ public class ZonedDateTimeSerializer extends DateTimeSerializer<ZonedDateTime> {
             return null;
         }
         if (zoneId == null) {
-            throw new IllegalArgumentException("ZonedDateTime needs ZoneId info.");
+            throw new IllegalArgumentException("ZonedDateTime needs ZoneId info");
         }
         return ZonedDateTime.parse(zonedDateTime, formatter);
     }
@@ -58,7 +58,7 @@ public class ZonedDateTimeSerializer extends DateTimeSerializer<ZonedDateTime> {
 
     @Override
     public ZonedDateTime parse(String zonedDateTime, DateTimeFormatter formatter) {
-        throw new IllegalArgumentException("ZonedDateTime should only be used for formatting/displaying.");
+        throw new IllegalStateException("ZonedDateTime should only be used for formatting/displaying");
     }
 
     @Override
@@ -68,7 +68,7 @@ public class ZonedDateTimeSerializer extends DateTimeSerializer<ZonedDateTime> {
 
     @Override
     public String format(ZonedDateTime zonedDateTime, ZoneId zoneId, DateTimeFormatter formatter) {
-        throw new IllegalArgumentException("ZonedDateTime should already have time zone data.");
+        throw new IllegalStateException("ZonedDateTime should already have time zone data");
     }
 
     @Override
@@ -82,7 +82,7 @@ public class ZonedDateTimeSerializer extends DateTimeSerializer<ZonedDateTime> {
             return null;
         }
         if (formatter == null) {
-            throw new IllegalArgumentException("DateTimeFormatter cannot be null.");
+            throw new IllegalArgumentException("DateTimeFormatter cannot be null");
         }
         return zonedDateTime.format(formatter);
     }

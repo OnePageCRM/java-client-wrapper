@@ -43,8 +43,13 @@ public class InstantSerializer extends DateTimeSerializer<Instant> {
     }
 
     @Override
-    public Instant parse(String instant) {
-        return parse(instant, defaultFormatter());
+    public Instant parse(String instant, ZoneId zoneId, DateTimeFormatter formatter) {
+        throw new IllegalStateException("Instant should already have time zone data");
+    }
+
+    @Override
+    public Instant parse(String instant, ZoneId zoneId) {
+        return parse(instant, zoneId, defaultFormatter());
     }
 
     @Override
@@ -53,19 +58,14 @@ public class InstantSerializer extends DateTimeSerializer<Instant> {
             return null;
         }
         if (formatter == null) {
-            throw new IllegalArgumentException("DateTimeFormatter object cannot be null.");
+            throw new IllegalArgumentException("DateTimeFormatter object cannot be null");
         }
         return ZonedDateTime.parse(instant, formatter.withZone(defaultZoneId())).toInstant();
     }
 
     @Override
-    public Instant parse(String instant, ZoneId zoneId, DateTimeFormatter formatter) {
-        throw new IllegalArgumentException("Instant should already have time zone data.");
-    }
-
-    @Override
-    public String format(Instant instant, DateTimeFormatter formatter) {
-        return format(instant, defaultZoneId(), formatter);
+    public Instant parse(String instant) {
+        return parse(instant, defaultFormatter());
     }
 
     @Override
@@ -74,9 +74,24 @@ public class InstantSerializer extends DateTimeSerializer<Instant> {
             return null;
         }
         if (formatter == null) {
-            throw new IllegalArgumentException("DateTimeFormatter object cannot be null.");
+            throw new IllegalArgumentException("DateTimeFormatter object cannot be null");
         }
         return instant.atZone(zoneId).format(formatter);
+    }
+
+    @Override
+    public String format(Instant instant, ZoneId zoneId) {
+        return format(instant, zoneId, defaultFormatter());
+    }
+
+    @Override
+    public String format(Instant instant, DateTimeFormatter formatter) {
+        return format(instant, defaultZoneId(), formatter);
+    }
+
+    @Override
+    public String format(Instant instant) {
+        return format(instant, defaultZoneId(), defaultFormatter());
     }
 
     public Instant ofSeconds(Long seconds) {
