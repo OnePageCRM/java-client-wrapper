@@ -1,11 +1,11 @@
 package com.onepagecrm.models;
 
 import com.onepagecrm.exceptions.OnePageException;
+import com.onepagecrm.models.helpers.ActionHelper;
 import com.onepagecrm.models.internal.Paginator;
 import com.onepagecrm.models.internal.PredefinedAction;
 import com.onepagecrm.models.internal.PredefinedActionList;
 import com.onepagecrm.models.serializers.ActionSerializer;
-import com.onepagecrm.models.serializers.DateSerializer;
 import com.onepagecrm.models.serializers.PredefinedActionSerializer;
 import com.onepagecrm.net.ApiResource;
 import com.onepagecrm.net.Response;
@@ -20,10 +20,8 @@ import org.threeten.bp.ZoneId;
 import org.threeten.bp.ZonedDateTime;
 
 import java.io.Serializable;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.Map;
-import java.util.TimeZone;
 
 /**
  * @author Cillian Myles (cillian@onepagecrm.com) on 29/06/2017.
@@ -214,28 +212,6 @@ public class Action extends ApiResource implements Serializable {
         return new PredefinedActionList(PredefinedActionSerializer.fromString(response.getResponseBody()));
     }
 
-    /**
-     * Caution - TimeZone is UTC and will not function as expected if using something different.
-     *
-     * @param predefined - PredefinedAction to be promoted.
-     * @return The current action which has taken on the text and date of the PredefinedAction.
-     */
-    public Action promote(PredefinedAction predefined) {
-        this.setText(predefined.getText());
-        // Add the extra days to the date of the action.
-        Calendar calendar = Calendar.getInstance(TimeZone.getTimeZone("UTC"));
-        calendar.setTime(this.date == null ? new Date() : this.date);
-        calendar.add(Calendar.DATE, predefined.getDays());
-        this.setDate(calendar.getTime());
-        // Add the extra days to the exact time for Date & Time.
-        calendar.set(Calendar.HOUR_OF_DAY, 9);
-        calendar.set(Calendar.MINUTE, 0);
-        calendar.set(Calendar.SECOND, 0);
-        calendar.set(Calendar.MILLISECOND, 0);
-        this.setExactTime(calendar.getTime());
-        return this;
-    }
-
     private String addActionIdToEndpoint(String endpoint) {
         return endpoint + "/" + this.id;
     }
@@ -244,17 +220,8 @@ public class Action extends ApiResource implements Serializable {
      * Utility methods
      */
 
-    public String getFriendlyDateString() {
-        if (this.date != null) {
-            // Return date in format yyyy-MM-dd (uppercase).
-            return DateSerializer.toFriendlyDateString(this.date).toUpperCase();
-        } else if (this.status != null) {
-            // Return status (uppercase).
-            return this.status.toString().toUpperCase();
-        } else {
-            // This is needed to correctly display contacts w/out NA's in Action Stream.
-            return null;
-        }
+    public Action promote(ZoneId zoneId, PredefinedAction predefined) {
+        return ActionHelper.promote(zoneId, predefined);
     }
 
     public boolean isQueued() {
@@ -264,6 +231,22 @@ public class Action extends ApiResource implements Serializable {
     public boolean isNext() {
         return this.status != null && (this.status == Status.ASAP || this.status == Status.DATE ||
                 this.status == Status.DATE_TIME || this.status == Status.WAITING);
+    }
+
+    public int getFlagColor() {
+        return ActionHelper.getFlagColor(this);
+    }
+
+    public String getFriendlyDateString() {
+        return ActionHelper.getFriendlyDate(this);
+    }
+
+    public String getFriendlyActionText(ZoneId zoneId, boolean is24hr) {
+        return ActionHelper.getFriendlyActionText(zoneId, is24hr, this);
+    }
+
+    public String getFriendlyTimeAndDate(ZoneId zoneId, boolean is24hr) {
+        return ActionHelper.getFriendlyTimeAndDate(zoneId, is24hr, this);
     }
 
     /**

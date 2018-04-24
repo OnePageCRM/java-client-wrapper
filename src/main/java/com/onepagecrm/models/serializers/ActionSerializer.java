@@ -2,6 +2,7 @@ package com.onepagecrm.models.serializers;
 
 import com.onepagecrm.exceptions.OnePageException;
 import com.onepagecrm.models.Action;
+import com.onepagecrm.models.helpers.ActionHelper;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -56,8 +57,6 @@ public class ActionSerializer extends BaseSerializer {
 
     public static Action fromJsonObject(JSONObject actionObject) {
         Action action = new Action();
-        String status = null;
-        Date exactTime = null;
         try {
             // Fix for some objects not having name.
             if (actionObject.has(ACTION_TAG)) {
@@ -87,29 +86,28 @@ public class ActionSerializer extends BaseSerializer {
                 action.setModifiedAt(modifiedAt);
             }
             if (actionObject.has(STATUS_TAG)) {
-                status = actionObject.getString(STATUS_TAG);
-                action.setStatus(Action.Status.fromString(status));
+                String status = actionObject.getString(STATUS_TAG);
+                action.setStatus( Action.Status.fromString(status));
             }
             if (actionObject.has(DATE_TAG)) {
                 if (!actionObject.isNull(DATE_TAG)) {
-                    final String dateStr = actionObject.getString(DATE_TAG);
-                    exactTime = DateSerializer.fromFormattedString(dateStr);
-                    action.setDate(exactTime);
-                    // TEST !!
-                    final LocalDate j8Date = LocalDate.parse(dateStr);
-                    action.setJ8Date(j8Date);
+                    String dateStr = actionObject.getString(DATE_TAG);
+                    Date date = DateSerializer.fromFormattedString(dateStr);
+                    action.setDate(date);
                 }
+                // NEW !!
+                LocalDate localDate = LocalDateSerializer.getInstance().parse(actionObject.optString(DATE_TAG));
+                action.setJ8Date(localDate);
             }
             if (actionObject.has(EXACT_TIME_TAG)) {
                 if (!actionObject.isNull(EXACT_TIME_TAG)) {
-                    final int exactTimeSecs = actionObject.getInt(EXACT_TIME_TAG);
-                    final String exactTimeStr = String.valueOf(actionObject.getInt(EXACT_TIME_TAG));
-                    exactTime = DateSerializer.fromTimestamp(exactTimeStr);
+                    String exactTimeStr = String.valueOf(actionObject.getInt(EXACT_TIME_TAG));
+                    Date exactTime = DateSerializer.fromTimestamp(exactTimeStr);
                     action.setExactTime(exactTime);
-                    // TEST !!
-                    final Instant exactTimeInstant = Instant.ofEpochSecond(exactTimeSecs);
-                    action.setJ8ExactTime(exactTimeInstant);
                 }
+                // NEW !!
+                Instant exactTime = InstantSerializer.getInstance().ofSeconds(actionObject.optLong(EXACT_TIME_TAG));
+                action.setJ8ExactTime(exactTime);
             }
             if (actionObject.has(POSITION_TAG)) {
                 if (!actionObject.isNull(POSITION_TAG)) {
@@ -117,7 +115,9 @@ public class ActionSerializer extends BaseSerializer {
                     action.setPosition(position);
                 }
             }
-            action.setDateColor(DateSerializer.getDateColour(exactTime, status));
+
+            final int dateColor = ActionHelper.getFlagColor(action);
+            action.setDateColor(dateColor);
 
             return action;
 
@@ -164,19 +164,19 @@ public class ActionSerializer extends BaseSerializer {
                     case DATE:
                     case QUEUED_WITH_DATE:
                         addJsonStringValue(
-                                DateSerializer.toFormattedDateString(action.getDate()),
+                                LocalDateSerializer.getInstance().format(action.getJ8Date()),
                                 actionObject,
                                 DATE_TAG
                         );
                         break;
                     case DATE_TIME:
                         addJsonStringValue(
-                                DateSerializer.toFormattedDateString(action.getDate()),
+                                LocalDateSerializer.getInstance().format(action.getJ8Date()),
                                 actionObject,
                                 DATE_TAG
                         );
                         addJsonLongValue(
-                                DateSerializer.toTimestamp(action.getExactTime()),
+                                InstantSerializer.getInstance().seconds(action.getJ8ExactTime()),
                                 actionObject,
                                 EXACT_TIME_TAG
                         );

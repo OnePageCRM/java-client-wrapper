@@ -14,11 +14,11 @@ import org.threeten.bp.ZonedDateTime;
 
 import java.util.logging.Logger;
 
-
 /**
  * Created by Cillian Myles on 19/04/2018.
  * Copyright (c) 2018 OnePageCRM. All rights reserved.
  */
+@SuppressWarnings({"unused", "WeakerAccess"})
 public class ActionHelper {
 
     private static final Logger LOG = Logger.getLogger(ActionHelper.class.getSimpleName());
@@ -61,6 +61,7 @@ public class ActionHelper {
         return ZonedDateTime.of(defaultLocalDateTime(), zoneId);
     }
 
+    // TODO: validate zoneid and zdt!?
     public static Action promote(ZoneId zoneId, PredefinedAction predefined) {
         final String actionText = predefined != null ? predefined.getText() : null;
         final int daysToBeAdded = predefined != null ? predefined.getDays() : 0;
@@ -97,7 +98,7 @@ public class ActionHelper {
 
     public static String getFriendlyActionText(ZoneId zoneId, boolean is24hr, Action action) {
         final String actionText = action != null && action.getText() != null ? action.getText() : "";
-        if (action == null || action.getExactTime() == null) {
+        if (action == null || action.getJ8ExactTime() == null) {
             return actionText;
         }
         return formatTimeAndActionText(zoneId, is24hr, action);
@@ -105,7 +106,7 @@ public class ActionHelper {
 
     public static String getFriendlyTimeAndDate(ZoneId zoneId, boolean is24hr, Action action) {
         final String actionText = action != null && action.getText() != null ? action.getText() : "";
-        if (action == null || action.getExactTime() == null) {
+        if (action == null || action.getJ8ExactTime() == null) {
             return actionText;
         }
         return formatTimeAndDate(zoneId, is24hr, action);
@@ -132,7 +133,7 @@ public class ActionHelper {
 
     public static String formatTimeAndActionText(ZoneId zoneId, boolean is24hr, Action action) {
         final String actionText = action != null && action.getText() != null ? action.getText() : "";
-        final ZonedDateTime exactTime = action != null && action.getJ8ExactTime(zoneId) != null
+        final ZonedDateTime exactTime = action != null && action.getJ8ExactTime() != null
                 ? action.getJ8ExactTime(zoneId)
                 : defaultZonedDateTime(zoneId);
         return String.format("%s %s",
@@ -216,7 +217,7 @@ public class ActionHelper {
         return COLOR_DEFAULT;
     }
 
-    private static int getFlagColor(LocalDate date, String status) { // TODO: remove
+    private static int getFlagColor(LocalDate date, String status) {
         if (date != null) {
             return getColorByDate(date);
         } else if (status != null) {
@@ -258,7 +259,7 @@ public class ActionHelper {
         return COLOR_DEFAULT;
     }
 
-    private static int getColorByStatus(String status) { // TODO: remove
+    private static int getColorByStatus(String status) {
         if (TextHelper.isEmpty(status)) {
             return COLOR_DEFAULT;
         }
