@@ -237,7 +237,7 @@ public class Action extends ApiResource implements Serializable {
         return ActionHelper.getFlagColor(this);
     }
 
-    public String getFriendlyDateString() {
+    public String getFriendlyDate() {
         return ActionHelper.getFriendlyDate(this);
     }
 
