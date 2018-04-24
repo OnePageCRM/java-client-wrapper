@@ -12,6 +12,7 @@ import org.threeten.bp.LocalDateTime;
 import org.threeten.bp.ZoneId;
 import org.threeten.bp.ZonedDateTime;
 
+import java.util.Locale;
 import java.util.logging.Logger;
 
 /**
@@ -80,14 +81,24 @@ public class ActionHelper {
      */
 
     public static String getFriendlyDate(Action action) { // Action#getFriendlyDateString
+        return getFriendlyDate(action, DateHelper.today());
+    }
+
+    // TODO: hide visibility!?
+    public static String getFriendlyDate(Action action, LocalDate today) { // Action#getFriendlyDateString
         if (action == null) {
             return null;
         }
 
         if (action.getJ8Date() != null) {
-            // Return date in format "MMM dd" (uppercase).
-            return LocalDateSerializer.getInstance().format(
-                    action.getJ8Date(), DateTimeSerializer.FORMATTER_FRIENDLY_DATE);
+            if (action.getJ8Date().isEqual(today)) {
+                return STATUS_TODAY;
+            } else {
+                // Return date in format "MMM dd" (uppercase).
+                return LocalDateSerializer.getInstance()
+                        .format(action.getJ8Date(), DateTimeSerializer.FORMATTER_FRIENDLY_DATE)
+                        .toUpperCase(Locale.ENGLISH);
+            }
         } else if (action.getStatus() != null) {
             // Return status (uppercase).
             return action.getStatus().toString().toUpperCase();
