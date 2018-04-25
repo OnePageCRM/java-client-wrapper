@@ -24,8 +24,8 @@ public class ActionHelperTest {
     // For this test TODAY is APR 22, 2018 (2018-04-22).
     private static final LocalDate TODAY = LocalDate.of(2018, 4, 22);
     private static final Instant NOW = Instant.parse("2018-04-22T09:00:00Z");
-    private static final ZoneId ZONE_ID_UTC = DateTimeTestHelper.ZONE_ID_UTC;
-    private static final Clock CLOCK = Clock.fixed(NOW, ZONE_ID_UTC);
+    private static final ZoneId UTC = DateTimeTestHelper.ZONE_ID_UTC;
+    private static final Clock FIXED_CLOCK = Clock.fixed(NOW, UTC);
 
     // ASAP
     private Action mAsapAction;
@@ -57,8 +57,8 @@ public class ActionHelperTest {
 
     @Before
     public void setUp() throws Exception {
-        // Use hardcoded CLOCK instead of real system clock.
-        SystemClock.inject(CLOCK);
+        // Use hardcoded Clock instead of real system clock.
+        SystemClock.inject(FIXED_CLOCK);
 
         mAsapFormatted = "ASAP";
         mAsapColor = OPCRMColors.FLAG_RED;
