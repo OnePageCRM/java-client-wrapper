@@ -3,6 +3,7 @@ package com.onepagecrm.models.helpers;
 import com.onepagecrm.models.Action;
 import com.onepagecrm.models.internal.OPCRMColors;
 import com.onepagecrm.models.internal.PredefinedAction;
+import com.onepagecrm.models.internal.SystemClock;
 import com.onepagecrm.models.serializers.DateTimeSerializer;
 import com.onepagecrm.models.serializers.LocalDateSerializer;
 import com.onepagecrm.models.serializers.ZonedDateTimeSerializer;
@@ -44,7 +45,7 @@ public class ActionHelper {
      */
     public static LocalDateTime defaultLocalDateTime() {
         // Default is TODAY at 9am.
-        return LocalDateTime.now()
+        return LocalDateTime.now(SystemClock.getInstance())
                 .withHour(9)
                 .withMinute(0)
                 .withSecond(0)
@@ -81,24 +82,18 @@ public class ActionHelper {
      */
 
     public static String getFriendlyDate(Action action) { // Action#getFriendlyDateString
-        return getFriendlyDate(action, DateHelper.today());
-    }
-
-    // TODO: hide visibility!?
-    public static String getFriendlyDate(Action action, LocalDate today) { // Action#getFriendlyDateString
         if (action == null) {
             return null;
         }
 
         if (action.getJ8Date() != null) {
-            if (action.getJ8Date().isEqual(today)) {
-                return STATUS_TODAY;
-            } else {
-                // Return date in format "MMM dd" (uppercase).
-                return LocalDateSerializer.getInstance()
-                        .format(action.getJ8Date(), DateTimeSerializer.FORMATTER_FRIENDLY_DATE)
-                        .toUpperCase(Locale.ENGLISH);
-            }
+            // Return date in format "MMM dd" (uppercase).
+            return DateHelper.isToday(action.getJ8Date())
+                    ? STATUS_TODAY
+                    : LocalDateSerializer.getInstance()
+                    .format(action.getJ8Date(), DateTimeSerializer.FORMATTER_FRIENDLY_DATE)
+                    .toUpperCase(Locale.ENGLISH);
+
         } else if (action.getStatus() != null) {
             // Return status (uppercase).
             return action.getStatus().toString().toUpperCase();
