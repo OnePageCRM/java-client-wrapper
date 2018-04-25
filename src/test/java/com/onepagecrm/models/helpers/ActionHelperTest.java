@@ -93,45 +93,45 @@ public class ActionHelperTest {
     public void testFormatting_FriendlyDateText() throws Exception {
         assertEquals("Formatted friendly Action date does not match",
                 mAsapFormatted,
-                ActionHelper.getFriendlyDate(mAsapAction/*, TODAY*/));
+                ActionHelper.getFriendlyDate(mAsapAction));
 
         assertEquals("Formatted friendly Action date does not match",
                 mYesterdayFormatted,
-                ActionHelper.getFriendlyDate(mYesterdayAction/*, TODAY*/));
+                ActionHelper.getFriendlyDate(mYesterdayAction));
 
         assertEquals("Formatted friendly Action date does not match",
                 mTodayFormatted,
-                ActionHelper.getFriendlyDate(mTodayAction/*, TODAY*/));
+                ActionHelper.getFriendlyDate(mTodayAction));
 
         assertEquals("Formatted friendly Action date does not match",
                 mTomorrowFormatted,
-                ActionHelper.getFriendlyDate(mTomorrowAction/*, TODAY*/));
+                ActionHelper.getFriendlyDate(mTomorrowAction));
 
         assertEquals("Formatted friendly Action date does not match",
                 mWaitingFormatted,
-                ActionHelper.getFriendlyDate(mWaitingAction/*, TODAY*/));
+                ActionHelper.getFriendlyDate(mWaitingAction));
     }
 
     @Test
     public void testFormatting_FlagColor() throws Exception {
         assertEquals("Formatted Action flag color does not match",
                 mAsapColor,
-                ActionHelper.getFlagColor(mAsapAction/*, TODAY*/));
+                ActionHelper.getFlagColor(mAsapAction));
 
         assertEquals("Formatted Action flag color does not match",
                 mYesterdayColor,
-                ActionHelper.getFlagColor(mYesterdayAction/*, TODAY*/));
+                ActionHelper.getFlagColor(mYesterdayAction));
 
         assertEquals("Formatted Action flag color does not match",
                 mTodayColor,
-                ActionHelper.getFlagColor(mTodayAction/*, TODAY*/));
+                ActionHelper.getFlagColor(mTodayAction));
 
         assertEquals("Formatted Action flag color does not match",
                 mTomorrowColor,
-                ActionHelper.getFlagColor(mTomorrowAction/*, TODAY*/));
+                ActionHelper.getFlagColor(mTomorrowAction));
 
         assertEquals("Formatted Action flag color does not match",
                 mWaitingColor,
-                ActionHelper.getFlagColor(mWaitingAction/*, TODAY*/));
+                ActionHelper.getFlagColor(mWaitingAction));
     }
 }
