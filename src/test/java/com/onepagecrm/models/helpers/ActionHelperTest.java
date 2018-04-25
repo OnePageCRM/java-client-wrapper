@@ -5,7 +5,9 @@ import com.onepagecrm.models.internal.OPCRMColors;
 import com.onepagecrm.models.internal.SystemClock;
 import com.onepagecrm.models.serializers.time.DateTimeTestHelper;
 import org.junit.After;
+import org.junit.AfterClass;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.threeten.bp.Clock;
 import org.threeten.bp.Instant;
@@ -22,7 +24,7 @@ import static org.junit.Assert.assertEquals;
 public class ActionHelperTest {
 
     // For this test TODAY is APR 22, 2018 (2018-04-22).
-    private static final LocalDate TODAY = LocalDate.of(2018, 4, 22);
+    private static final LocalDate TODAY = LocalDate.parse("2018-04-22");
     private static final Instant NOW = Instant.parse("2018-04-22T09:00:00Z");
     private static final ZoneId UTC = DateTimeTestHelper.ZONE_ID_UTC;
     private static final Clock FIXED_CLOCK = Clock.fixed(NOW, UTC);
@@ -55,11 +57,14 @@ public class ActionHelperTest {
     private String mWaitingFormatted;
     private int mWaitingColor;
 
-    @Before
-    public void setUp() throws Exception {
+    @BeforeClass
+    public static void init() throws Exception {
         // Use hardcoded Clock instead of real system clock.
         SystemClock.inject(FIXED_CLOCK);
+    }
 
+    @Before
+    public void setUp() throws Exception {
         mAsapFormatted = "ASAP";
         mAsapColor = OPCRMColors.FLAG_RED;
         mAsapAction = new Action().setStatus(Action.Status.ASAP);
@@ -86,6 +91,11 @@ public class ActionHelperTest {
 
     @After
     public void tearDown() throws Exception {
+
+    }
+
+    @AfterClass
+    public static void destroy() throws Exception {
         SystemClock.restoreToDefault();
     }
 
