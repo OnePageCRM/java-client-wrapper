@@ -39,11 +39,20 @@ public class ActionHelper {
     public static final int COLOR_DEFAULT = COLOR_FUTURE_WAITING;
 
     /**
+     * Default date is TODAY.
+     *
+     * @return LocalDate object for TODAY.
+     */
+    public static LocalDate defaultDate() {
+        return defaultDateTime().toLocalDate();
+    }
+
+    /**
      * Default date/time is TODAY at 9am.
      *
      * @return LocalDateTime object for TODAY at 9am.
      */
-    public static LocalDateTime defaultLocalDateTime() {
+    public static LocalDateTime defaultDateTime() {
         // Default is TODAY at 9am.
         return LocalDateTime.now(SystemClock.getInstance())
                 .withHour(9)
@@ -58,9 +67,9 @@ public class ActionHelper {
      * @param zoneId - of the device / OnePage settings.
      * @return ZonedDateTime object for TODAY at 9am.
      */
-    public static ZonedDateTime defaultZonedDateTime(ZoneId zoneId) {
+    public static ZonedDateTime defaultDateTime(ZoneId zoneId) {
         // Default is TODAY at 9am.
-        return ZonedDateTime.of(defaultLocalDateTime(), zoneId);
+        return ZonedDateTime.of(defaultDateTime(), zoneId);
     }
 
     // TODO: validate zoneid and zdt!?
@@ -69,7 +78,7 @@ public class ActionHelper {
         final int daysToBeAdded = predefined != null ? predefined.getDays() : 0;
         // Default date is TODAY at 9am.
         LocalDate today = DateHelper.today();
-        ZonedDateTime todayZdt = defaultZonedDateTime(zoneId);
+        ZonedDateTime todayZdt = defaultDateTime(zoneId);
         // Apply the updated date/time to action.
         return new Action()
                 .setText(actionText)
@@ -133,7 +142,7 @@ public class ActionHelper {
     public static String formatTimeAndDate(ZoneId zoneId, boolean is24hr, Action action) {
         final ZonedDateTime exactTime = action != null && action.getJ8ExactTime(zoneId) != null
                 ? action.getJ8ExactTime(zoneId)
-                : defaultZonedDateTime(zoneId);
+                : defaultDateTime(zoneId);
         return ZonedDateTimeSerializer.getInstance().format(exactTime, DateHelper.timeDateYearFormat(is24hr));
     }
 
@@ -141,7 +150,7 @@ public class ActionHelper {
         final String actionText = action != null && action.getText() != null ? action.getText() : "";
         final ZonedDateTime exactTime = action != null && action.getJ8ExactTime() != null
                 ? action.getJ8ExactTime(zoneId)
-                : defaultZonedDateTime(zoneId);
+                : defaultDateTime(zoneId);
         return String.format("%s %s",
                 ZonedDateTimeSerializer.getInstance().format(exactTime, DateHelper.timeFormat(is24hr)),
                 actionText);

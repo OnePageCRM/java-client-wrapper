@@ -9,23 +9,16 @@ import org.threeten.bp.format.DateTimeFormatter;
  * Created by Cillian Myles on 19/04/2018.
  * Copyright (c) 2018 OnePageCRM. All rights reserved.
  */
+@SuppressWarnings("WeakerAccess")
 public class DateHelper {
 
     public static LocalDate today() {
         return LocalDate.now(SystemClock.getInstance());
     }
 
-//    public static LocalDate today(ZoneId zoneId) {
-//        return LocalDate.now(zoneId);
-//    }
-
     public static boolean isToday(LocalDate date) {
         return date != null && date.isEqual(today());
     }
-
-//    public static boolean isToday(ZoneId zoneId, LocalDate date) {
-//        return date != null && date.isEqual(today(zoneId));
-//    }
 
     public static DateTimeFormatter timeFormat(boolean is24hr) { // DateSerializer#getDateTimeYearFormat
         return is24hr
