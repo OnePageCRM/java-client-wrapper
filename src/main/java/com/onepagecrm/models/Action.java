@@ -103,7 +103,7 @@ public class Action extends ApiResource implements Serializable {
     private Status status;
     private Date date;
     private Date exactTime;
-    private int dateColor;
+    private int dateColor; // TODO: rename to flagColor !?
     private Integer position;
 
     // ----------------------------------------
@@ -233,19 +233,19 @@ public class Action extends ApiResource implements Serializable {
                 this.status == Status.DATE_TIME || this.status == Status.WAITING);
     }
 
-    public int getFlagColor() {
+    public int getFlagColor() { // TODO: differentiate between this and #getDateColor - change get to "calculate" (imply not getter) ??
         return ActionHelper.getFlagColor(this);
     }
 
-    public String getFriendlyDate() {
+    public String getFriendlyDate() { // TODO: imply not getter
         return ActionHelper.getFriendlyDate(this);
     }
 
-    public String getFriendlyActionText(ZoneId zoneId, boolean is24hr) {
+    public String getFriendlyActionText(ZoneId zoneId, boolean is24hr) { // TODO: imply not getter
         return ActionHelper.getFriendlyActionText(zoneId, is24hr, this);
     }
 
-    public String getFriendlyTimeAndDate(ZoneId zoneId, boolean is24hr) {
+    public String getFriendlyTimeAndDate(ZoneId zoneId, boolean is24hr) { // TODO: imply not getter
         return ActionHelper.getFriendlyTimeAndDate(zoneId, is24hr, this);
     }
 
