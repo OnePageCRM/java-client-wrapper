@@ -2,6 +2,7 @@ package com.onepagecrm.net;
 
 import com.onepagecrm.OnePageCRM;
 import com.onepagecrm.exceptions.OnePageException;
+import com.onepagecrm.models.Contact;
 import com.onepagecrm.models.StartupData;
 import com.onepagecrm.models.internal.LoginData;
 import com.onepagecrm.models.serializers.LoginDataSerializer;
@@ -68,6 +69,19 @@ public interface API {
             Request request = new GoogleAuthRequest(oauth2Code, serverId);
             Response response = request.send();
             return LoginDataSerializer.fromString(response.getResponseBody());
+        }
+    }
+
+    abstract class GoogleContacts {
+
+        public static void authorise(String oauth2Code) throws OnePageException {
+            // TODO: change return type from void to ??
+            // TODO: implement ...
+        }
+
+        public static void save(Contact contact) throws OnePageException {
+            // TODO: change return type from void to Contact
+            // TODO: steam logic from Contact#saveToGoogle
         }
     }
 

@@ -113,7 +113,8 @@ public class Contact extends ApiResource implements Serializable {
         return contact;
     }
 
-    public Contact saveGoogle() throws OnePageException {
+    public Contact saveToGoogle() throws OnePageException {
+        // TODO: move this logic to API.GoogleContacts.save
         Request request = new PostRequest(
                 GOOGLE_CONTACTS_ENDPOINT.replace("{id}", this.id),
                 null);
