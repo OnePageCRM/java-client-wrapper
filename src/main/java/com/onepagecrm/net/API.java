@@ -74,14 +74,14 @@ public interface API {
 
     abstract class GoogleContacts {
 
-        public static void authorise(String oauth2Code) throws OnePageException {
+        public static void authorize(String oauth2Code) throws OnePageException {
             // TODO: change return type from void to ??
             // TODO: implement ...
         }
 
         public static void save(Contact contact) throws OnePageException {
             // TODO: change return type from void to Contact
-            // TODO: steam logic from Contact#saveToGoogle
+            // TODO: steal logic from Contact#saveToGoogle
         }
     }
 
