@@ -4,6 +4,7 @@ import com.onepagecrm.OnePageCRM;
 import com.onepagecrm.exceptions.OnePageException;
 import com.onepagecrm.models.Contact;
 import com.onepagecrm.models.StartupData;
+import com.onepagecrm.models.helpers.TextHelper;
 import com.onepagecrm.models.internal.LoginData;
 import com.onepagecrm.models.serializers.LoginDataSerializer;
 import com.onepagecrm.models.serializers.LoginSerializer;
@@ -81,7 +82,25 @@ public interface API {
 
         public static void save(Contact contact) throws OnePageException {
             // TODO: change return type from void to Contact
+            if (contact == null || !contact.isValid()) {
+                throw new OnePageException("Contact must be non-null and valid")
+                        .setErrorMessage("Contact must be non-null and valid");
+            }
+            if (TextHelper.isEmpty(contact.getGoogleId())) {
+                create(contact);
+            } else {
+                update(contact);
+            }
+        }
+
+        private static void create(Contact contact) throws OnePageException {
+            // TODO: change return type from void to Contact
             // TODO: steal logic from Contact#saveToGoogle
+        }
+
+        private static void update(Contact contact) throws OnePageException {
+            // TODO: change return type from void to Contact
+            // TODO: implement ...
         }
     }
 
