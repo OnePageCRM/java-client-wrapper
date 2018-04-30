@@ -134,7 +134,10 @@ public class Contact extends ApiResource implements Serializable {
     }
 
     public static ContactList byIds(String contactIds) throws OnePageException {
-        Request request = new GetRequest(addIdToEndpoint(MULTIPLE_CONTACTS_ENDPOINT, contactIds));
+        Request request = new GetRequest(
+                addIdToEndpoint(MULTIPLE_CONTACTS_ENDPOINT, contactIds),
+                "?" + EXTRA_FIELDS
+        );
         Response response = request.send();
         return ContactListSerializer.fromString(response.getResponseBody());
     }

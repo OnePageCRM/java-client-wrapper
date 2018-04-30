@@ -41,7 +41,7 @@ public class GoogleLoginDriver {
             }
         }
 
-        OnePageCRM.setServer(Request.AUTH_SERVER);
+        OnePageCRM.setServer(Request.AUTH_PROD_SERVER);
 
         final String oauth2Code = "";
         API.Google.authenticate(oauth2Code);
