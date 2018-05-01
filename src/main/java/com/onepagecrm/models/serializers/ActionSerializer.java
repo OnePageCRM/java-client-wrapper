@@ -6,8 +6,6 @@ import com.onepagecrm.models.helpers.ActionHelper;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.threeten.bp.Instant;
-import org.threeten.bp.LocalDate;
 
 import java.util.Date;
 import java.util.LinkedList;
@@ -90,24 +88,10 @@ public class ActionSerializer extends BaseSerializer {
                 action.setStatus(Action.Status.fromString(status));
             }
             if (actionObject.has(DATE_TAG)) {
-                if (!actionObject.isNull(DATE_TAG)) {
-                    String dateStr = actionObject.getString(DATE_TAG);
-                    Date date = DateSerializer.fromFormattedString(dateStr);
-                    action.setDate(date);
-                }
-                // NEW !!
-                LocalDate localDate = LocalDateSerializer.getInstance().parse(actionObject.optString(DATE_TAG));
-                action.setJ8Date(localDate);
+                action.setDate(LocalDateSerializer.getInstance().parse(actionObject.optString(DATE_TAG)));
             }
             if (actionObject.has(EXACT_TIME_TAG)) {
-                if (!actionObject.isNull(EXACT_TIME_TAG)) {
-                    String exactTimeStr = String.valueOf(actionObject.getInt(EXACT_TIME_TAG));
-                    Date exactTime = DateSerializer.fromTimestamp(exactTimeStr);
-                    action.setExactTime(exactTime);
-                }
-                // NEW !!
-                Instant exactTime = InstantSerializer.getInstance().ofSeconds(actionObject.optLong(EXACT_TIME_TAG));
-                action.setJ8ExactTime(exactTime);
+                action.setExactTime(InstantSerializer.getInstance().ofSeconds(actionObject.optLong(EXACT_TIME_TAG)));
             }
             if (actionObject.has(POSITION_TAG)) {
                 if (!actionObject.isNull(POSITION_TAG)) {
@@ -115,7 +99,6 @@ public class ActionSerializer extends BaseSerializer {
                     action.setPosition(position);
                 }
             }
-
             final int calculatedFlagColor = ActionHelper.calculateFlagColor(action);
             action.setFlagColor(calculatedFlagColor);
 
@@ -164,19 +147,19 @@ public class ActionSerializer extends BaseSerializer {
                     case DATE:
                     case QUEUED_WITH_DATE:
                         addJsonStringValue(
-                                LocalDateSerializer.getInstance().format(action.getJ8Date()),
+                                LocalDateSerializer.getInstance().format(action.getDate()),
                                 actionObject,
                                 DATE_TAG
                         );
                         break;
                     case DATE_TIME:
                         addJsonStringValue(
-                                LocalDateSerializer.getInstance().format(action.getJ8Date()),
+                                LocalDateSerializer.getInstance().format(action.getDate()),
                                 actionObject,
                                 DATE_TAG
                         );
                         addJsonLongValue(
-                                InstantSerializer.getInstance().seconds(action.getJ8ExactTime()),
+                                InstantSerializer.getInstance().seconds(action.getExactTime()),
                                 actionObject,
                                 EXACT_TIME_TAG
                         );

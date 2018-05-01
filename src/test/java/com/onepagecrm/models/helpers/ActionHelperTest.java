@@ -72,17 +72,17 @@ public class ActionHelperTest {
         mYesterdayFormatted = "APR 21";
         mYesterdayColor = OPCRMColors.FLAG_RED;
         mYesterdayDate = TODAY.minusDays(1);
-        mYesterdayAction = new Action().setJ8Date(mYesterdayDate);
+        mYesterdayAction = new Action().setDate(mYesterdayDate);
 
         mTodayFormatted = "TODAY";
         mTodayColor = OPCRMColors.FLAG_ORANGE;
         mTodayDate = TODAY;
-        mTodayAction = new Action().setJ8Date(mTodayDate);
+        mTodayAction = new Action().setDate(mTodayDate);
 
         mTomorrowFormatted = "APR 23";
         mTomorrowColor = OPCRMColors.FLAG_GREY_BROWN;
         mTomorrowDate = TODAY.plusDays(1);
-        mTomorrowAction = new Action().setJ8Date(mTomorrowDate);
+        mTomorrowAction = new Action().setDate(mTomorrowDate);
 
         mWaitingFormatted = "WAITING";
         mWaitingColor = OPCRMColors.FLAG_GREY_BROWN;

@@ -101,45 +101,10 @@ public class Action extends ApiResource implements Serializable {
     private Date createdAt;
     private Date modifiedAt;
     private Status status;
-    private Date date;
-    private Date exactTime;
+    private LocalDate date;
+    private Instant exactTime;
     private int flagColor;
     private Integer position;
-
-    // ----------------------------------------
-    // --- TEST !! ---
-
-    private LocalDate j8Date;
-    private Instant j8ExactTime;
-
-    public LocalDate getJ8Date() {
-        return j8Date;
-    }
-
-    public Action setJ8Date(LocalDate j8Date) {
-        this.j8Date = j8Date;
-        return this;
-    }
-
-    public Instant getJ8ExactTime() {
-        return j8ExactTime;
-    }
-
-    public ZonedDateTime getJ8ExactTime(ZoneId zoneId) {
-        return j8ExactTime != null ? ZonedDateTime.ofInstant(j8ExactTime, zoneId) : null;
-    }
-
-    public Action setJ8ExactTime(Instant j8ExactTime) {
-        this.j8ExactTime = j8ExactTime;
-        return this;
-    }
-
-    public Action setJ8ExactTime(ZonedDateTime zonedDateTime) {
-        this.j8ExactTime = zonedDateTime != null ? zonedDateTime.toInstant() : null;
-        return this;
-    }
-
-    // ----------------------------------------
 
     /*
      * API methods.
@@ -319,21 +284,30 @@ public class Action extends ApiResource implements Serializable {
         return this;
     }
 
-    public Date getDate() {
+    public LocalDate getDate() {
         return date;
     }
 
-    public Action setDate(Date date) {
+    public Action setDate(LocalDate date) {
         this.date = date;
         return this;
     }
 
-    public Date getExactTime() {
+    public Instant getExactTime() {
         return exactTime;
     }
 
-    public Action setExactTime(Date exactTime) {
+    public ZonedDateTime getExactTime(ZoneId zoneId) {
+        return exactTime != null ? ZonedDateTime.ofInstant(exactTime, zoneId) : null;
+    }
+
+    public Action setExactTime(Instant exactTime) {
         this.exactTime = exactTime;
+        return this;
+    }
+
+    public Action setExactTime(ZonedDateTime zonedDateTime) {
+        this.exactTime = zonedDateTime != null ? zonedDateTime.toInstant() : null;
         return this;
     }
 

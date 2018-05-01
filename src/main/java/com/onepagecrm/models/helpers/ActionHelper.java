@@ -80,8 +80,8 @@ public class ActionHelper {
         // Apply the updated date/time to action.
         return new Action()
                 .setText(actionText)
-                .setJ8Date(today.plusDays(daysToBeAdded))
-                .setJ8ExactTime(todayZdt.plusDays(daysToBeAdded));
+                .setDate(today.plusDays(daysToBeAdded))
+                .setExactTime(todayZdt.plusDays(daysToBeAdded));
     }
 
     /*
@@ -93,12 +93,12 @@ public class ActionHelper {
             return null;
         }
 
-        if (action.getJ8Date() != null) {
+        if (action.getDate() != null) {
             // Return date in format "MMM dd" (uppercase).
-            return DateTimeHelper.isToday(action.getJ8Date())
+            return DateTimeHelper.isToday(action.getDate())
                     ? STATUS_TODAY
                     : LocalDateSerializer.getInstance()
-                    .format(action.getJ8Date(), DateTimeSerializer.FORMATTER_FRIENDLY_DATE)
+                    .format(action.getDate(), DateTimeSerializer.FORMATTER_FRIENDLY_DATE)
                     .toUpperCase(Locale.ENGLISH);
 
         } else if (action.getStatus() != null) {
@@ -111,7 +111,7 @@ public class ActionHelper {
 
     public static String formatFriendlyActionText(ZoneId zoneId, boolean is24hr, Action action) {
         final String actionText = action != null && action.getText() != null ? action.getText() : "";
-        if (action == null || action.getJ8ExactTime() == null) {
+        if (action == null || action.getExactTime() == null) {
             return actionText;
         }
         return formatTimeAndActionText(zoneId, is24hr, action);
@@ -119,33 +119,33 @@ public class ActionHelper {
 
     public static String formatFriendlyTimeAndDate(ZoneId zoneId, boolean is24hr, Action action) {
         final String actionText = action != null && action.getText() != null ? action.getText() : "";
-        if (action == null || action.getJ8ExactTime() == null) {
+        if (action == null || action.getExactTime() == null) {
             return actionText;
         }
         return formatTimeAndDate(zoneId, is24hr, action);
     }
 
     public static String formatDate(Action action) {
-        final LocalDate date = action != null ? action.getJ8Date() : DateTimeHelper.today();
+        final LocalDate date = action != null ? action.getDate() : DateTimeHelper.today();
         return LocalDateSerializer.getInstance().format(date, DateTimeSerializer.FORMATTER_FRIENDLY_DATE);
     }
 
     public static String formatDateYear(Action action) {
-        final LocalDate date = action != null ? action.getJ8Date() : DateTimeHelper.today();
+        final LocalDate date = action != null ? action.getDate() : DateTimeHelper.today();
         return LocalDateSerializer.getInstance().format(date, DateTimeSerializer.FORMATTER_FRIENDLY_DATE_YEAR);
     }
 
     public static String formatTimeAndDate(ZoneId zoneId, boolean is24hr, Action action) {
-        final ZonedDateTime exactTime = action != null && action.getJ8ExactTime(zoneId) != null
-                ? action.getJ8ExactTime(zoneId)
+        final ZonedDateTime exactTime = action != null && action.getExactTime(zoneId) != null
+                ? action.getExactTime(zoneId)
                 : defaultDateTime(zoneId);
         return ZonedDateTimeSerializer.getInstance().format(exactTime, DateTimeHelper.timeDateYearFormat(is24hr));
     }
 
     public static String formatTimeAndActionText(ZoneId zoneId, boolean is24hr, Action action) {
         final String actionText = action != null && action.getText() != null ? action.getText() : "";
-        final ZonedDateTime exactTime = action != null && action.getJ8ExactTime() != null
-                ? action.getJ8ExactTime(zoneId)
+        final ZonedDateTime exactTime = action != null && action.getExactTime() != null
+                ? action.getExactTime(zoneId)
                 : defaultDateTime(zoneId);
         return String.format("%s %s",
                 ZonedDateTimeSerializer.getInstance().format(exactTime, DateTimeHelper.timeFormat(is24hr)),
@@ -173,12 +173,12 @@ public class ActionHelper {
         switch (action.getStatus()) {
             case DATE:
             case QUEUED_WITH_DATE: {
-                action.setJ8Date(date);
+                action.setDate(date);
                 break;
             }
             case DATE_TIME: {
-                action.setJ8ExactTime(instant);
-                action.setJ8Date(date);
+                action.setExactTime(instant);
+                action.setDate(date);
                 break;
             }
         }
@@ -217,7 +217,7 @@ public class ActionHelper {
         if (action == null) {
             return COLOR_DEFAULT;
         }
-        return calculateFlagColor(action.getJ8Date(), action.getStatus());
+        return calculateFlagColor(action.getDate(), action.getStatus());
     }
 
     private static int calculateFlagColor(LocalDate date, Action.Status status) {

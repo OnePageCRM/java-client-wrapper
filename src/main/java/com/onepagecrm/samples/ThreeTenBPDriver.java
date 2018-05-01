@@ -71,14 +71,14 @@ public class ThreeTenBPDriver {
                         "\n\t\"formatted_utc\":\"%s\"," +
                         "\n\t\"formatted_est\":\"%s\"" +
                         "\n}",
-                action.getJ8Date().toString(),
-                action.getJ8ExactTime().toEpochMilli() / 1000,
-                action.getJ8ExactTime().toEpochMilli(),
-                action.getJ8ExactTime().atZone(ZONE_ID_UTC).format(DateTimeFormatter.ISO_INSTANT),
-                action.getJ8ExactTime().atZone(ZONE_ID_ET).toString(),
-                action.getJ8ExactTime().atZone(ZONE_ID_ET).format(DateTimeFormatter.ISO_LOCAL_DATE_TIME),
-                action.getJ8ExactTime().atZone(ZONE_ID_UTC).format(DateTimeFormatter.ofPattern("hh:mma MMM dd, yyyy")),
-                action.getJ8ExactTime().atZone(ZONE_ID_ET).format(DateTimeFormatter.ofPattern("hh:mma MMM dd, yyyy"))
+                action.getDate().toString(),
+                action.getExactTime().toEpochMilli() / 1000,
+                action.getExactTime().toEpochMilli(),
+                action.getExactTime().atZone(ZONE_ID_UTC).format(DateTimeFormatter.ISO_INSTANT),
+                action.getExactTime().atZone(ZONE_ID_ET).toString(),
+                action.getExactTime().atZone(ZONE_ID_ET).format(DateTimeFormatter.ISO_LOCAL_DATE_TIME),
+                action.getExactTime().atZone(ZONE_ID_UTC).format(DateTimeFormatter.ofPattern("hh:mma MMM dd, yyyy")),
+                action.getExactTime().atZone(ZONE_ID_ET).format(DateTimeFormatter.ofPattern("hh:mma MMM dd, yyyy"))
         ));
     }
 }
