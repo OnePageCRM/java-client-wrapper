@@ -87,7 +87,7 @@ public class ActionSerializer extends BaseSerializer {
             }
             if (actionObject.has(STATUS_TAG)) {
                 String status = actionObject.getString(STATUS_TAG);
-                action.setStatus( Action.Status.fromString(status));
+                action.setStatus(Action.Status.fromString(status));
             }
             if (actionObject.has(DATE_TAG)) {
                 if (!actionObject.isNull(DATE_TAG)) {
@@ -116,8 +116,8 @@ public class ActionSerializer extends BaseSerializer {
                 }
             }
 
-            final int dateColor = ActionHelper.getFlagColor(action);
-            action.setDateColor(dateColor);
+            final int calculatedFlagColor = ActionHelper.calculateFlagColor(action);
+            action.setFlagColor(calculatedFlagColor);
 
             return action;
 

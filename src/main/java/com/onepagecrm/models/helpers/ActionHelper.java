@@ -216,32 +216,32 @@ public class ActionHelper {
      * Flags/colours.
      */
 
-    public static int getFlagColor(Action action) {
+    public static int calculateFlagColor(Action action) {
         if (action == null) {
             return COLOR_DEFAULT;
         }
-        return getFlagColor(action.getJ8Date(), action.getStatus());
+        return calculateFlagColor(action.getJ8Date(), action.getStatus());
     }
 
-    private static int getFlagColor(LocalDate date, Action.Status status) {
+    private static int calculateFlagColor(LocalDate date, Action.Status status) {
         if (date != null) {
-            return getColorByDate(date);
+            return calculateFlagColor(date);
         } else if (status != null) {
-            return getColorByStatus(status);
+            return calculateFlagColor(status);
         }
         return COLOR_DEFAULT;
     }
 
-    private static int getFlagColor(LocalDate date, String status) {
+    private static int calculateFlagColor(LocalDate date, String status) {
         if (date != null) {
-            return getColorByDate(date);
+            return calculateFlagColor(date);
         } else if (status != null) {
-            return getColorByStatus(status);
+            return calculateFlagColor(status);
         }
         return COLOR_DEFAULT;
     }
 
-    private static int getColorByDate(LocalDate date) {
+    private static int calculateFlagColor(LocalDate date) {
         if (date == null) {
             return COLOR_DEFAULT;
         }
@@ -259,7 +259,7 @@ public class ActionHelper {
         return COLOR_DEFAULT;
     }
 
-    private static int getColorByStatus(Action.Status status) {
+    private static int calculateFlagColor(Action.Status status) {
         if (status == null) {
             return COLOR_DEFAULT;
         }
@@ -274,7 +274,7 @@ public class ActionHelper {
         return COLOR_DEFAULT;
     }
 
-    private static int getColorByStatus(String status) {
+    private static int calculateFlagColor(String status) {
         if (TextHelper.isEmpty(status)) {
             return COLOR_DEFAULT;
         }

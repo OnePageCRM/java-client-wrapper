@@ -126,22 +126,22 @@ public class ActionHelperTest {
     public void testFormatting_FlagColor() throws Exception {
         assertEquals("Formatted Action flag color does not match",
                 mAsapColor,
-                ActionHelper.getFlagColor(mAsapAction));
+                ActionHelper.calculateFlagColor(mAsapAction));
 
         assertEquals("Formatted Action flag color does not match",
                 mYesterdayColor,
-                ActionHelper.getFlagColor(mYesterdayAction));
+                ActionHelper.calculateFlagColor(mYesterdayAction));
 
         assertEquals("Formatted Action flag color does not match",
                 mTodayColor,
-                ActionHelper.getFlagColor(mTodayAction));
+                ActionHelper.calculateFlagColor(mTodayAction));
 
         assertEquals("Formatted Action flag color does not match",
                 mTomorrowColor,
-                ActionHelper.getFlagColor(mTomorrowAction));
+                ActionHelper.calculateFlagColor(mTomorrowAction));
 
         assertEquals("Formatted Action flag color does not match",
                 mWaitingColor,
-                ActionHelper.getFlagColor(mWaitingAction));
+                ActionHelper.calculateFlagColor(mWaitingAction));
     }
 }

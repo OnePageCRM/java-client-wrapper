@@ -103,7 +103,7 @@ public class Action extends ApiResource implements Serializable {
     private Status status;
     private Date date;
     private Date exactTime;
-    private int dateColor; // TODO: rename to flagColor !?
+    private int flagColor;
     private Integer position;
 
     // ----------------------------------------
@@ -233,10 +233,6 @@ public class Action extends ApiResource implements Serializable {
                 this.status == Status.DATE_TIME || this.status == Status.WAITING);
     }
 
-    public int getFlagColor() { // TODO: differentiate between this and #getDateColor - change get to "calculate" (imply not getter) ??
-        return ActionHelper.getFlagColor(this);
-    }
-
     public String getFriendlyDate() { // TODO: imply not getter
         return ActionHelper.getFriendlyDate(this);
     }
@@ -341,12 +337,12 @@ public class Action extends ApiResource implements Serializable {
         return this;
     }
 
-    public int getDateColor() {
-        return dateColor;
+    public int getFlagColor() {
+        return flagColor;
     }
 
-    public Action setDateColor(int dateColor) {
-        this.dateColor = dateColor;
+    public Action setFlagColor(int flagColor) {
+        this.flagColor = flagColor;
         return this;
     }
 
