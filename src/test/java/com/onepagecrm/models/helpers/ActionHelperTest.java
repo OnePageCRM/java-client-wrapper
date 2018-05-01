@@ -103,23 +103,23 @@ public class ActionHelperTest {
     public void testFormatting_FriendlyDateText() throws Exception {
         assertEquals("Formatted friendly Action date does not match",
                 mAsapFormatted,
-                ActionHelper.getFriendlyDate(mAsapAction));
+                ActionHelper.formatFriendlyDate(mAsapAction));
 
         assertEquals("Formatted friendly Action date does not match",
                 mYesterdayFormatted,
-                ActionHelper.getFriendlyDate(mYesterdayAction));
+                ActionHelper.formatFriendlyDate(mYesterdayAction));
 
         assertEquals("Formatted friendly Action date does not match",
                 mTodayFormatted,
-                ActionHelper.getFriendlyDate(mTodayAction));
+                ActionHelper.formatFriendlyDate(mTodayAction));
 
         assertEquals("Formatted friendly Action date does not match",
                 mTomorrowFormatted,
-                ActionHelper.getFriendlyDate(mTomorrowAction));
+                ActionHelper.formatFriendlyDate(mTomorrowAction));
 
         assertEquals("Formatted friendly Action date does not match",
                 mWaitingFormatted,
-                ActionHelper.getFriendlyDate(mWaitingAction));
+                ActionHelper.formatFriendlyDate(mWaitingAction));
     }
 
     @Test

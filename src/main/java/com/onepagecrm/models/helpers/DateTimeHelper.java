@@ -3,6 +3,7 @@ package com.onepagecrm.models.helpers;
 import com.onepagecrm.models.internal.SystemClock;
 import com.onepagecrm.models.serializers.DateTimeSerializer;
 import org.threeten.bp.LocalDate;
+import org.threeten.bp.LocalDateTime;
 import org.threeten.bp.format.DateTimeFormatter;
 
 /**
@@ -10,7 +11,7 @@ import org.threeten.bp.format.DateTimeFormatter;
  * Copyright (c) 2018 OnePageCRM. All rights reserved.
  */
 @SuppressWarnings("WeakerAccess")
-public class DateHelper {
+public class DateTimeHelper {
 
     public static LocalDate today() {
         return LocalDate.now(SystemClock.getInstance());
@@ -18,6 +19,10 @@ public class DateHelper {
 
     public static boolean isToday(LocalDate date) {
         return date != null && date.isEqual(today());
+    }
+
+    public static LocalDateTime now() {
+        return LocalDateTime.now(SystemClock.getInstance());
     }
 
     public static DateTimeFormatter timeFormat(boolean is24hr) { // DateSerializer#getDateTimeYearFormat

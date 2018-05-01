@@ -3,7 +3,6 @@ package com.onepagecrm.models.helpers;
 import com.onepagecrm.models.Action;
 import com.onepagecrm.models.internal.OPCRMColors;
 import com.onepagecrm.models.internal.PredefinedAction;
-import com.onepagecrm.models.internal.SystemClock;
 import com.onepagecrm.models.serializers.DateTimeSerializer;
 import com.onepagecrm.models.serializers.LocalDateSerializer;
 import com.onepagecrm.models.serializers.ZonedDateTimeSerializer;
@@ -54,7 +53,7 @@ public class ActionHelper {
      */
     public static LocalDateTime defaultDateTime() {
         // Default is TODAY at 9am.
-        return LocalDateTime.now(SystemClock.getInstance())
+        return DateTimeHelper.now()
                 .withHour(9)
                 .withMinute(0)
                 .withSecond(0)
@@ -72,12 +71,11 @@ public class ActionHelper {
         return ZonedDateTime.of(defaultDateTime(), zoneId);
     }
 
-    // TODO: validate zoneid and zdt!?
     public static Action promote(ZoneId zoneId, PredefinedAction predefined) {
         final String actionText = predefined != null ? predefined.getText() : null;
         final int daysToBeAdded = predefined != null ? predefined.getDays() : 0;
         // Default date is TODAY at 9am.
-        LocalDate today = DateHelper.today();
+        LocalDate today = DateTimeHelper.today();
         ZonedDateTime todayZdt = defaultDateTime(zoneId);
         // Apply the updated date/time to action.
         return new Action()
@@ -90,14 +88,14 @@ public class ActionHelper {
      * Dates.
      */
 
-    public static String getFriendlyDate(Action action) { // Action#getFriendlyDateString
+    public static String formatFriendlyDate(Action action) { // Action#getFriendlyDateString
         if (action == null) {
             return null;
         }
 
         if (action.getJ8Date() != null) {
             // Return date in format "MMM dd" (uppercase).
-            return DateHelper.isToday(action.getJ8Date())
+            return DateTimeHelper.isToday(action.getJ8Date())
                     ? STATUS_TODAY
                     : LocalDateSerializer.getInstance()
                     .format(action.getJ8Date(), DateTimeSerializer.FORMATTER_FRIENDLY_DATE)
@@ -111,7 +109,7 @@ public class ActionHelper {
         return null; // <- needed to correctly display contacts w/out NA's in Action Stream.
     }
 
-    public static String getFriendlyActionText(ZoneId zoneId, boolean is24hr, Action action) {
+    public static String formatFriendlyActionText(ZoneId zoneId, boolean is24hr, Action action) {
         final String actionText = action != null && action.getText() != null ? action.getText() : "";
         if (action == null || action.getJ8ExactTime() == null) {
             return actionText;
@@ -119,7 +117,7 @@ public class ActionHelper {
         return formatTimeAndActionText(zoneId, is24hr, action);
     }
 
-    public static String getFriendlyTimeAndDate(ZoneId zoneId, boolean is24hr, Action action) {
+    public static String formatFriendlyTimeAndDate(ZoneId zoneId, boolean is24hr, Action action) {
         final String actionText = action != null && action.getText() != null ? action.getText() : "";
         if (action == null || action.getJ8ExactTime() == null) {
             return actionText;
@@ -127,15 +125,13 @@ public class ActionHelper {
         return formatTimeAndDate(zoneId, is24hr, action);
     }
 
-    // ----------------------------------------
-
     public static String formatDate(Action action) {
-        final LocalDate date = action != null ? action.getJ8Date() : DateHelper.today();
+        final LocalDate date = action != null ? action.getJ8Date() : DateTimeHelper.today();
         return LocalDateSerializer.getInstance().format(date, DateTimeSerializer.FORMATTER_FRIENDLY_DATE);
     }
 
     public static String formatDateYear(Action action) {
-        final LocalDate date = action != null ? action.getJ8Date() : DateHelper.today();
+        final LocalDate date = action != null ? action.getJ8Date() : DateTimeHelper.today();
         return LocalDateSerializer.getInstance().format(date, DateTimeSerializer.FORMATTER_FRIENDLY_DATE_YEAR);
     }
 
@@ -143,7 +139,7 @@ public class ActionHelper {
         final ZonedDateTime exactTime = action != null && action.getJ8ExactTime(zoneId) != null
                 ? action.getJ8ExactTime(zoneId)
                 : defaultDateTime(zoneId);
-        return ZonedDateTimeSerializer.getInstance().format(exactTime, DateHelper.timeDateYearFormat(is24hr));
+        return ZonedDateTimeSerializer.getInstance().format(exactTime, DateTimeHelper.timeDateYearFormat(is24hr));
     }
 
     public static String formatTimeAndActionText(ZoneId zoneId, boolean is24hr, Action action) {
@@ -152,11 +148,12 @@ public class ActionHelper {
                 ? action.getJ8ExactTime(zoneId)
                 : defaultDateTime(zoneId);
         return String.format("%s %s",
-                ZonedDateTimeSerializer.getInstance().format(exactTime, DateHelper.timeFormat(is24hr)),
+                ZonedDateTimeSerializer.getInstance().format(exactTime, DateTimeHelper.timeFormat(is24hr)),
                 actionText);
     }
 
     // ----------------------------------------
+    // TODO: use below 2 methods or remove them!!
 
     public static Action extractDate(ZoneId zoneId, boolean is24hr, Action action, String dateString) {
         if (TextHelper.isEmpty(dateString)) {
@@ -204,7 +201,7 @@ public class ActionHelper {
             }
             case DATE_TIME: {
                 dateTime = ZonedDateTimeSerializer.getInstance().parse(
-                        dateString, zoneId, DateHelper.timeDateYearFormat(is24hr));
+                        dateString, zoneId, DateTimeHelper.timeDateYearFormat(is24hr));
                 break;
             }
         }
@@ -246,7 +243,7 @@ public class ActionHelper {
             return COLOR_DEFAULT;
         }
 
-        final LocalDate today = DateHelper.today();
+        final LocalDate today = DateTimeHelper.today();
 
         if (date.isAfter(today)) {
             return COLOR_FUTURE_WAITING;

@@ -26,12 +26,12 @@ import java.util.Map;
 /**
  * @author Cillian Myles (cillian@onepagecrm.com) on 29/06/2017.
  */
-@SuppressWarnings({"unused", "WeakerAccess", "UnusedReturnValue"})
+@SuppressWarnings({"unused", "WeakerAccess", "UnusedReturnValue", "SameParameterValue"})
 public class Action extends ApiResource implements Serializable {
 
     private static final long serialVersionUID = -7486991046434989805L;
 
-    /**
+    /*
      * Constants
      */
 
@@ -44,7 +44,7 @@ public class Action extends ApiResource implements Serializable {
     private static final String STATUS_DONE = "done";
     private static final String STATUS_OTHER = "other"; // Catch all.
 
-    /**
+    /*
      * Member variables.
      */
 
@@ -216,7 +216,7 @@ public class Action extends ApiResource implements Serializable {
         return endpoint + "/" + this.id;
     }
 
-    /**
+    /*
      * Utility methods
      */
 
@@ -233,19 +233,19 @@ public class Action extends ApiResource implements Serializable {
                 this.status == Status.DATE_TIME || this.status == Status.WAITING);
     }
 
-    public String getFriendlyDate() { // TODO: imply not getter
-        return ActionHelper.getFriendlyDate(this);
+    public String getFriendlyDate() {
+        return ActionHelper.formatFriendlyDate(this);
     }
 
-    public String getFriendlyActionText(ZoneId zoneId, boolean is24hr) { // TODO: imply not getter
-        return ActionHelper.getFriendlyActionText(zoneId, is24hr, this);
+    public String getFriendlyActionText(ZoneId zoneId, boolean is24hr) {
+        return ActionHelper.formatFriendlyActionText(zoneId, is24hr, this);
     }
 
-    public String getFriendlyTimeAndDate(ZoneId zoneId, boolean is24hr) { // TODO: imply not getter
-        return ActionHelper.getFriendlyTimeAndDate(zoneId, is24hr, this);
+    public String getFriendlyTimeAndDate(ZoneId zoneId, boolean is24hr) {
+        return ActionHelper.formatFriendlyTimeAndDate(zoneId, is24hr, this);
     }
 
-    /**
+    /*
      * Object methods
      */
 
