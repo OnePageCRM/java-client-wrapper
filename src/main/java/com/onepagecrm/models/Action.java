@@ -20,7 +20,6 @@ import org.threeten.bp.ZoneId;
 import org.threeten.bp.ZonedDateTime;
 
 import java.io.Serializable;
-import java.util.Date;
 import java.util.Map;
 
 /**
@@ -98,8 +97,8 @@ public class Action extends ApiResource implements Serializable {
     private String assigneeId;
     private String contactId;
     private String text;
-    private Date createdAt;
-    private Date modifiedAt;
+    private Instant createdAt;
+    private Instant modifiedAt;
     private Status status;
     private LocalDate date;
     private Instant exactTime;
@@ -257,20 +256,28 @@ public class Action extends ApiResource implements Serializable {
         return this;
     }
 
-    public Date getCreatedAt() {
+    public Instant getCreatedAt() {
         return createdAt;
     }
 
-    public Action setCreatedAt(Date createdAt) {
+    public ZonedDateTime getCreatedAt(ZoneId zoneId) {
+        return createdAt != null ? ZonedDateTime.ofInstant(createdAt, zoneId) : null;
+    }
+
+    public Action setCreatedAt(Instant createdAt) {
         this.createdAt = createdAt;
         return this;
     }
 
-    public Date getModifiedAt() {
+    public Instant getModifiedAt() {
         return modifiedAt;
     }
 
-    public Action setModifiedAt(Date modifiedAt) {
+    public ZonedDateTime getModifiedAt(ZoneId zoneId) {
+        return modifiedAt != null ? ZonedDateTime.ofInstant(modifiedAt, zoneId) : null;
+    }
+
+    public Action setModifiedAt(Instant modifiedAt) {
         this.modifiedAt = modifiedAt;
         return this;
     }

@@ -7,7 +7,6 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.logging.Logger;
@@ -74,14 +73,10 @@ public class ActionSerializer extends BaseSerializer {
                 action.setAssigneeId(actionObject.getString(ASSIGNEE_ID_TAG));
             }
             if (actionObject.has(CREATED_AT_TAG)) {
-                String createdAtStr = actionObject.getString(CREATED_AT_TAG);
-                Date createdAt = DateSerializer.fromFormattedString(createdAtStr);
-                action.setCreatedAt(createdAt);
+                action.setCreatedAt(InstantSerializer.getInstance().parse(actionObject.optString(CREATED_AT_TAG)));
             }
             if (actionObject.has(MODIFIED_AT_TAG)) {
-                String modifiedAtStr = actionObject.getString(MODIFIED_AT_TAG);
-                Date modifiedAt = DateSerializer.fromFormattedString(modifiedAtStr);
-                action.setModifiedAt(modifiedAt);
+                action.setModifiedAt(InstantSerializer.getInstance().parse(actionObject.optString(MODIFIED_AT_TAG)));
             }
             if (actionObject.has(STATUS_TAG)) {
                 String status = actionObject.getString(STATUS_TAG);
@@ -132,12 +127,12 @@ public class ActionSerializer extends BaseSerializer {
             addJsonStringValue(action.getText(), actionObject, TEXT_TAG);
             addJsonStringValue(action.getAssigneeId(), actionObject, ASSIGNEE_ID_TAG);
             addJsonStringValue(
-                    DateSerializer.toFormattedDateTimeString(action.getCreatedAt()),
+                    InstantSerializer.getInstance().format(action.getCreatedAt()),
                     actionObject,
                     CREATED_AT_TAG
             );
             addJsonStringValue(
-                    DateSerializer.toFormattedDateTimeString(action.getModifiedAt()),
+                    InstantSerializer.getInstance().format(action.getModifiedAt()),
                     actionObject,
                     MODIFIED_AT_TAG
             );
