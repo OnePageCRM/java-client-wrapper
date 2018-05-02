@@ -64,4 +64,8 @@ public abstract class ApiResource extends BaseResource implements Serializable {
     public boolean isValid() {
         return this.getId() != null && !this.getId().equals("");
     }
+
+    protected String addIdToEndpoint(String endpoint) {
+        return endpoint + "/" + this.getId();
+    }
 }

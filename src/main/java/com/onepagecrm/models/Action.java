@@ -25,7 +25,7 @@ import java.util.Map;
 /**
  * @author Cillian Myles (cillian@onepagecrm.com) on 29/06/2017.
  */
-@SuppressWarnings({"unused", "WeakerAccess", "UnusedReturnValue", "SameParameterValue"})
+@SuppressWarnings({"unused", "WeakerAccess", "UnusedReturnValue"})
 public class Action extends ApiResource implements Serializable {
 
     private static final long serialVersionUID = -7486991046434989805L;
@@ -115,7 +115,7 @@ public class Action extends ApiResource implements Serializable {
 
     private Action update() throws OnePageException {
         Request request = new PutRequest(
-                addActionIdToEndpoint(ACTIONS_ENDPOINT),
+                addIdToEndpoint(ACTIONS_ENDPOINT),
                 null,
                 ActionSerializer.toJsonObject(this)
         );
@@ -130,7 +130,7 @@ public class Action extends ApiResource implements Serializable {
     }
 
     public void delete() throws OnePageException {
-        Request request = new DeleteRequest(ACTIONS_ENDPOINT + "/" + this.getId());
+        Request request = new DeleteRequest(addIdToEndpoint(ACTIONS_ENDPOINT));
         Response response = request.send();
     }
 
@@ -174,10 +174,6 @@ public class Action extends ApiResource implements Serializable {
         Request request = new GetRequest(PREDEFINED_ACTIONS_ENDPOINT, Query.query(paginator));
         Response response = request.send();
         return new PredefinedActionList(PredefinedActionSerializer.fromString(response.getResponseBody()));
-    }
-
-    private String addActionIdToEndpoint(String endpoint) {
-        return endpoint + "/" + this.id;
     }
 
     /*
