@@ -233,6 +233,7 @@ public class BaseSerializer {
     public static final String NOTE_TAG = "note";
     public static final String NOTES_TAG = "notes";
     public static final String LINKED_DEAL_ID_TAG = "linked_deal_id";
+    public static final String USER_IDS_TO_NOTIFY = "user_ids_to_notify";
 
     // FILTERS TAGS
     public static final String FILTER_TAG = "filter";
