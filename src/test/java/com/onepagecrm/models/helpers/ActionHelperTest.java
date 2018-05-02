@@ -14,6 +14,8 @@ import org.threeten.bp.Instant;
 import org.threeten.bp.LocalDate;
 import org.threeten.bp.ZoneId;
 
+import static com.onepagecrm.models.serializers.time.DateTimeTestHelper.ZONE_ID_ET;
+import static com.onepagecrm.models.serializers.time.DateTimeTestHelper.ZONE_ID_UTC;
 import static org.junit.Assert.assertEquals;
 
 /**
@@ -31,31 +33,39 @@ public class ActionHelperTest {
 
     // ASAP
     private Action mAsapAction;
-    private String mAsapFormatted;
+    private String mAsapFriendlyDate;
     private int mAsapColor;
 
     // Yesterday / 2018-04-22 / APR 21, 2018
     private Action mYesterdayAction;
     private LocalDate mYesterdayDate;
-    private String mYesterdayFormatted;
+    private String mYesterdayFriendlyDate;
     private int mYesterdayColor;
 
     // Today / 2018-04-22 / TODAY
     private Action mTodayAction;
     private LocalDate mTodayDate;
-    private String mTodayFormatted;
+    private String mTodayFriendlyDate;
     private int mTodayColor;
 
     // Yesterday / 2018-04-23 / APR 25, 2018
     private Action mTomorrowAction;
     private LocalDate mTomorrowDate;
-    private String mTomorrowFormatted;
+    private String mTomorrowFriendlyDate;
     private int mTomorrowColor;
 
     // ASAP
     private Action mWaitingAction;
-    private String mWaitingFormatted;
+    private String mWaitingFriendlyDate;
     private int mWaitingColor;
+
+    // DATE w/ TIME
+    // -> 1467360000
+    // -> Fri, 01 Jul 2016 08:00:00 UTC
+    // -> Fri, 01 Jul 2016 04:00:00 EST
+    private Action mTimedAction;
+    private Instant mTimedExactTime;
+    private String mTimedActionText;
 
     @BeforeClass
     public static void init() throws Exception {
@@ -65,28 +75,35 @@ public class ActionHelperTest {
 
     @Before
     public void setUp() throws Exception {
-        mAsapFormatted = "ASAP";
+        mAsapFriendlyDate = "ASAP";
         mAsapColor = OPCRMColors.FLAG_RED;
         mAsapAction = new Action().setStatus(Action.Status.ASAP);
 
-        mYesterdayFormatted = "APR 21";
+        mYesterdayFriendlyDate = "APR 21";
         mYesterdayColor = OPCRMColors.FLAG_RED;
         mYesterdayDate = TODAY.minusDays(1);
         mYesterdayAction = new Action().setDate(mYesterdayDate);
 
-        mTodayFormatted = "TODAY";
+        mTodayFriendlyDate = "TODAY";
         mTodayColor = OPCRMColors.FLAG_ORANGE;
         mTodayDate = TODAY;
         mTodayAction = new Action().setDate(mTodayDate);
 
-        mTomorrowFormatted = "APR 23";
+        mTomorrowFriendlyDate = "APR 23";
         mTomorrowColor = OPCRMColors.FLAG_GREY_BROWN;
         mTomorrowDate = TODAY.plusDays(1);
         mTomorrowAction = new Action().setDate(mTomorrowDate);
 
-        mWaitingFormatted = "WAITING";
+        mWaitingFriendlyDate = "WAITING";
         mWaitingColor = OPCRMColors.FLAG_GREY_BROWN;
         mWaitingAction = new Action().setStatus(Action.Status.WAITING);
+
+        mTimedActionText = "This action has a date and time!";
+        mTimedExactTime = Instant.ofEpochSecond(1467360000L);
+        mTimedAction = new Action()
+                .setText(mTimedActionText)
+                .setExactTime(mTimedExactTime)
+                .setStatus(Action.Status.DATE_TIME);
     }
 
     @After
@@ -102,23 +119,23 @@ public class ActionHelperTest {
     @Test
     public void testFormatting_FriendlyDateText() throws Exception {
         assertEquals("Formatted friendly Action date does not match",
-                mAsapFormatted,
+                mAsapFriendlyDate,
                 ActionHelper.formatFriendlyDate(mAsapAction));
 
         assertEquals("Formatted friendly Action date does not match",
-                mYesterdayFormatted,
+                mYesterdayFriendlyDate,
                 ActionHelper.formatFriendlyDate(mYesterdayAction));
 
         assertEquals("Formatted friendly Action date does not match",
-                mTodayFormatted,
+                mTodayFriendlyDate,
                 ActionHelper.formatFriendlyDate(mTodayAction));
 
         assertEquals("Formatted friendly Action date does not match",
-                mTomorrowFormatted,
+                mTomorrowFriendlyDate,
                 ActionHelper.formatFriendlyDate(mTomorrowAction));
 
         assertEquals("Formatted friendly Action date does not match",
-                mWaitingFormatted,
+                mWaitingFriendlyDate,
                 ActionHelper.formatFriendlyDate(mWaitingAction));
     }
 
@@ -143,5 +160,24 @@ public class ActionHelperTest {
         assertEquals("Formatted Action flag color does not match",
                 mWaitingColor,
                 ActionHelper.calculateFlagColor(mWaitingAction));
+    }
+
+    @Test
+    public void testFormatting_TimeAndActionText() throws Exception {
+        assertEquals("Formatted Action time & text color does not match",
+                String.format("08:00am %s", mTimedActionText),
+                ActionHelper.formatTimeAndActionText(ZONE_ID_UTC, false, mTimedAction));
+
+        assertEquals("Formatted Action time & text color does not match",
+                String.format("08:00 %s", mTimedActionText),
+                ActionHelper.formatTimeAndActionText(ZONE_ID_UTC, true, mTimedAction));
+
+        assertEquals("Formatted Action time & text color does not match",
+                String.format("04:00am %s", mTimedActionText),
+                ActionHelper.formatTimeAndActionText(ZONE_ID_ET, false, mTimedAction));
+
+        assertEquals("Formatted Action time & text color does not match",
+                String.format("04:00 %s", mTimedActionText),
+                ActionHelper.formatTimeAndActionText(ZONE_ID_ET, true, mTimedAction));
     }
 }

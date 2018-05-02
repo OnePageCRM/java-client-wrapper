@@ -147,9 +147,8 @@ public class ActionHelper {
         final ZonedDateTime exactTime = action != null && action.getExactTime() != null
                 ? action.getExactTime(zoneId)
                 : defaultDateTime(zoneId);
-        return String.format("%s %s",
-                ZonedDateTimeSerializer.getInstance().format(exactTime, DateTimeHelper.timeFormat(is24hr)),
-                actionText);
+        final String time = ZonedDateTimeSerializer.getInstance().format(exactTime, DateTimeHelper.timeFormat(is24hr));
+        return String.format("%s %s", time.toLowerCase(Locale.ENGLISH), actionText);
     }
 
     // ----------------------------------------
