@@ -135,13 +135,6 @@ public class ActionHelper {
         return LocalDateSerializer.getInstance().format(date, DateTimeSerializer.FORMATTER_FRIENDLY_DATE_YEAR);
     }
 
-    public static String formatTimeAndDate(ZoneId zoneId, boolean is24hr, Action action) {
-        final ZonedDateTime exactTime = action != null && action.getExactTime(zoneId) != null
-                ? action.getExactTime(zoneId)
-                : defaultDateTime(zoneId);
-        return ZonedDateTimeSerializer.getInstance().format(exactTime, DateTimeHelper.timeDateYearFormat(is24hr));
-    }
-
     public static String formatTimeAndActionText(ZoneId zoneId, boolean is24hr, Action action) {
         final String actionText = action != null && action.getText() != null ? action.getText() : "";
         final ZonedDateTime exactTime = action != null && action.getExactTime() != null
@@ -149,6 +142,13 @@ public class ActionHelper {
                 : defaultDateTime(zoneId);
         final String time = ZonedDateTimeSerializer.getInstance().format(exactTime, DateTimeHelper.timeFormat(is24hr));
         return String.format("%s %s", time, actionText);
+    }
+
+    public static String formatTimeAndDate(ZoneId zoneId, boolean is24hr, Action action) {
+        final ZonedDateTime exactTime = action != null && action.getExactTime(zoneId) != null
+                ? action.getExactTime(zoneId)
+                : defaultDateTime(zoneId);
+        return ZonedDateTimeSerializer.getInstance().format(exactTime, DateTimeHelper.timeDateYearFormat(is24hr));
     }
 
     // ----------------------------------------

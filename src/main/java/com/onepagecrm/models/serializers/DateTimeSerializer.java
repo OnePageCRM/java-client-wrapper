@@ -15,7 +15,7 @@ import static org.threeten.bp.format.DateTimeFormatter.ofPattern;
  * Created by Cillian Myles on 17/04/2018.
  * Copyright (c) 2018 OnePageCRM. All rights reserved.
  */
-@SuppressWarnings({"unused", "WeakerAccess"})
+@SuppressWarnings({"WeakerAccess", "unused"})
 public abstract class DateTimeSerializer<T extends DefaultInterfaceTemporalAccessor> {
 
     // Dates.
@@ -34,10 +34,9 @@ public abstract class DateTimeSerializer<T extends DefaultInterfaceTemporalAcces
     public static final String PATTERN_FRIENDLY_TIME_DATE_YEAR = "HH:mm MMM dd, yyyy";
     public static final String PATTERN_FRIENDLY_TIME_AM_PM_DATE_YEAR = "hh:mma MMM dd, yyyy";
 
-    private static Map<Long, String> AM_PM_LOOKUP;
+    private static Map<Long, String> AM_PM_LOOKUP = new HashMap<>();
 
     static {
-        AM_PM_LOOKUP = new HashMap<>();
         AM_PM_LOOKUP.put(0L, "am");
         AM_PM_LOOKUP.put(1L, "pm");
     }
@@ -46,15 +45,15 @@ public abstract class DateTimeSerializer<T extends DefaultInterfaceTemporalAcces
     public static final DateTimeFormatter FORMATTER_FRIENDLY_TIME_AM_PM = new DateTimeFormatterBuilder()
             .appendPattern(PATTERN_FRIENDLY_TIME)
             .appendText(ChronoField.AMPM_OF_DAY, AM_PM_LOOKUP)
-            .toFormatter();
+            .toFormatter(); // "hh:mma" | PATTERN_FRIENDLY_TIME_AM_PM
     public static final DateTimeFormatter FORMATTER_FRIENDLY_DATE = ofPattern(PATTERN_FRIENDLY_DATE);
     public static final DateTimeFormatter FORMATTER_FRIENDLY_DATE_YEAR = ofPattern(PATTERN_FRIENDLY_DATE_YEAR);
     public static final DateTimeFormatter FORMATTER_FRIENDLY_TIME_DATE_YEAR = ofPattern(PATTERN_FRIENDLY_TIME_DATE_YEAR);
     public static final DateTimeFormatter FORMATTER_FRIENDLY_TIME_AM_PM_DATE_YEAR = new DateTimeFormatterBuilder()
             .appendPattern(PATTERN_FRIENDLY_TIME)
             .appendText(ChronoField.AMPM_OF_DAY, AM_PM_LOOKUP)
-            .appendPattern(String.format(" %s", PATTERN_FRIENDLY_DATE))
-            .toFormatter();
+            .appendPattern(String.format(" %s", PATTERN_FRIENDLY_DATE_YEAR))
+            .toFormatter(); // "hh:mma MMM dd, yyyy" | PATTERN_FRIENDLY_TIME_AM_PM_DATE_YEAR
 
     public abstract ZoneId defaultZoneId();
 
