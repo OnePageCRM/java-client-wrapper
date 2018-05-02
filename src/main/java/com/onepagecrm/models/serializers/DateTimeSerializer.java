@@ -2,7 +2,12 @@ package com.onepagecrm.models.serializers;
 
 import org.threeten.bp.ZoneId;
 import org.threeten.bp.format.DateTimeFormatter;
+import org.threeten.bp.format.DateTimeFormatterBuilder;
 import org.threeten.bp.jdk8.DefaultInterfaceTemporalAccessor;
+import org.threeten.bp.temporal.ChronoField;
+
+import java.util.HashMap;
+import java.util.Map;
 
 import static org.threeten.bp.format.DateTimeFormatter.ofPattern;
 
@@ -29,12 +34,27 @@ public abstract class DateTimeSerializer<T extends DefaultInterfaceTemporalAcces
     public static final String PATTERN_FRIENDLY_TIME_DATE_YEAR = "HH:mm MMM dd, yyyy";
     public static final String PATTERN_FRIENDLY_TIME_AM_PM_DATE_YEAR = "hh:mma MMM dd, yyyy";
 
+    private static Map<Long, String> AM_PM_LOOKUP;
+
+    static {
+        AM_PM_LOOKUP = new HashMap<>();
+        AM_PM_LOOKUP.put(0L, "am");
+        AM_PM_LOOKUP.put(1L, "pm");
+    }
+
     public static final DateTimeFormatter FORMATTER_FRIENDLY_TIME = ofPattern(PATTERN_FRIENDLY_TIME);
-    public static final DateTimeFormatter FORMATTER_FRIENDLY_TIME_AM_PM = ofPattern(PATTERN_FRIENDLY_TIME_AM_PM);
+    public static final DateTimeFormatter FORMATTER_FRIENDLY_TIME_AM_PM = new DateTimeFormatterBuilder()
+            .appendPattern(PATTERN_FRIENDLY_TIME)
+            .appendText(ChronoField.AMPM_OF_DAY, AM_PM_LOOKUP)
+            .toFormatter();
     public static final DateTimeFormatter FORMATTER_FRIENDLY_DATE = ofPattern(PATTERN_FRIENDLY_DATE);
     public static final DateTimeFormatter FORMATTER_FRIENDLY_DATE_YEAR = ofPattern(PATTERN_FRIENDLY_DATE_YEAR);
     public static final DateTimeFormatter FORMATTER_FRIENDLY_TIME_DATE_YEAR = ofPattern(PATTERN_FRIENDLY_TIME_DATE_YEAR);
-    public static final DateTimeFormatter FORMATTER_FRIENDLY_TIME_AM_PM_DATE_YEAR = ofPattern(PATTERN_FRIENDLY_TIME_AM_PM_DATE_YEAR);
+    public static final DateTimeFormatter FORMATTER_FRIENDLY_TIME_AM_PM_DATE_YEAR = new DateTimeFormatterBuilder()
+            .appendPattern(PATTERN_FRIENDLY_TIME)
+            .appendText(ChronoField.AMPM_OF_DAY, AM_PM_LOOKUP)
+            .appendPattern(String.format(" %s", PATTERN_FRIENDLY_DATE))
+            .toFormatter();
 
     public abstract ZoneId defaultZoneId();
 
