@@ -115,7 +115,7 @@ public class Action extends ApiResource implements Serializable {
 
     private Action update() throws OnePageException {
         Request request = new PutRequest(
-                addIdToEndpoint(ACTIONS_ENDPOINT),
+                withId(ACTIONS_ENDPOINT),
                 null,
                 ActionSerializer.toJsonObject(this)
         );
@@ -130,7 +130,7 @@ public class Action extends ApiResource implements Serializable {
     }
 
     public void delete() throws OnePageException {
-        Request request = new DeleteRequest(addIdToEndpoint(ACTIONS_ENDPOINT));
+        Request request = new DeleteRequest(withId(ACTIONS_ENDPOINT));
         Response response = request.send();
     }
 

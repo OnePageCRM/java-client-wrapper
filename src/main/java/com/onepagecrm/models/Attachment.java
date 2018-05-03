@@ -136,7 +136,7 @@ public class Attachment extends ApiResource implements Serializable {
 
     private Attachment update(String contactId, S3FileReference fileRef) throws OnePageException {
         Request request = new PutRequest(
-                addIdToEndpoint(ATTACHMENTS_ENDPOINT),
+                withId(ATTACHMENTS_ENDPOINT),
                 null,
                 AttachmentSerializer.toJsonString(this, contactId, fileRef)
         );
@@ -161,7 +161,7 @@ public class Attachment extends ApiResource implements Serializable {
     }
 
     public DeleteResult delete() throws OnePageException {
-        Request request = new DeleteRequest(addIdToEndpoint(ATTACHMENTS_ENDPOINT), null);
+        Request request = new DeleteRequest(withId(ATTACHMENTS_ENDPOINT), null);
         Response response = request.send();
         return DeleteResultSerializer.fromString(this.id, response.getResponseBody());
     }

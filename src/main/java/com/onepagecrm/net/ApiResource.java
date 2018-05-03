@@ -8,7 +8,7 @@ import java.io.Serializable;
  * Created by Cillian Myles on 31/01/2018.
  * Copyright (c) 2018 OnePageCRM. All rights reserved.
  */
-@SuppressWarnings({"WeakerAccess", "unused", "SpellCheckingInspection"})
+@SuppressWarnings({"WeakerAccess", "unused", "SpellCheckingInspection", "SameParameterValue"})
 public abstract class ApiResource extends BaseResource implements Serializable {
 
     public static final String CHARSET = "UTF-8";
@@ -69,19 +69,19 @@ public abstract class ApiResource extends BaseResource implements Serializable {
         return this.getId() != null && !this.getId().equals("");
     }
 
-    protected String addIdToEndpoint(String endpoint) {
-        return addIdToEndpoint(endpoint, this.getId());
+    protected String withId(String endpoint) {
+        return withId(endpoint, this.getId());
     }
 
-    protected static String addIdToEndpoint(String endpoint, String id) {
+    protected static String withId(String endpoint, String id) {
         return endpoint + "/" + id;
     }
 
-    protected String subEndpoint(String endpoint, String subEndpoint) {
-        return subEndpoint(endpoint, this.getId(), subEndpoint);
+    protected String subEndpointWithId(String endpoint, String subEndpoint) {
+        return subEndpointWithId(endpoint, this.getId(), subEndpoint);
     }
 
-    protected static String subEndpoint(String endpoint, String id, String subEndpoint) {
-        return addIdToEndpoint(endpoint, id) + "/" + subEndpoint;
+    protected static String subEndpointWithId(String endpoint, String id, String subEndpoint) {
+        return withId(endpoint, id) + "/" + subEndpoint;
     }
 }

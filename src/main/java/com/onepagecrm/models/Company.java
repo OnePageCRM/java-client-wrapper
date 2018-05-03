@@ -70,7 +70,7 @@ public class Company extends ApiResource implements Serializable {
 
     private Company update() throws OnePageException {
         Request request = new PutRequest(
-                addIdToEndpoint(COMPANIES_ENDPOINT, this.id),
+                withId(COMPANIES_ENDPOINT, this.id),
                 null,
                 CompanySerializer.toJsonObject(this)
         );
@@ -83,7 +83,7 @@ public class Company extends ApiResource implements Serializable {
 
     public static Company byId(String companyId) throws OnePageException {
         Request request = new GetRequest(
-                addIdToEndpoint(COMPANIES_ENDPOINT, companyId),
+                withId(COMPANIES_ENDPOINT, companyId),
                 null
         );
         Response response = request.send();
@@ -93,7 +93,7 @@ public class Company extends ApiResource implements Serializable {
 
     public Company partial(Company updateValues) throws OnePageException {
         Request request = new PutRequest(
-                addIdToEndpoint(COMPANIES_ENDPOINT, this.id),
+                withId(COMPANIES_ENDPOINT, this.id),
                 "?" + QUERY_PARTIAL,
                 CompanySerializer.toJsonObject(updateValues)
         );
@@ -155,7 +155,7 @@ public class Company extends ApiResource implements Serializable {
 
     public static DeleteResult unlinkContact(String companyId, String contactId) throws OnePageException {
         String endpoint = LINKED_CONTACTS_ENDPOINT.replace("{id}", companyId);
-        Request request = new DeleteRequest(addIdToEndpoint(endpoint, contactId), null);
+        Request request = new DeleteRequest(withId(endpoint, contactId), null);
         Response response = request.send();
         String responseBody = response.getResponseBody();
         DeleteResult deleteResult = DeleteResultSerializer.fromString(contactId, responseBody);

@@ -65,7 +65,7 @@ public class Note extends ApiResource implements Serializable {
 
     private Note update() throws OnePageException {
         Request request = new PutRequest(
-                addIdToEndpoint(NOTES_ENDPOINT, this.id),
+                withId(NOTES_ENDPOINT, this.id),
                 null,
                 NoteSerializer.toJsonObject(this)
         );
@@ -74,13 +74,13 @@ public class Note extends ApiResource implements Serializable {
     }
 
     public static Note byId(String id) throws OnePageException {
-        Request request = new GetRequest(addIdToEndpoint(NOTES_ENDPOINT, id), null);
+        Request request = new GetRequest(withId(NOTES_ENDPOINT, id), null);
         Response response = request.send();
         return NoteSerializer.fromString(response.getResponseBody());
     }
 
     public DeleteResult delete() throws OnePageException {
-        Request request = new DeleteRequest(addIdToEndpoint(NOTES_ENDPOINT, this.id));
+        Request request = new DeleteRequest(withId(NOTES_ENDPOINT, this.id));
         Response response = request.send();
         return DeleteResultSerializer.fromString(this.id, response.getResponseBody());
     }

@@ -100,7 +100,7 @@ public class Contact extends ApiResource implements Serializable {
 
     private Contact update() throws OnePageException {
         Request request = new PutRequest(
-                addIdToEndpoint(CONTACTS_ENDPOINT),
+                withId(CONTACTS_ENDPOINT),
                 "?" + EXTRA_FIELDS,
                 ContactSerializer.toJsonObject(this)
         );
@@ -111,18 +111,18 @@ public class Contact extends ApiResource implements Serializable {
         return contact;
     }
 
-    public static Contact byId(String contactId) throws OnePageException {
+    public static Contact byId(String id) throws OnePageException {
         Request request = new GetRequest(
-                addIdToEndpoint(CONTACTS_ENDPOINT, contactId),
+                withId(CONTACTS_ENDPOINT, id),
                 "?" + EXTRA_FIELDS
         );
         Response response = request.send();
         return ContactSerializer.fromString(response.getResponseBody());
     }
 
-    public static ContactList byIds(String contactIds) throws OnePageException {
+    public static ContactList byIds(String ids) throws OnePageException {
         Request request = new GetRequest(
-                addIdToEndpoint(MULTIPLE_CONTACTS_ENDPOINT, contactIds),
+                withId(MULTIPLE_CONTACTS_ENDPOINT, ids),
                 "?" + EXTRA_FIELDS
         );
         Response response = request.send();
@@ -131,7 +131,7 @@ public class Contact extends ApiResource implements Serializable {
 
     public Contact partial(Contact updateValues) throws OnePageException {
         Request request = new PutRequest(
-                addIdToEndpoint(CONTACTS_ENDPOINT),
+                withId(CONTACTS_ENDPOINT),
                 "?" + QUERY_PARTIAL + "&" + EXTRA_FIELDS,
                 ContactSerializer.toJsonObject(updateValues)
         );
@@ -144,7 +144,7 @@ public class Contact extends ApiResource implements Serializable {
 
     public Contact addPhoto(String base64EncodedImageString) throws OnePageException {
         Request request = new PutRequest(
-                contactsSubEndpoint(BaseSerializer.CONTACT_PHOTO_TAG), // TODO: swap
+                subEndpointWithId(BaseSerializer.CONTACT_PHOTO_TAG), // TODO: swap
                 null,
                 ContactPhotoSerializer.toJsonObject(base64EncodedImageString)
         );
@@ -167,7 +167,7 @@ public class Contact extends ApiResource implements Serializable {
     }
 
     public DeleteResult delete() throws OnePageException {
-        Request request = new DeleteRequest(addIdToEndpoint(CONTACTS_ENDPOINT), null);
+        Request request = new DeleteRequest(withId(CONTACTS_ENDPOINT), null);
         Response response = request.send();
         String responseBody = response.getResponseBody();
         DeleteResult deleteResult = DeleteResultSerializer.fromString(this.id, responseBody);
@@ -176,7 +176,7 @@ public class Contact extends ApiResource implements Serializable {
     }
 
     public Contact undoDeletion() throws OnePageException {
-        Request request = new DeleteRequest(addIdToEndpoint(CONTACTS_ENDPOINT), "?undo=1");
+        Request request = new DeleteRequest(withId(CONTACTS_ENDPOINT), "?undo=1");
         Response response = request.send();
         String responseBody = response.getResponseBody();
         Contact contact = ContactSerializer.fromString(responseBody);
@@ -185,20 +185,20 @@ public class Contact extends ApiResource implements Serializable {
     }
 
     public Contact starContact() throws OnePageException {
-        Request request = new PutRequest(contactsSubEndpoint(BaseSerializer.STAR_TAG)); // TODO: swap
+        Request request = new PutRequest(subEndpointWithId(BaseSerializer.STAR_TAG)); // TODO: swap
         Response response = request.send();
         return ContactSerializer.fromString(response.getResponseBody());
     }
 
     public Contact unStarContact() throws OnePageException {
-        Request request = new PutRequest(contactsSubEndpoint(BaseSerializer.UNSTAR_TAG)); // TODO: swap
+        Request request = new PutRequest(subEndpointWithId(BaseSerializer.UNSTAR_TAG)); // TODO: swap
         Response response = request.send();
         return ContactSerializer.fromString(response.getResponseBody());
     }
 
     public Contact split(String newCompanyName) throws OnePageException {
         Request request = new PutRequest(
-                contactsSubEndpoint(BaseSerializer.SPLIT_TAG), // TODO: swap
+                subEndpointWithId(BaseSerializer.SPLIT_TAG), // TODO: swap
                 null,
                 ContactSplitSerializer.toJsonObject(newCompanyName)
         );
@@ -209,8 +209,8 @@ public class Contact extends ApiResource implements Serializable {
         return contact;
     }
 
-    private String contactsSubEndpoint(String subEndpoint) {
-        return subEndpoint(CONTACTS_ENDPOINT, subEndpoint);
+    private String subEndpointWithId(String subEndpoint) {
+        return subEndpointWithId(CONTACTS_ENDPOINT, subEndpoint);
     }
 
     public Contact() {

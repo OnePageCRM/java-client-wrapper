@@ -55,7 +55,7 @@ public class Call extends ApiResource implements Serializable {
 
     private Call update() throws OnePageException {
         Request request = new PutRequest(
-                addIdToEndpoint(CALLS_ENDPOINT),
+                withId(CALLS_ENDPOINT),
                 null,
                 CallSerializer.toJsonObject(this)
         );
@@ -76,13 +76,13 @@ public class Call extends ApiResource implements Serializable {
     }
 
     public static Call byId(String id) throws OnePageException {
-        Request request = new GetRequest(addIdToEndpoint(CALLS_ENDPOINT, id), null);
+        Request request = new GetRequest(withId(CALLS_ENDPOINT, id), null);
         Response response = request.send();
         return CallSerializer.fromString(response.getResponseBody());
     }
 
     public DeleteResult delete() throws OnePageException {
-        Request request = new DeleteRequest(addIdToEndpoint(CALLS_ENDPOINT));
+        Request request = new DeleteRequest(withId(CALLS_ENDPOINT));
         Response response = request.send();
         return DeleteResultSerializer.fromString(this.id, response.getResponseBody());
     }

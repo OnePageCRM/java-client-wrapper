@@ -96,7 +96,7 @@ public class Deal extends ApiResource implements Serializable {
 
     private Deal update() throws OnePageException {
         Request request = new PutRequest(
-                addIdToEndpoint(DEALS_ENDPOINT, this.id),
+                withId(DEALS_ENDPOINT, this.id),
                 null,
                 DealSerializer.toJsonObject(this)
         );
@@ -106,7 +106,7 @@ public class Deal extends ApiResource implements Serializable {
 
     public static Deal byId(String dealId) throws OnePageException {
         Request request = new GetRequest(
-                addIdToEndpoint(DEALS_ENDPOINT, dealId),
+                withId(DEALS_ENDPOINT, dealId),
                 "?" + RELATED_NOTES_FIELDS
         );
         Response response = request.send();
@@ -165,7 +165,7 @@ public class Deal extends ApiResource implements Serializable {
 
     public Deal partial() throws OnePageException {
         Request request = new PutRequest(
-                addIdToEndpoint(DEALS_ENDPOINT, this.id),
+                withId(DEALS_ENDPOINT, this.id),
                 "?" + QUERY_PARTIAL,
                 DealSerializer.toJsonObject(this)
         );
@@ -174,13 +174,13 @@ public class Deal extends ApiResource implements Serializable {
     }
 
     public DeleteResult delete() throws OnePageException {
-        Request request = new DeleteRequest(addIdToEndpoint(DEALS_ENDPOINT, this.id));
+        Request request = new DeleteRequest(withId(DEALS_ENDPOINT, this.id));
         Response response = request.send();
         return DeleteResultSerializer.fromString(this.id, response.getResponseBody());
     }
 
     public List<Note> relatedNotes() throws OnePageException {
-        Request request = new GetRequest(addIdToEndpoint(DEALS_ENDPOINT, this.id), "?" + RELATED_NOTES_FIELDS);
+        Request request = new GetRequest(withId(DEALS_ENDPOINT, this.id), "?" + RELATED_NOTES_FIELDS);
         Response response = request.send();
         Deal deal = DealSerializer.fromString(response.getResponseBody());
         return deal.hasRelatedNotes() ? deal.getRelatedNotes() : new ArrayList<Note>();
