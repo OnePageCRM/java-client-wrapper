@@ -8,7 +8,7 @@ import java.io.Serializable;
  * Created by Cillian Myles on 31/01/2018.
  * Copyright (c) 2018 OnePageCRM. All rights reserved.
  */
-@SuppressWarnings({"WeakerAccess", "unused", "SpellCheckingInspection", "SameParameterValue"})
+@SuppressWarnings({"WeakerAccess", "unused", "SpellCheckingInspection"})
 public abstract class ApiResource extends BaseResource implements Serializable {
 
     public static final String CHARSET = "UTF-8";
