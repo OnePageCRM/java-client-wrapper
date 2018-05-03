@@ -2,7 +2,6 @@ package com.onepagecrm.models.helpers;
 
 import com.onepagecrm.models.internal.SystemClock;
 import com.onepagecrm.models.serializers.DateTimeSerializer;
-import org.threeten.bp.Clock;
 import org.threeten.bp.Instant;
 import org.threeten.bp.LocalDate;
 import org.threeten.bp.LocalDateTime;
@@ -34,7 +33,7 @@ public class DateTimeHelper {
     }
 
     public static Instant nowUTC() {
-        return Instant.now(Clock.systemUTC());
+        return Instant.now(SystemClock.getInstance());
     }
 
     public static DateTimeFormatter timeFormat(boolean is24hr) { // DateSerializer#getDateTimeYearFormat
