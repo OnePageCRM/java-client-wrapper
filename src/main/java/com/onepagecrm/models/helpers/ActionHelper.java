@@ -53,7 +53,7 @@ public class ActionHelper {
      */
     public static LocalDateTime defaultDateTime() {
         // Default is TODAY at 9am.
-        return DateTimeHelper.nowDateTime()
+        return DateTimeHelper.nowLocal()
                 .withHour(9)
                 .withMinute(0)
                 .withSecond(0)

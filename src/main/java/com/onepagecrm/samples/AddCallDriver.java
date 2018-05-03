@@ -54,7 +54,7 @@ public class AddCallDriver {
         new Call()
                 .setText("Java Wrapper call")
                 .setContactId(first.getId())
-                .setTime(DateTimeHelper.nowInstant())
+                .setTime(DateTimeHelper.nowUTC())
                 .setCallResult(new CallResult().setId("interested"))
                 .save();
     }

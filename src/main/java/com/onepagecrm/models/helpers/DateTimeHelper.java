@@ -5,6 +5,8 @@ import com.onepagecrm.models.serializers.DateTimeSerializer;
 import org.threeten.bp.Instant;
 import org.threeten.bp.LocalDate;
 import org.threeten.bp.LocalDateTime;
+import org.threeten.bp.ZoneId;
+import org.threeten.bp.ZonedDateTime;
 import org.threeten.bp.format.DateTimeFormatter;
 
 /**
@@ -22,11 +24,15 @@ public class DateTimeHelper {
         return date != null && date.isEqual(today());
     }
 
-    public static LocalDateTime nowDateTime() {
+    public static LocalDateTime nowLocal() {
         return LocalDateTime.now(SystemClock.getInstance());
     }
 
-    public static Instant nowInstant() {
+    public static ZonedDateTime nowZoned(ZoneId zoneId) {
+        return ZonedDateTime.of(nowLocal(), zoneId);
+    }
+
+    public static Instant nowUTC() {
         return Instant.now(SystemClock.getInstance());
     }
 
