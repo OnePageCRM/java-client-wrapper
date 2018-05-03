@@ -17,6 +17,10 @@ public abstract class ApiResource extends BaseResource implements Serializable {
     public static final String CONTACTS_ENDPOINT = "contacts";
     public static final String MULTIPLE_CONTACTS_ENDPOINT = "contacts/show_multiple";
     public static final String CLOSE_SALES_CYCLE_ENDPOINT = "contacts/{id}/close_sales_cycle";
+    public static final String CONTACT_PHOTO_ENDPOINT = "contacts/{id}/contact_photo";
+    public static final String STAR_CONTACT_ENDPOINT = "contacts/{id}/star";
+    public static final String UNSTAR_CONTACT_ENDPOINT = "contacts/{id}/unstar";
+    public static final String SPLIT_CONTACT_ENDPOINT = "contacts/{id}/split";
     public static final String CALLS_ENDPOINT = "calls";
     public static final String CUSTOM_FIELDS_ENDPOINT = "custom_fields";
     public static final String COUNTRIES_ENDPOINT = "countries";
@@ -71,5 +75,13 @@ public abstract class ApiResource extends BaseResource implements Serializable {
 
     protected static String addIdToEndpoint(String endpoint, String id) {
         return endpoint + "/" + id;
+    }
+
+    protected String subEndpoint(String endpoint, String subEndpoint) {
+        return subEndpoint(endpoint, this.getId(), subEndpoint);
+    }
+
+    protected static String subEndpoint(String endpoint, String id, String subEndpoint) {
+        return addIdToEndpoint(endpoint, id) + "/" + subEndpoint;
     }
 }
