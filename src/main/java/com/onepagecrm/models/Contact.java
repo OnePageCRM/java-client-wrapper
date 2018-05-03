@@ -4,7 +4,6 @@ import com.onepagecrm.exceptions.OnePageException;
 import com.onepagecrm.models.internal.CloseSalesCycle;
 import com.onepagecrm.models.internal.DeleteResult;
 import com.onepagecrm.models.internal.SalesCycleClosure;
-import com.onepagecrm.models.serializers.BaseSerializer;
 import com.onepagecrm.models.serializers.CloseSalesCycleSerializer;
 import com.onepagecrm.models.serializers.ContactListSerializer;
 import com.onepagecrm.models.serializers.ContactPhotoSerializer;
@@ -36,11 +35,19 @@ public class Contact extends ApiResource implements Serializable {
 
     private static final long serialVersionUID = -6073805195226829625L;
 
+    /*
+     * Constants.
+     */
+
     public static final String TYPE_INDIVIDUAL = "individual";
     public static final String TYPE_COMPANY = "company";
 
     public static final String EXTRA_FIELDS = "fields=all,deals(all),notes(all),calls(all)";
     public static final String UNDO = "undo=1";
+
+    /*
+     * Member variables.
+     */
 
     private int intId;
     public static int nextIntId = 1;
@@ -81,6 +88,10 @@ public class Contact extends ApiResource implements Serializable {
     private Company company;
     private List<String> linkedWithIds;
     private String linkedWithName;
+
+    /*
+     * API methods.
+     */
 
     public Contact save() throws OnePageException {
         return this.isValid() ? update() : create();
@@ -210,30 +221,9 @@ public class Contact extends ApiResource implements Serializable {
         return contact;
     }
 
-    private String subEndpointWithId(String subEndpoint) {
-        return subEndpointWithId(CONTACTS_ENDPOINT, subEndpoint);
-    }
-
-    public Contact() {
-        this.intId = nextIntId;
-        nextIntId++;
-    }
-
-    @Override
-    public String getId() {
-        return this.id;
-    }
-
-    @Override
-    public Contact setId(String id) {
-        this.id = id;
-        return this;
-    }
-
-    @Override
-    public String toString() {
-        return ContactSerializer.toJsonObject(this);
-    }
+    /*
+     * Utility methods.
+     */
 
     public String getSimpleName() {
         String simple = "";
@@ -278,6 +268,31 @@ public class Contact extends ApiResource implements Serializable {
             return fullAlpha;
         }
         return null;
+    }
+
+    /*
+     * Object methods.
+     */
+
+    public Contact() {
+        this.intId = nextIntId;
+        nextIntId++;
+    }
+
+    @Override
+    public String toString() {
+        return ContactSerializer.toJsonObject(this);
+    }
+
+    @Override
+    public String getId() {
+        return this.id;
+    }
+
+    @Override
+    public Contact setId(String id) {
+        this.id = id;
+        return this;
     }
 
     public Contact setIntId(int intId) {
