@@ -40,6 +40,7 @@ public class Contact extends ApiResource implements Serializable {
     public static final String TYPE_COMPANY = "company";
 
     public static final String EXTRA_FIELDS = "fields=all,deals(all),notes(all),calls(all)";
+    public static final String UNDO = "undo=1";
 
     private int intId;
     public static int nextIntId = 1;
@@ -176,7 +177,7 @@ public class Contact extends ApiResource implements Serializable {
     }
 
     public Contact undoDeletion() throws OnePageException {
-        Request request = new DeleteRequest(withId(CONTACTS_ENDPOINT), "?undo=1");
+        Request request = new DeleteRequest(withId(CONTACTS_ENDPOINT), "?" + UNDO);
         Response response = request.send();
         String responseBody = response.getResponseBody();
         Contact contact = ContactSerializer.fromString(responseBody);
