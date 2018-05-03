@@ -31,7 +31,7 @@ public class Action extends ApiResource implements Serializable {
     private static final long serialVersionUID = -7486991046434989805L;
 
     /*
-     * Constants
+     * Constants.
      */
 
     private static final String STATUS_ASAP = "asap";
@@ -177,7 +177,7 @@ public class Action extends ApiResource implements Serializable {
     }
 
     /*
-     * Utility methods
+     * Utility methods.
      */
 
     public Action promote(ZoneId zoneId, PredefinedAction predefined) {
@@ -206,7 +206,7 @@ public class Action extends ApiResource implements Serializable {
     }
 
     /*
-     * Object methods
+     * Object methods.
      */
 
     @Override

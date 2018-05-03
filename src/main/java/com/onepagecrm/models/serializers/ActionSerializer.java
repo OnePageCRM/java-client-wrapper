@@ -168,9 +168,9 @@ public class ActionSerializer extends BaseSerializer {
     public static String toJsonArray(List<Action> actions) {
         JSONArray actionsArray = new JSONArray();
         if (actions != null && !actions.isEmpty()) {
-            for (int i = 0; i < actions.size(); i++) {
+            for (Action action : actions) {
                 try {
-                    actionsArray.put(new JSONObject(toJsonObject(actions.get(i))));
+                    actionsArray.put(new JSONObject(toJsonObject(action)));
                 } catch (JSONException e) {
                     LOG.severe("Error creating JSONArray out of list of Actions.");
                     LOG.severe(e.toString());

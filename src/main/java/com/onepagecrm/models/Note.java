@@ -107,10 +107,6 @@ public class Note extends ApiResource implements Serializable {
         return NoteListSerializer.fromString(response.getResponseBody());
     }
 
-    private static String addIdToEndpoint(String endpoint, String noteId) {
-        return endpoint + "/" + noteId;
-    }
-
     /**
      * Utility methods
      */

@@ -6,12 +6,12 @@ import com.onepagecrm.models.Call;
 import com.onepagecrm.models.CallResult;
 import com.onepagecrm.models.Contact;
 import com.onepagecrm.models.User;
+import com.onepagecrm.models.helpers.DateTimeHelper;
 import com.onepagecrm.net.request.Request;
 
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.Date;
 import java.util.Properties;
 import java.util.logging.Logger;
 
@@ -54,7 +54,7 @@ public class AddCallDriver {
         new Call()
                 .setText("Java Wrapper call")
                 .setContactId(first.getId())
-                .setTime(new Date())
+                .setTime(DateTimeHelper.nowInstant())
                 .setCallResult(new CallResult().setId("interested"))
                 .save();
     }

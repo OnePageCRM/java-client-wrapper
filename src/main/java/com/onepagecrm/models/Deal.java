@@ -186,10 +186,6 @@ public class Deal extends ApiResource implements Serializable {
         return deal.hasRelatedNotes() ? deal.getRelatedNotes() : new ArrayList<Note>();
     }
 
-    private static String addIdToEndpoint(String endpoint, String id) {
-        return endpoint + "/" + id;
-    }
-
     /**
      * Utility methods
      */

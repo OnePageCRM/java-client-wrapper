@@ -213,10 +213,6 @@ public class Contact extends ApiResource implements Serializable {
         return addIdToEndpoint(CONTACTS_ENDPOINT, this.id) + "/" + subEndpoint;
     }
 
-    private static String addIdToEndpoint(String endpoint, String id) {
-        return endpoint + "/" + id;
-    }
-
     public Contact() {
         this.intId = nextIntId;
         nextIntId++;

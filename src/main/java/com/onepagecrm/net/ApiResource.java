@@ -66,6 +66,10 @@ public abstract class ApiResource extends BaseResource implements Serializable {
     }
 
     protected String addIdToEndpoint(String endpoint) {
-        return endpoint + "/" + this.getId();
+        return addIdToEndpoint(endpoint, this.getId());
+    }
+
+    protected static String addIdToEndpoint(String endpoint, String id) {
+        return endpoint + "/" + id;
     }
 }

@@ -163,10 +163,6 @@ public class Company extends ApiResource implements Serializable {
         return deleteResult;
     }
 
-    private static String addIdToEndpoint(String endpoint, String id) {
-        return endpoint + "/" + id;
-    }
-
     @Override
     public String getId() {
         return id;

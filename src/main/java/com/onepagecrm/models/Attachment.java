@@ -127,7 +127,7 @@ public class Attachment extends ApiResource implements Serializable {
     private String externalUrl;
 
     /*
-     * API methods
+     * API methods.
      */
 
     public Attachment save(String contactId, S3FileReference fileRef) throws OnePageException {
@@ -167,7 +167,7 @@ public class Attachment extends ApiResource implements Serializable {
     }
 
     /*
-     * Utility methods
+     * Utility methods.
      */
 
     public String getFileExtension() {
@@ -175,7 +175,7 @@ public class Attachment extends ApiResource implements Serializable {
     }
 
     /*
-     * Object methods
+     * Object methods.
      */
 
     public Attachment() {
