@@ -17,6 +17,7 @@ import java.util.List;
 /**
  * Created by Cillian Myles <cillian@onepagecrm.com> on 26/10/2016.
  */
+@SuppressWarnings("unused")
 public class Device extends ApiResource {
 
     public static final String TYPE_ANDROID = "android_app";
@@ -45,21 +46,14 @@ public class Device extends ApiResource {
     }
 
     public DeleteResult delete() throws OnePageException {
-        final String resourceId = this.id;
-        Request request = new DeleteRequest(
-                withId(DEVICE_ENDPOINT, resourceId),
-                null
-        );
+        Request request = new DeleteRequest(withId(DEVICE_ENDPOINT), null);
         Response response = request.send();
-        return DeleteResultSerializer.fromString(resourceId, response.getResponseBody());
+        return DeleteResultSerializer.fromString(this.id, response.getResponseBody());
     }
 
-    public Device() {
-
-    }
-
-    private String withId(String endpoint, String id) {
-        return endpoint + "/" + id;
+    @Override
+    public String toString() {
+        return DeviceSerializer.toJsonObject(this);
     }
 
     @Override
@@ -71,11 +65,6 @@ public class Device extends ApiResource {
     public Device setId(String id) {
         this.id = id;
         return this;
-    }
-
-    @Override
-    public String toString() {
-        return DeviceSerializer.toJsonObject(this);
     }
 
     public String getDeviceId() {

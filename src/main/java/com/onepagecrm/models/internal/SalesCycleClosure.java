@@ -1,9 +1,11 @@
 package com.onepagecrm.models.internal;
 
 import com.onepagecrm.models.helpers.TextHelper;
+import org.threeten.bp.Instant;
+import org.threeten.bp.ZoneId;
+import org.threeten.bp.ZonedDateTime;
 
 import java.io.Serializable;
-import java.util.Date;
 
 /**
  * Created by Cillian Myles <cillian@onepagecrm.com> on 13/06/2016.
@@ -17,7 +19,7 @@ public class SalesCycleClosure implements Serializable {
 
     private String contactId;
     private String userId;
-    private Date closedAt;
+    private Instant closedAt;
     private String comment;
 
     /*
@@ -63,11 +65,15 @@ public class SalesCycleClosure implements Serializable {
         return this;
     }
 
-    public Date getClosedAt() {
+    public Instant getClosedAt() {
         return closedAt;
     }
 
-    public SalesCycleClosure setClosedAt(Date closedAt) {
+    public ZonedDateTime getClosedAt(ZoneId zoneId) {
+        return closedAt != null ? ZonedDateTime.ofInstant(closedAt, zoneId) : null;
+    }
+
+    public SalesCycleClosure setClosedAt(Instant closedAt) {
         this.closedAt = closedAt;
         return this;
     }
