@@ -1,31 +1,36 @@
 package com.onepagecrm.models.internal;
 
+import com.onepagecrm.models.helpers.TextHelper;
+
 import java.io.Serializable;
 import java.util.Date;
-
-import static com.onepagecrm.models.internal.Utilities.notNullOrEmpty;
 
 /**
  * Created by Cillian Myles <cillian@onepagecrm.com> on 13/06/2016.
  */
+@SuppressWarnings("unused")
 public class SalesCycleClosure implements Serializable {
+
+    /*
+     * Member variables.
+     */
 
     private String contactId;
     private String userId;
     private Date closedAt;
     private String comment;
 
-    public SalesCycleClosure() {
-
-    }
+    /*
+     * Object methods.
+     */
 
     @Override
     public boolean equals(Object object) {
-        if (object == null || !(object instanceof SalesCycleClosure)) {
+        if (!(object instanceof SalesCycleClosure)) {
             return false;
         }
         SalesCycleClosure toCompare = (SalesCycleClosure) object;
-        if (!notNullOrEmpty(userId) || !notNullOrEmpty(toCompare.getUserId())) {
+        if (TextHelper.isEmpty(userId) || TextHelper.isEmpty(toCompare.getUserId())) {
             return false;
         }
         if (!userId.equals(toCompare.getUserId())) {
@@ -33,8 +38,8 @@ public class SalesCycleClosure implements Serializable {
         }
 
         boolean lBothNull = contactId == null && toCompare.getContactId() == null;
-        boolean lSameNonNull = notNullOrEmpty(contactId)
-                && notNullOrEmpty(toCompare.getContactId())
+        boolean lSameNonNull = !TextHelper.isEmpty(contactId)
+                && !TextHelper.isEmpty(toCompare.getContactId())
                 && contactId.equals(toCompare.getContactId());
 
         return lBothNull || lSameNonNull;
@@ -79,7 +84,8 @@ public class SalesCycleClosure implements Serializable {
     @Override
     public String toString() {
         return "SalesCycleClosure{" +
-                "userId='" + userId + '\'' +
+                "contactId='" + contactId + '\'' +
+                ", userId='" + userId + '\'' +
                 ", closedAt=" + closedAt +
                 ", comment='" + comment + '\'' +
                 '}';
