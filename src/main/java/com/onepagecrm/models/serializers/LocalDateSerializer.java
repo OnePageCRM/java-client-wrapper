@@ -4,6 +4,7 @@ import com.onepagecrm.models.helpers.TextHelper;
 import org.threeten.bp.LocalDate;
 import org.threeten.bp.ZoneId;
 import org.threeten.bp.format.DateTimeFormatter;
+import org.threeten.bp.format.DateTimeParseException;
 
 /**
  * Created by Cillian Myles on 17/04/2018.
@@ -58,7 +59,11 @@ public class LocalDateSerializer extends DateTimeSerializer<LocalDate> {
         if (formatter == null) {
             throw new IllegalArgumentException("DateTimeFormatter object cannot be null");
         }
-        return LocalDate.parse(date, formatter);
+        try {
+            return LocalDate.parse(date, formatter);
+        } catch (DateTimeParseException e) {
+            return null;
+        }
     }
 
     @Override

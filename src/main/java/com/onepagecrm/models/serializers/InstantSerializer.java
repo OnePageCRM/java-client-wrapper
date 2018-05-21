@@ -6,6 +6,7 @@ import org.threeten.bp.ZoneId;
 import org.threeten.bp.ZoneOffset;
 import org.threeten.bp.ZonedDateTime;
 import org.threeten.bp.format.DateTimeFormatter;
+import org.threeten.bp.format.DateTimeParseException;
 
 /**
  * Created by Cillian Myles on 17/04/2018.
@@ -60,7 +61,11 @@ public class InstantSerializer extends DateTimeSerializer<Instant> {
         if (formatter == null) {
             throw new IllegalArgumentException("DateTimeFormatter object cannot be null");
         }
-        return ZonedDateTime.parse(instant, formatter.withZone(defaultZoneId())).toInstant();
+        try {
+            return ZonedDateTime.parse(instant, formatter.withZone(defaultZoneId())).toInstant();
+        } catch (DateTimeParseException e) {
+            return null;
+        }
     }
 
     @Override

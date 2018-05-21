@@ -5,6 +5,7 @@ import org.threeten.bp.LocalDateTime;
 import org.threeten.bp.ZoneId;
 import org.threeten.bp.ZonedDateTime;
 import org.threeten.bp.format.DateTimeFormatter;
+import org.threeten.bp.format.DateTimeParseException;
 
 /**
  * Created by Cillian Myles on 19/04/2018.
@@ -52,7 +53,11 @@ public class ZonedDateTimeSerializer extends DateTimeSerializer<ZonedDateTime> {
         if (formatter == null) {
             throw new IllegalArgumentException("ZonedDateTime needs format info");
         }
-        return ZonedDateTime.of(LocalDateTime.parse(zonedDateTime, formatter), zoneId);
+        try {
+            return ZonedDateTime.of(LocalDateTime.parse(zonedDateTime, formatter), zoneId);
+        } catch (DateTimeParseException e) {
+            return null;
+        }
     }
 
     @Override
