@@ -18,10 +18,12 @@ import com.onepagecrm.net.request.GetRequest;
 import com.onepagecrm.net.request.PostRequest;
 import com.onepagecrm.net.request.PutRequest;
 import com.onepagecrm.net.request.Request;
+import org.threeten.bp.Instant;
+import org.threeten.bp.ZoneId;
+import org.threeten.bp.ZonedDateTime;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
@@ -77,8 +79,8 @@ public class Contact extends ApiResource implements Serializable {
     private Map<String, SalesCycleClosure> salesClosedFor;
     private List<Tag> tags;
     private List<CustomField> customFields;
-    private Date createdAt;
-    private Date modifiedAt;
+    private Instant createdAt;
+    private Instant modifiedAt;
     private Address address;
     private List<Action> actions;
     private Action nextAction;
@@ -528,20 +530,28 @@ public class Contact extends ApiResource implements Serializable {
         return this;
     }
 
-    public Date getCreatedAt() {
+    public Instant getCreatedAt() {
         return createdAt;
     }
 
-    public Contact setCreatedAt(Date createdAt) {
+    public ZonedDateTime getCreatedAt(ZoneId zoneId) {
+        return createdAt != null ? ZonedDateTime.ofInstant(createdAt, zoneId) : null;
+    }
+
+    public Contact setCreatedAt(Instant createdAt) {
         this.createdAt = createdAt;
         return this;
     }
 
-    public Date getModifiedAt() {
+    public Instant getModifiedAt() {
         return modifiedAt;
     }
 
-    public Contact setModifiedAt(Date modifiedAt) {
+    public ZonedDateTime getModifiedAt(ZoneId zoneId) {
+        return modifiedAt != null ? ZonedDateTime.ofInstant(modifiedAt, zoneId) : null;
+    }
+
+    public Contact setModifiedAt(Instant modifiedAt) {
         this.modifiedAt = modifiedAt;
         return this;
     }
