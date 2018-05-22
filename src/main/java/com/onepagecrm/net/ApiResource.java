@@ -23,6 +23,8 @@ public abstract class ApiResource extends BaseResource implements Serializable {
     public static final String SPLIT_CONTACT_ENDPOINT = "contacts/{id}/split";
     public static final String CALLS_ENDPOINT = "calls";
     public static final String CUSTOM_FIELDS_ENDPOINT = "custom_fields";
+    public static final String COMPANY_FIELDS_ENDPOINT = "company_fields";
+    public static final String DEAL_FIELDS_ENDPOINT = "deal_fields";
     public static final String COUNTRIES_ENDPOINT = "countries";
     public static final String TAGS_ENDPOINT = "tags";
     public static final String DEALS_ENDPOINT = "deals";
@@ -37,8 +39,6 @@ public abstract class ApiResource extends BaseResource implements Serializable {
     public static final String DEVICE_ENDPOINT = "firebase";
     public static final String COMPANIES_ENDPOINT = "companies";
     public static final String LINKED_CONTACTS_ENDPOINT = "companies/{id}/linked_contacts";
-    public static final String COMPANY_FIELDS_ENDPOINT = "company_fields";
-    public static final String DEAL_FIELDS_ENDPOINT = "deal_fields";
     public static final String ATTACHMENTS_ENDPOINT = "attachments";
     public static final String GOOGLE_LOGIN_ENDPOINT = "google_plus/login";
     public static final String GOOGLE_SIGNUP_ENDPOINT = "google_plus/signup";

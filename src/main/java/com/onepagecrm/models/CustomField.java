@@ -1,6 +1,7 @@
 package com.onepagecrm.models;
 
 import com.onepagecrm.exceptions.OnePageException;
+import com.onepagecrm.models.helpers.TextHelper;
 import com.onepagecrm.models.internal.CustomFieldValue;
 import com.onepagecrm.models.serializers.CustomFieldSerializer;
 import com.onepagecrm.net.ApiResource;
@@ -50,8 +51,12 @@ public class CustomField extends ApiResource implements Serializable {
      */
 
     public String save() throws OnePageException {
+        return this.isValid() ? update() : create();
+    }
+
+    public String create() throws OnePageException {
         Request request = new PostRequest(
-                CUSTOM_FIELDS_ENDPOINT,
+                endpoint(cfType),
                 null,
                 CustomFieldSerializer.toJsonObjectNew(this)
         );
@@ -59,9 +64,22 @@ public class CustomField extends ApiResource implements Serializable {
         return response.getResponseBody();
     }
 
-    // TODO: add create and update methods
+    public String update() throws OnePageException {
+        Request request = new PostRequest(
+                withId(endpoint(cfType)),
+                null,
+                CustomFieldSerializer.toJsonObjectNew(this)
+        );
+        Response response = request.send();
+        return response.getResponseBody();
+    }
 
-    // TODO: save method to call create or update as needed
+    private String endpoint(String cfType) {
+        if (TextHelper.isEmpty(cfType)) return CUSTOM_FIELDS_ENDPOINT;
+        if (CF_TYPE_COMPANY.equals(cfType)) return COMPANY_FIELDS_ENDPOINT;
+        if (CF_TYPE_DEAL.equals(cfType)) return DEAL_FIELDS_ENDPOINT;
+        return CUSTOM_FIELDS_ENDPOINT;
+    }
 
     public static List<CustomField> listContacts() throws OnePageException {
         Map<String, Object> params = new HashMap<>();
