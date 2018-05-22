@@ -41,7 +41,7 @@ public class CustomFieldsDriver {
             }
         }
 
-        OnePageCRM.setServer(Request.DEV_SERVER);
+        OnePageCRM.setServer(Request.STAGING_SERVER);
 
         User loggedInUser = User.login(
                 prop.getProperty("username"),
