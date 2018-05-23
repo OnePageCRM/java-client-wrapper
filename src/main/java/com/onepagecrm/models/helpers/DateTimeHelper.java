@@ -2,7 +2,9 @@ package com.onepagecrm.models.helpers;
 
 import com.onepagecrm.models.internal.SystemClock;
 import com.onepagecrm.models.serializers.DateTimeSerializer;
+import com.onepagecrm.models.serializers.InstantSerializer;
 import com.onepagecrm.models.serializers.LocalDateSerializer;
+import com.onepagecrm.models.serializers.ZonedDateTimeSerializer;
 import org.threeten.bp.Instant;
 import org.threeten.bp.LocalDate;
 import org.threeten.bp.LocalDateTime;
@@ -59,6 +61,26 @@ public class DateTimeHelper {
         return DateTimeHelper.isToday(date)
                 ? STATUS_TODAY
                 : LocalDateSerializer.getInstance()
+                .format(date, DateTimeSerializer.FORMATTER_FRIENDLY_DATE)
+                .toUpperCase(Locale.ENGLISH);
+    }
+
+    public static String formatFriendlyDate(ZonedDateTime date) {
+        if (date == null) return null;
+        // Return date in format "MMM dd" (uppercase).
+        return DateTimeHelper.isToday(date.toLocalDate())
+                ? STATUS_TODAY
+                : ZonedDateTimeSerializer.getInstance()
+                .format(date, DateTimeSerializer.FORMATTER_FRIENDLY_DATE)
+                .toUpperCase(Locale.ENGLISH);
+    }
+
+    public static String formatFriendlyDate(Instant date) {
+        if (date == null) return null;
+        // Return date in format "MMM dd" (uppercase).
+        return DateTimeHelper.isToday(date.atZone(InstantSerializer.getInstance().defaultZoneId()).toLocalDate())
+                ? STATUS_TODAY
+                : InstantSerializer.getInstance()
                 .format(date, DateTimeSerializer.FORMATTER_FRIENDLY_DATE)
                 .toUpperCase(Locale.ENGLISH);
     }
