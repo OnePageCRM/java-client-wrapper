@@ -36,7 +36,7 @@ public class ActionHelperTest {
     private String mAsapFriendlyDate;
     private int mAsapColor;
 
-    // Yesterday / 2018-04-22 / APR 21, 2018
+    // Yesterday / 2018-04-21 / APR 21, 2018
     private Action mYesterdayAction;
     private LocalDate mYesterdayDate;
     private String mYesterdayFriendlyDate;
@@ -48,7 +48,7 @@ public class ActionHelperTest {
     private String mTodayFriendlyDate;
     private int mTodayColor;
 
-    // Yesterday / 2018-04-23 / APR 25, 2018
+    // Tomorrow / 2018-04-23 / APR 23, 2018
     private Action mTomorrowAction;
     private LocalDate mTomorrowDate;
     private String mTomorrowFriendlyDate;
