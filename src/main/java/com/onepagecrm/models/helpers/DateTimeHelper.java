@@ -92,15 +92,15 @@ public class DateTimeHelper {
     }
 
     public static String formatDateYearFriendly(LocalDate date) {
-        return formatDateImpl(date, false, true);
+        return formatDateImpl(date, true, true);
     }
 
     public static String formatDateYearFriendly(ZonedDateTime date) {
-        return formatDateImpl(date, false, true);
+        return formatDateImpl(date, true, true);
     }
 
     public static String formatDateYearFriendly(Instant date) {
-        return formatDateImpl(date, false, true);
+        return formatDateImpl(date, true, true);
     }
 
     private static String formatDateImpl(LocalDate date, boolean friendly, boolean year) {
