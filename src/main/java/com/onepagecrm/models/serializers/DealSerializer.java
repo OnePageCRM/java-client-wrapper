@@ -218,9 +218,9 @@ public class DealSerializer extends BaseSerializer {
     public static String toJsonArray(DealList deals) {
         JSONArray dealsArray = new JSONArray();
         if (deals != null && !deals.isEmpty()) {
-            for (int i = 0; i < deals.size(); i++) {
+            for (Deal deal : deals) {
                 try {
-                    dealsArray.put(new JSONObject(toJsonObject(deals.get(i))));
+                    dealsArray.put(new JSONObject(toJsonObject(deal)));
                 } catch (JSONException e) {
                     LOG.severe("Error creating JSONArray out of Deals");
                     LOG.severe(e.toString());
@@ -228,66 +228,5 @@ public class DealSerializer extends BaseSerializer {
             }
         }
         return dealsArray.toString();
-    }
-
-    // TODO: tidy up below methods
-
-    public static JSONObject toJsonObjectForPartial(Deal deal) {
-        JSONObject dealObject = new JSONObject();
-        if (deal == null) return dealObject;
-        addJsonStringValue(stringValue(deal.getId()), dealObject, ID_TAG);
-        addJsonStringValue(stringValue(deal.getContactId()), dealObject, CONTACT_ID_TAG);
-        addJsonStringValue(stringValue(deal.getName()), dealObject, NAME_TAG);
-        addJsonStringValue(stringValue(deal.getOwnerId()), dealObject, OWNER_ID_TAG);
-        addJsonStringValue(stringValue(deal.getStage()), dealObject, STAGE_TAG);
-        addJsonStringValue(stringValue(deal.getStatus()), dealObject, STATUS_TAG);
-        addJsonStringValue(stringValue(deal.getAuthor()), dealObject, AUTHOR_TAG);
-        addJsonStringValue(stringValue(deal.getText()), dealObject, TEXT_TAG);
-        addJsonStringValue(
-                stringValue(DateSerializer.toFormattedDateString(deal.getDate())),
-                dealObject,
-                DATE_TAG
-        );
-        addJsonStringValue(
-                stringValue(DateSerializer.toFormattedDateString(deal.getExpectedCloseDate())),
-                dealObject,
-                EXPECTED_CLOSE_DATE_TAG
-        );
-
-        addJsonStringValue(
-                DateSerializer.toFormattedDateString(deal.getCloseDate()),
-                dealObject,
-                CLOSE_DATE_TAG
-        );
-        addJsonStringValue(stringValue(deal.getAmount(), "0"), dealObject, AMOUNT_TAG);
-        addJsonStringValue(stringValue(deal.getMonths(), "1"), dealObject, MONTHS_TAG);
-        addJsonStringValue(stringValue(deal.getTotalAmount(), "0"), dealObject, TOTAL_AMOUNT_TAG);
-        addJsonStringValue(stringValue(deal.getCost(), "0"), dealObject, COST_TAG);
-        addJsonStringValue(stringValue(deal.getMargin(), "0"), dealObject, MARGIN_TAG);
-        addJsonStringValue(stringValue(deal.getTotalCost(), "0"), dealObject, TOTAL_COST_TAG);
-        addJsonStringValue(stringValue(deal.getCommission(), "0"), dealObject, COMMISSION_TAG);
-        addJsonStringValue(stringValue(deal.getCommissionPercentage(), "0"), dealObject, COMMISSION_PERCENTAGE_TAG);
-        addJsonObjectValue(deal.getCommissionBase(), dealObject, COMMISSION_BASE_TAG);
-        addJsonObjectValue(deal.getCommissionType(), dealObject, COMMISSION_TYPE_TAG);
-        try {
-            JSONArray dealFieldsArray = new JSONArray(CustomFieldSerializer.toJsonArray(deal.getDealFields()));
-            addJsonArray(dealFieldsArray, dealObject, DEAL_FIELDS_TAG);
-        } catch (JSONException e) {
-            LOG.severe("Error creating Deal Fields array while constructing Deal object");
-            LOG.severe(e.toString());
-        }
-        return dealObject;
-    }
-
-    private static final String NULL = "null";
-
-    private static String stringValue(Object value) {
-        return stringValue(value, "");
-    }
-
-    private static String stringValue(Object value, String defaultValue) {
-        String toString = String.valueOf(value);
-        boolean validToString = value != null && !toString.equalsIgnoreCase(NULL) && !toString.endsWith("@" + value.hashCode());
-        return validToString ? toString : defaultValue;
     }
 }
