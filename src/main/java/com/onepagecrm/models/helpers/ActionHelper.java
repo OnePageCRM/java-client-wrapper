@@ -12,7 +12,6 @@ import org.threeten.bp.LocalDateTime;
 import org.threeten.bp.ZoneId;
 import org.threeten.bp.ZonedDateTime;
 
-import java.util.Locale;
 import java.util.logging.Logger;
 
 /**
@@ -95,11 +94,7 @@ public class ActionHelper {
 
         if (action.getDate() != null) {
             // Return date in format "MMM dd" (uppercase).
-            return DateTimeHelper.isToday(action.getDate())
-                    ? STATUS_TODAY
-                    : LocalDateSerializer.getInstance()
-                    .format(action.getDate(), DateTimeSerializer.FORMATTER_FRIENDLY_DATE)
-                    .toUpperCase(Locale.ENGLISH);
+            return DateTimeHelper.formatFriendlyDate(action.getDate());
 
         } else if (action.getStatus() != null) {
             // Return status (uppercase).

@@ -2,12 +2,17 @@ package com.onepagecrm.models.helpers;
 
 import com.onepagecrm.models.internal.SystemClock;
 import com.onepagecrm.models.serializers.DateTimeSerializer;
+import com.onepagecrm.models.serializers.LocalDateSerializer;
 import org.threeten.bp.Instant;
 import org.threeten.bp.LocalDate;
 import org.threeten.bp.LocalDateTime;
 import org.threeten.bp.ZoneId;
 import org.threeten.bp.ZonedDateTime;
 import org.threeten.bp.format.DateTimeFormatter;
+
+import java.util.Locale;
+
+import static com.onepagecrm.models.helpers.ActionHelper.STATUS_TODAY;
 
 /**
  * Created by Cillian Myles on 19/04/2018.
@@ -46,5 +51,15 @@ public class DateTimeHelper {
         return is24hr
                 ? DateTimeSerializer.FORMATTER_FRIENDLY_TIME_DATE_YEAR
                 : DateTimeSerializer.FORMATTER_FRIENDLY_TIME_AM_PM_DATE_YEAR;
+    }
+
+    public static String formatFriendlyDate(LocalDate date) {
+        if (date == null) return null;
+        // Return date in format "MMM dd" (uppercase).
+        return DateTimeHelper.isToday(date)
+                ? STATUS_TODAY
+                : LocalDateSerializer.getInstance()
+                .format(date, DateTimeSerializer.FORMATTER_FRIENDLY_DATE)
+                .toUpperCase(Locale.ENGLISH);
     }
 }
