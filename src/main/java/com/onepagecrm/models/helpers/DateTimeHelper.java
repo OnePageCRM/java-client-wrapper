@@ -62,4 +62,10 @@ public class DateTimeHelper {
                 .format(date, DateTimeSerializer.FORMATTER_FRIENDLY_DATE)
                 .toUpperCase(Locale.ENGLISH);
     }
+
+    public static LocalDate fromFriendlyDate(String date) {
+        if (date == null) return null;
+        return LocalDateSerializer.getInstance()
+                .parse(date, DateTimeSerializer.FORMATTER_FRIENDLY_DATE);
+    }
 }
