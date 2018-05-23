@@ -56,57 +56,84 @@ public class DateTimeHelper {
     }
 
     public static String formatDate(LocalDate date) {
-        return formatDateImpl(date, false);
+        return formatDateImpl(date, false, false);
     }
 
     public static String formatDate(ZonedDateTime date) {
-        return formatDateImpl(date, false);
+        return formatDateImpl(date, false, false);
     }
 
     public static String formatDate(Instant date) {
-        return formatDateImpl(date, false);
+        return formatDateImpl(date, false, false);
+    }
+
+    public static String formatDateYear(LocalDate date) {
+        return formatDateImpl(date, false, true);
+    }
+
+    public static String formatDateYear(ZonedDateTime date) {
+        return formatDateImpl(date, false, true);
+    }
+
+    public static String formatDateYear(Instant date) {
+        return formatDateImpl(date, false, true);
     }
 
     public static String formatDateFriendly(LocalDate date) {
-        return formatDateImpl(date, true);
+        return formatDateImpl(date, true, false);
     }
 
     public static String formatDateFriendly(ZonedDateTime date) {
-        return formatDateImpl(date, true);
+        return formatDateImpl(date, true, false);
     }
 
     public static String formatDateFriendly(Instant date) {
-        return formatDateImpl(date, true);
+        return formatDateImpl(date, true, false);
     }
 
-    private static String formatDateImpl(LocalDate date, boolean friendly) {
+    public static String formatDateYearFriendly(LocalDate date) {
+        return formatDateImpl(date, false, true);
+    }
+
+    public static String formatDateYearFriendly(ZonedDateTime date) {
+        return formatDateImpl(date, false, true);
+    }
+
+    public static String formatDateYearFriendly(Instant date) {
+        return formatDateImpl(date, false, true);
+    }
+
+    private static String formatDateImpl(LocalDate date, boolean friendly, boolean year) {
         if (date == null) return null;
         // Return date in format "MMM dd" (uppercase).
         return DateTimeHelper.isToday(date) && friendly
                 ? STATUS_TODAY
                 : LocalDateSerializer.getInstance()
-                .format(date, DateTimeSerializer.FORMATTER_FRIENDLY_DATE)
+                .format(date, year ?
+                        DateTimeSerializer.FORMATTER_FRIENDLY_DATE_YEAR : DateTimeSerializer.FORMATTER_FRIENDLY_DATE)
                 .toUpperCase(Locale.ENGLISH);
     }
 
-    private static String formatDateImpl(ZonedDateTime date, boolean friendly) {
+    private static String formatDateImpl(ZonedDateTime date, boolean friendly, boolean year) {
         if (date == null) return null;
         // Return date in format "MMM dd" (uppercase).
         return DateTimeHelper.isToday(date.toLocalDate()) && friendly
                 ? STATUS_TODAY
                 : ZonedDateTimeSerializer.getInstance()
-                .format(date, DateTimeSerializer.FORMATTER_FRIENDLY_DATE)
+                .format(date, year ?
+                        DateTimeSerializer.FORMATTER_FRIENDLY_DATE_YEAR : DateTimeSerializer.FORMATTER_FRIENDLY_DATE)
                 .toUpperCase(Locale.ENGLISH);
     }
 
-    private static String formatDateImpl(Instant date, boolean friendly) {
+    private static String formatDateImpl(Instant date, boolean friendly, boolean year) {
         if (date == null) return null;
         // Return date in format "MMM dd" (uppercase).
         return DateTimeHelper.isToday(date.atZone(InstantSerializer.getInstance().defaultZoneId()).toLocalDate())
                 && friendly
                 ? STATUS_TODAY
                 : InstantSerializer.getInstance()
-                .format(date, DateTimeSerializer.FORMATTER_FRIENDLY_DATE)
+                .format(date, year ?
+                        DateTimeSerializer.FORMATTER_FRIENDLY_DATE_YEAR : DateTimeSerializer.FORMATTER_FRIENDLY_DATE)
                 .toUpperCase(Locale.ENGLISH);
     }
 
