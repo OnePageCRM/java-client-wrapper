@@ -16,12 +16,12 @@ import com.onepagecrm.net.request.PostRequest;
 import com.onepagecrm.net.request.PutRequest;
 import com.onepagecrm.net.request.Request;
 import org.threeten.bp.Instant;
+import org.threeten.bp.LocalDate;
 import org.threeten.bp.ZoneId;
 import org.threeten.bp.ZonedDateTime;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -64,9 +64,9 @@ public class Deal extends ApiResource implements Serializable {
     private Commission.Type commissionType;
     private Double commission;
     private Double commissionPercentage;
-    private Date expectedCloseDate;
-    private Date closeDate;
-    private Date date;
+    private LocalDate expectedCloseDate;
+    private LocalDate closeDate;
+    private LocalDate date;
     private Integer stage;
     private String status;
     private String text;
@@ -362,29 +362,29 @@ public class Deal extends ApiResource implements Serializable {
         return this;
     }
 
-    public Date getExpectedCloseDate() {
+    public LocalDate getExpectedCloseDate() {
         return expectedCloseDate;
     }
 
-    public Deal setExpectedCloseDate(Date expectedCloseDate) {
+    public Deal setExpectedCloseDate(LocalDate expectedCloseDate) {
         this.expectedCloseDate = expectedCloseDate;
         return this;
     }
 
-    public Date getCloseDate() {
+    public LocalDate getCloseDate() {
         return closeDate;
     }
 
-    public Deal setCloseDate(Date closeDate) {
+    public Deal setCloseDate(LocalDate closeDate) {
         this.closeDate = closeDate;
         return this;
     }
 
-    public Date getDate() {
+    public LocalDate getDate() {
         return date;
     }
 
-    public Deal setDate(Date date) {
+    public Deal setDate(LocalDate date) {
         this.date = date;
         return this;
     }

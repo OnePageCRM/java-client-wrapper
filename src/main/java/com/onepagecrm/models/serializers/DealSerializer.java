@@ -9,7 +9,6 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.Date;
 import java.util.logging.Logger;
 
 /**
@@ -66,14 +65,10 @@ public class DealSerializer extends BaseSerializer {
                 deal.setCreatedAt(InstantSerializer.getInstance().parse(dealObject.optString(CREATED_AT_TAG)));
             }
             if (dealObject.has(DATE_TAG)) {
-                String dateStr = dealObject.getString(DATE_TAG);
-                Date date = DateSerializer.fromFormattedString(dateStr);
-                deal.setDate(date);
+                deal.setDate(LocalDateSerializer.getInstance().parse(dealObject.optString(DATE_TAG)));
             }
             if (dealObject.has(EXPECTED_CLOSE_DATE_TAG)) {
-                String expectedCloseDateStr = dealObject.getString(EXPECTED_CLOSE_DATE_TAG);
-                Date expectedCloseDate = DateSerializer.fromFormattedString(expectedCloseDateStr);
-                deal.setExpectedCloseDate(expectedCloseDate);
+                deal.setExpectedCloseDate(LocalDateSerializer.getInstance().parse(dealObject.optString(EXPECTED_CLOSE_DATE_TAG)));
             }
             if (dealObject.has(MONTHS_TAG)) {
                 deal.setMonths(dealObject.getInt(MONTHS_TAG));
@@ -100,9 +95,7 @@ public class DealSerializer extends BaseSerializer {
                 deal.setHasRelatedNotes(dealObject.getBoolean(HAS_RELATED_NOTES_TAG));
             }
             if (dealObject.has(CLOSE_DATE_TAG) && !dealObject.isNull(CLOSE_DATE_TAG)) {
-                String closeDateStr = dealObject.getString(CLOSE_DATE_TAG);
-                Date closeDate = DateSerializer.fromFormattedString(closeDateStr);
-                deal.setCloseDate(closeDate);
+                deal.setCloseDate(LocalDateSerializer.getInstance().parse(dealObject.optString(CLOSE_DATE_TAG)));
             }
             if (dealObject.has(CONTACT_INFO_TAG)) {
                 JSONObject contactInfoObj = dealObject.getJSONObject(CONTACT_INFO_TAG);
@@ -168,12 +161,12 @@ public class DealSerializer extends BaseSerializer {
                 CREATED_AT_TAG
         );
         addJsonStringValue(
-                DateSerializer.toFormattedDateString(deal.getDate()),
+                LocalDateSerializer.getInstance().format(deal.getDate()),
                 dealObject,
                 DATE_TAG
         );
         addJsonStringValue(
-                DateSerializer.toFormattedDateString(deal.getExpectedCloseDate()),
+                LocalDateSerializer.getInstance().format(deal.getExpectedCloseDate()),
                 dealObject,
                 EXPECTED_CLOSE_DATE_TAG
         );
@@ -190,7 +183,7 @@ public class DealSerializer extends BaseSerializer {
         );
         addJsonBooleanValue(deal.getHasRelatedNotes(), dealObject, HAS_RELATED_NOTES_TAG);
         addJsonStringValue(
-                DateSerializer.toFormattedDateString(deal.getCloseDate()),
+                LocalDateSerializer.getInstance().format(deal.getCloseDate()),
                 dealObject,
                 CLOSE_DATE_TAG
         );

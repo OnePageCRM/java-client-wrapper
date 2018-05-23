@@ -4,8 +4,8 @@ import com.onepagecrm.BaseTest;
 import com.onepagecrm.models.Deal;
 import com.onepagecrm.models.DealList;
 import com.onepagecrm.models.internal.Commission;
-import com.onepagecrm.models.serializers.DateSerializer;
 import org.threeten.bp.Instant;
+import org.threeten.bp.LocalDate;
 
 /**
  * @author Cillian Myles <cillian@onepagecrm.com> on 16/02/2016.
@@ -20,9 +20,9 @@ public class DealFabricatorTest extends BaseTest {
         assertEquals("Cillian M.", deal.getAuthor());
         assertEquals("Deal note for Falcon 9", deal.getText());
         assertEquals("56fa805fefa9dd4d3502ab25", deal.getContactId());
-        assertEquals(DateSerializer.fromFormattedString("2016-03-29"), deal.getDate());
-        assertEquals(DateSerializer.fromFormattedString("2016-03-30"), deal.getExpectedCloseDate());
-        assertEquals(DateSerializer.fromFormattedString(null), deal.getCloseDate());
+        assertEquals(LocalDate.parse("2016-03-29"), deal.getDate());
+        assertEquals(LocalDate.parse("2016-03-30"), deal.getExpectedCloseDate());
+        assertNull(deal.getCloseDate());
         assertEquals(Instant.parse("2016-03-29T13:20:48Z"), deal.getCreatedAt());
         assertEquals(Instant.parse("2016-03-29T13:20:48Z"), deal.getModifiedAt());
         assertTrue(deal.getMonths() != null && deal.getMonths() == 1);
@@ -44,9 +44,9 @@ public class DealFabricatorTest extends BaseTest {
                 "I am even going to add some more text to this note right here. Let's see if we can read this or " +
                 "if it ellipsizes. Now it must surely ellipsize. Please please please.", deal.getText());
         assertEquals("56fa805fefa9dd4d3502ab2b", deal.getContactId());
-        assertEquals(DateSerializer.fromFormattedString("2016-08-02"), deal.getDate());
-        assertEquals(DateSerializer.fromFormattedString("2016-03-29"), deal.getExpectedCloseDate());
-        assertEquals(DateSerializer.fromFormattedString(null), deal.getCloseDate());
+        assertEquals(LocalDate.parse("2016-08-02"), deal.getDate());
+        assertEquals(LocalDate.parse("2016-03-29"), deal.getExpectedCloseDate());
+        assertNull(deal.getCloseDate());
         assertEquals(Instant.parse("2016-03-29T13:19:46Z"), deal.getCreatedAt());
         assertEquals(Instant.parse("2016-08-03T09:34:04Z"), deal.getModifiedAt());
         assertTrue(deal.getMonths() != null && deal.getMonths() == 12);
@@ -66,15 +66,15 @@ public class DealFabricatorTest extends BaseTest {
         assertEquals("Cillian M.", deal.getAuthor());
         assertEquals("Sample text", deal.getText());
         assertEquals("56fa805fefa9dd4d3502ab2b", deal.getContactId());
-        assertEquals(DateSerializer.fromFormattedString("2016-07-20"), deal.getDate());
-        assertEquals(DateSerializer.fromFormattedString(null), deal.getExpectedCloseDate());
-        assertEquals(DateSerializer.fromFormattedString("2016-07-20"), deal.getCloseDate());
+        assertEquals(LocalDate.parse("2016-07-20"), deal.getDate());
+        assertNull(deal.getExpectedCloseDate());
+        assertEquals(LocalDate.parse("2016-07-20"), deal.getCloseDate());
         assertEquals(Instant.parse("2016-06-16T15:42:13Z"), deal.getCreatedAt());
         assertEquals(Instant.parse("2016-07-20T10:55:21Z"), deal.getModifiedAt());
         assertTrue(deal.getMonths() != null && deal.getMonths() == 1);
         assertEquals("Tester deal", deal.getName());
         assertEquals("556cb8b61787fa02e000047e", deal.getOwnerId());
-        assertTrue(deal.getStage() == null);
+        assertNull(deal.getStage());
         assertEquals("won", deal.getStatus());
         assertEquals(234.5d, deal.getTotalAmount());
         assertTrue(deal.getHasRelatedNotes() != null && !deal.getHasRelatedNotes());
@@ -87,15 +87,15 @@ public class DealFabricatorTest extends BaseTest {
         assertEquals(13d, deal.getAmount());
         assertEquals("Cillian M.", deal.getAuthor());
         assertEquals("56fa805fefa9dd4d3502ab2b", deal.getContactId());
-        assertEquals(DateSerializer.fromFormattedString("2016-06-16"), deal.getDate());
-        assertEquals(DateSerializer.fromFormattedString(null), deal.getExpectedCloseDate());
-        assertEquals(DateSerializer.fromFormattedString("2016-06-16"), deal.getCloseDate());
+        assertEquals(LocalDate.parse("2016-06-16"), deal.getDate());
+        assertNull(deal.getExpectedCloseDate());
+        assertEquals(LocalDate.parse("2016-06-16"), deal.getCloseDate());
         assertEquals(Instant.parse("2016-06-16T15:43:39Z"), deal.getCreatedAt());
         assertEquals(Instant.parse("2016-06-16T15:43:39Z"), deal.getModifiedAt());
         assertTrue(deal.getMonths() != null && deal.getMonths() == 1);
         assertEquals("Tester2", deal.getName());
         assertEquals("556cb8b61787fa02e000047e", deal.getOwnerId());
-        assertTrue(deal.getStage() == null);
+        assertNull(deal.getStage());
         assertEquals("lost", deal.getStatus());
         assertEquals(13d, deal.getTotalAmount());
         assertTrue(deal.getHasRelatedNotes() != null && !deal.getHasRelatedNotes());
