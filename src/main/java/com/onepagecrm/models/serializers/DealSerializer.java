@@ -63,9 +63,7 @@ public class DealSerializer extends BaseSerializer {
                 deal.setContactId(dealObject.getString(CONTACT_ID_TAG));
             }
             if (dealObject.has(CREATED_AT_TAG)) {
-                String createdAtStr = dealObject.getString(CREATED_AT_TAG);
-                Date createdAt = DateSerializer.fromFormattedString(createdAtStr);
-                deal.setCreatedAt(createdAt);
+                deal.setCreatedAt(InstantSerializer.getInstance().parse(dealObject.optString(CREATED_AT_TAG)));
             }
             if (dealObject.has(DATE_TAG)) {
                 String dateStr = dealObject.getString(DATE_TAG);
@@ -96,9 +94,7 @@ public class DealSerializer extends BaseSerializer {
                 deal.setTotalAmount(dealObject.getDouble(TOTAL_AMOUNT_TAG));
             }
             if (dealObject.has(MODIFIED_AT_TAG)) {
-                String modifiedAtStr = dealObject.getString(MODIFIED_AT_TAG);
-                Date modifiedAt = DateSerializer.fromFormattedString(modifiedAtStr);
-                deal.setModifiedAt(modifiedAt);
+                deal.setModifiedAt(InstantSerializer.getInstance().parse(dealObject.optString(MODIFIED_AT_TAG)));
             }
             if (dealObject.has(HAS_RELATED_NOTES_TAG)) {
                 deal.setHasRelatedNotes(dealObject.getBoolean(HAS_RELATED_NOTES_TAG));
@@ -167,7 +163,7 @@ public class DealSerializer extends BaseSerializer {
         addJsonStringValue(deal.getText(), dealObject, TEXT_TAG);
         addJsonStringValue(deal.getContactId(), dealObject, CONTACT_ID_TAG);
         addJsonStringValue(
-                DateSerializer.toFormattedDateTimeString(deal.getCreatedAt()),
+                InstantSerializer.getInstance().format(deal.getCreatedAt()),
                 dealObject,
                 CREATED_AT_TAG
         );
@@ -188,7 +184,7 @@ public class DealSerializer extends BaseSerializer {
         addJsonStringValue(deal.getStatus(), dealObject, STATUS_TAG);
         addJsonDoubleValue(deal.getTotalAmount(), dealObject, TOTAL_AMOUNT_TAG);
         addJsonStringValue(
-                DateSerializer.toFormattedDateTimeString(deal.getModifiedAt()),
+                InstantSerializer.getInstance().format(deal.getModifiedAt()),
                 dealObject,
                 MODIFIED_AT_TAG
         );

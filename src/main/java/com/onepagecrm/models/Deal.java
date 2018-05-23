@@ -15,6 +15,9 @@ import com.onepagecrm.net.request.GetRequest;
 import com.onepagecrm.net.request.PostRequest;
 import com.onepagecrm.net.request.PutRequest;
 import com.onepagecrm.net.request.Request;
+import org.threeten.bp.Instant;
+import org.threeten.bp.ZoneId;
+import org.threeten.bp.ZonedDateTime;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -71,8 +74,8 @@ public class Deal extends ApiResource implements Serializable {
 
     // Read-only members.
     private String author;
-    private Date createdAt;
-    private Date modifiedAt;
+    private Instant createdAt;
+    private Instant modifiedAt;
     private Boolean hasRelatedNotes;
     private ContactInfo contactInfo;
     private List<Note> relatedNotes;
@@ -433,20 +436,28 @@ public class Deal extends ApiResource implements Serializable {
         return this;
     }
 
-    public Date getCreatedAt() {
+    public Instant getCreatedAt() {
         return createdAt;
     }
 
-    public Deal setCreatedAt(Date createdAt) {
+    public ZonedDateTime getCreatedAt(ZoneId zoneId) {
+        return createdAt != null ? ZonedDateTime.ofInstant(createdAt, zoneId) : null;
+    }
+
+    public Deal setCreatedAt(Instant createdAt) {
         this.createdAt = createdAt;
         return this;
     }
 
-    public Date getModifiedAt() {
+    public Instant getModifiedAt() {
         return modifiedAt;
     }
 
-    public Deal setModifiedAt(Date modifiedAt) {
+    public ZonedDateTime getModifiedAt(ZoneId zoneId) {
+        return modifiedAt != null ? ZonedDateTime.ofInstant(modifiedAt, zoneId) : null;
+    }
+
+    public Deal setModifiedAt(Instant modifiedAt) {
         this.modifiedAt = modifiedAt;
         return this;
     }

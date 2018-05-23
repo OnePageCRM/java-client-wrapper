@@ -5,6 +5,7 @@ import com.onepagecrm.models.Deal;
 import com.onepagecrm.models.DealList;
 import com.onepagecrm.models.internal.Commission;
 import com.onepagecrm.models.serializers.DateSerializer;
+import org.threeten.bp.Instant;
 
 /**
  * @author Cillian Myles <cillian@onepagecrm.com> on 16/02/2016.
@@ -22,8 +23,8 @@ public class DealFabricatorTest extends BaseTest {
         assertEquals(DateSerializer.fromFormattedString("2016-03-29"), deal.getDate());
         assertEquals(DateSerializer.fromFormattedString("2016-03-30"), deal.getExpectedCloseDate());
         assertEquals(DateSerializer.fromFormattedString(null), deal.getCloseDate());
-        assertEquals(DateSerializer.fromFormattedString("2016-03-29T13:20:48Z"), deal.getCreatedAt());
-        assertEquals(DateSerializer.fromFormattedString("2016-03-29T13:20:48Z"), deal.getModifiedAt());
+        assertEquals(Instant.parse("2016-03-29T13:20:48Z"), deal.getCreatedAt());
+        assertEquals(Instant.parse("2016-03-29T13:20:48Z"), deal.getModifiedAt());
         assertTrue(deal.getMonths() != null && deal.getMonths() == 1);
         assertEquals("Falcon 9", deal.getName());
         assertEquals("556cb8b61787fa02e000047e", deal.getOwnerId());
@@ -46,8 +47,8 @@ public class DealFabricatorTest extends BaseTest {
         assertEquals(DateSerializer.fromFormattedString("2016-08-02"), deal.getDate());
         assertEquals(DateSerializer.fromFormattedString("2016-03-29"), deal.getExpectedCloseDate());
         assertEquals(DateSerializer.fromFormattedString(null), deal.getCloseDate());
-        assertEquals(DateSerializer.fromFormattedString("2016-03-29T13:19:46Z"), deal.getCreatedAt());
-        assertEquals(DateSerializer.fromFormattedString("2016-08-03T09:34:04Z"), deal.getModifiedAt());
+        assertEquals(Instant.parse("2016-03-29T13:19:46Z"), deal.getCreatedAt());
+        assertEquals(Instant.parse("2016-08-03T09:34:04Z"), deal.getModifiedAt());
         assertTrue(deal.getMonths() != null && deal.getMonths() == 12);
         assertEquals("Big deal", deal.getName());
         assertEquals("556cb8b61787fa02e000047e", deal.getOwnerId());
@@ -68,8 +69,8 @@ public class DealFabricatorTest extends BaseTest {
         assertEquals(DateSerializer.fromFormattedString("2016-07-20"), deal.getDate());
         assertEquals(DateSerializer.fromFormattedString(null), deal.getExpectedCloseDate());
         assertEquals(DateSerializer.fromFormattedString("2016-07-20"), deal.getCloseDate());
-        assertEquals(DateSerializer.fromFormattedString("2016-06-16T15:42:13Z"), deal.getCreatedAt());
-        assertEquals(DateSerializer.fromFormattedString("2016-07-20T10:55:21Z"), deal.getModifiedAt());
+        assertEquals(Instant.parse("2016-06-16T15:42:13Z"), deal.getCreatedAt());
+        assertEquals(Instant.parse("2016-07-20T10:55:21Z"), deal.getModifiedAt());
         assertTrue(deal.getMonths() != null && deal.getMonths() == 1);
         assertEquals("Tester deal", deal.getName());
         assertEquals("556cb8b61787fa02e000047e", deal.getOwnerId());
@@ -89,8 +90,8 @@ public class DealFabricatorTest extends BaseTest {
         assertEquals(DateSerializer.fromFormattedString("2016-06-16"), deal.getDate());
         assertEquals(DateSerializer.fromFormattedString(null), deal.getExpectedCloseDate());
         assertEquals(DateSerializer.fromFormattedString("2016-06-16"), deal.getCloseDate());
-        assertEquals(DateSerializer.fromFormattedString("2016-06-16T15:43:39Z"), deal.getCreatedAt());
-        assertEquals(DateSerializer.fromFormattedString("2016-06-16T15:43:39Z"), deal.getModifiedAt());
+        assertEquals(Instant.parse("2016-06-16T15:43:39Z"), deal.getCreatedAt());
+        assertEquals(Instant.parse("2016-06-16T15:43:39Z"), deal.getModifiedAt());
         assertTrue(deal.getMonths() != null && deal.getMonths() == 1);
         assertEquals("Tester2", deal.getName());
         assertEquals("556cb8b61787fa02e000047e", deal.getOwnerId());
