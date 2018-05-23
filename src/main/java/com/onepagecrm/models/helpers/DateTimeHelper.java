@@ -55,38 +55,63 @@ public class DateTimeHelper {
                 : DateTimeSerializer.FORMATTER_FRIENDLY_TIME_AM_PM_DATE_YEAR;
     }
 
-    public static String formatFriendlyDate(LocalDate date) {
+    public static String formatDate(LocalDate date) {
+        return formatDateImpl(date, false);
+    }
+
+    public static String formatDate(ZonedDateTime date) {
+        return formatDateImpl(date, false);
+    }
+
+    public static String formatDate(Instant date) {
+        return formatDateImpl(date, false);
+    }
+
+    public static String formatDateFriendly(LocalDate date) {
+        return formatDateImpl(date, true);
+    }
+
+    public static String formatDateFriendly(ZonedDateTime date) {
+        return formatDateImpl(date, true);
+    }
+
+    public static String formatDateFriendly(Instant date) {
+        return formatDateImpl(date, true);
+    }
+
+    private static String formatDateImpl(LocalDate date, boolean friendly) {
         if (date == null) return null;
         // Return date in format "MMM dd" (uppercase).
-        return DateTimeHelper.isToday(date)
+        return DateTimeHelper.isToday(date) && friendly
                 ? STATUS_TODAY
                 : LocalDateSerializer.getInstance()
                 .format(date, DateTimeSerializer.FORMATTER_FRIENDLY_DATE)
                 .toUpperCase(Locale.ENGLISH);
     }
 
-    public static String formatFriendlyDate(ZonedDateTime date) {
+    private static String formatDateImpl(ZonedDateTime date, boolean friendly) {
         if (date == null) return null;
         // Return date in format "MMM dd" (uppercase).
-        return DateTimeHelper.isToday(date.toLocalDate())
+        return DateTimeHelper.isToday(date.toLocalDate()) && friendly
                 ? STATUS_TODAY
                 : ZonedDateTimeSerializer.getInstance()
                 .format(date, DateTimeSerializer.FORMATTER_FRIENDLY_DATE)
                 .toUpperCase(Locale.ENGLISH);
     }
 
-    public static String formatFriendlyDate(Instant date) {
+    private static String formatDateImpl(Instant date, boolean friendly) {
         if (date == null) return null;
         // Return date in format "MMM dd" (uppercase).
         return DateTimeHelper.isToday(date.atZone(InstantSerializer.getInstance().defaultZoneId()).toLocalDate())
+                && friendly
                 ? STATUS_TODAY
                 : InstantSerializer.getInstance()
                 .format(date, DateTimeSerializer.FORMATTER_FRIENDLY_DATE)
                 .toUpperCase(Locale.ENGLISH);
     }
 
-    public static LocalDate fromFriendlyDate(String date) {
-        if (date == null) return null;
+    public static LocalDate parseDateFriendly(String date) {
+        if (TextHelper.isEmpty(date)) return null;
         return LocalDateSerializer.getInstance()
                 .parse(date, DateTimeSerializer.FORMATTER_FRIENDLY_DATE);
     }

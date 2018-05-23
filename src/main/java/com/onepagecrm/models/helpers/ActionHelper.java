@@ -94,7 +94,7 @@ public class ActionHelper {
 
         if (action.getDate() != null) {
             // Return date in format "MMM dd" (uppercase).
-            return DateTimeHelper.formatFriendlyDate(action.getDate());
+            return DateTimeHelper.formatDateFriendly(action.getDate());
 
         } else if (action.getStatus() != null) {
             // Return status (uppercase).
