@@ -29,18 +29,21 @@ public class DateTimeHelperTest {
     // Yesterday / 2018-05-22 / May 22, 2018
     private LocalDate mYesterdayDate;
     private String mYesterdayFormatted;
+    private String mYesterdayFormattedYear;
     private String mYesterdayFormattedFriendly;
     private String mYesterdayFormattedYearFriendly;
 
     // Today / 2018-05-23 / TODAY
     private LocalDate mTodayDate;
     private String mTodayFormatted;
+    private String mTodayFormattedYear;
     private String mTodayFormattedFriendly;
     private String mTodayFormattedYearFriendly;
 
     // Tomorrow / 2018-05-24 / May 24, 2018
     private LocalDate mTomorrowDate;
     private String mTomorrowFormatted;
+    private String mTomorrowFormattedYear;
     private String mTomorrowFormattedFriendly;
     private String mTomorrowFormattedYearFriendly;
 
@@ -53,17 +56,20 @@ public class DateTimeHelperTest {
     @Before
     public void setUp() throws Exception {
         mYesterdayDate = TODAY.minusDays(1);
-        mYesterdayFormatted = "2018-05-22";
+        mYesterdayFormatted = "May 22";
+        mYesterdayFormattedYear = "May 22, 2018";
         mYesterdayFormattedFriendly = "May 22";
         mYesterdayFormattedYearFriendly = "May 22, 2018";
 
         mTodayDate = TODAY;
-        mTodayFormatted = "2018-05-23";
+        mTodayFormatted = "May 23";
+        mTodayFormattedYear = "May 23, 2018";
         mTodayFormattedFriendly = "TODAY";
         mTodayFormattedYearFriendly = "TODAY";
 
         mTomorrowDate = TODAY.plusDays(1);
-        mTomorrowFormatted = "2018-05-24";
+        mTomorrowFormatted = "May 24";
+        mTomorrowFormattedYear = "May 24, 2018";
         mTomorrowFormattedFriendly = "May 24";
         mTomorrowFormattedYearFriendly = "May 24, 2018";
     }
@@ -79,7 +85,7 @@ public class DateTimeHelperTest {
     }
 
     @Test
-    public void formatDate() {
+    public void formatDate() throws Exception {
         assertEquals("Formatted date does not match",
                 mYesterdayFormatted,
                 DateTimeHelper.formatDate(mYesterdayDate));
@@ -94,22 +100,22 @@ public class DateTimeHelperTest {
     }
 
     @Test
-    public void formatDateYear() {
+    public void formatDateYear() throws Exception {
         assertEquals("Formatted date does not match",
-                mYesterdayFormatted,
+                mYesterdayFormattedYear,
                 DateTimeHelper.formatDateYear(mYesterdayDate));
 
         assertEquals("Formatted date does not match",
-                mTodayFormatted,
+                mTodayFormattedYear,
                 DateTimeHelper.formatDateYear(mTodayDate));
 
         assertEquals("Formatted date does not match",
-                mTomorrowFormatted,
+                mTomorrowFormattedYear,
                 DateTimeHelper.formatDateYear(mTomorrowDate));
     }
 
     @Test
-    public void formatDateFriendly() {
+    public void formatDateFriendly() throws Exception {
         assertEquals("Formatted date does not match",
                 mYesterdayFormattedFriendly,
                 DateTimeHelper.formatDateFriendly(mYesterdayDate));
@@ -124,7 +130,7 @@ public class DateTimeHelperTest {
     }
 
     @Test
-    public void formatDateYearFriendly() {
+    public void formatDateYearFriendly() throws Exception {
         assertEquals("Formatted date does not match",
                 mYesterdayFormattedYearFriendly,
                 DateTimeHelper.formatDateYearFriendly(mYesterdayDate));

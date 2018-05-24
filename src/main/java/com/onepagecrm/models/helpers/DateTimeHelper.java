@@ -103,33 +103,27 @@ public class DateTimeHelper {
 
     private static String formatDateImpl(LocalDate date, boolean friendly, boolean year) {
         if (date == null) return null;
-        final DateTimeFormatter formatter = !friendly
-                ? LocalDateSerializer.getInstance().defaultFormatter()
-                : year ? DateTimeSerializer.FORMATTER_FRIENDLY_DATE_YEAR : DateTimeSerializer.FORMATTER_FRIENDLY_DATE;
         return DateTimeHelper.isToday(date) && friendly
                 ? STATUS_TODAY
-                : LocalDateSerializer.getInstance().format(date, formatter);
+                : LocalDateSerializer.getInstance().format(date,
+                year ? DateTimeSerializer.FORMATTER_FRIENDLY_DATE_YEAR : DateTimeSerializer.FORMATTER_FRIENDLY_DATE);
     }
 
     private static String formatDateImpl(ZonedDateTime date, boolean friendly, boolean year) {
         if (date == null) return null;
-        final DateTimeFormatter formatter = !friendly
-                ? LocalDateSerializer.getInstance().defaultFormatter()
-                : year ? DateTimeSerializer.FORMATTER_FRIENDLY_DATE_YEAR : DateTimeSerializer.FORMATTER_FRIENDLY_DATE;
         return DateTimeHelper.isToday(date.toLocalDate()) && friendly
                 ? STATUS_TODAY
-                : ZonedDateTimeSerializer.getInstance().format(date, formatter);
+                : ZonedDateTimeSerializer.getInstance().format(date,
+                year ? DateTimeSerializer.FORMATTER_FRIENDLY_DATE_YEAR : DateTimeSerializer.FORMATTER_FRIENDLY_DATE);
     }
 
     private static String formatDateImpl(Instant date, boolean friendly, boolean year) {
         if (date == null) return null;
-        final DateTimeFormatter formatter = !friendly
-                ? LocalDateSerializer.getInstance().defaultFormatter()
-                : year ? DateTimeSerializer.FORMATTER_FRIENDLY_DATE_YEAR : DateTimeSerializer.FORMATTER_FRIENDLY_DATE;
         return DateTimeHelper.isToday(date.atZone(InstantSerializer.getInstance().defaultZoneId()).toLocalDate())
                 && friendly
                 ? STATUS_TODAY
-                : InstantSerializer.getInstance().format(date, formatter);
+                : InstantSerializer.getInstance().format(date,
+                year ? DateTimeSerializer.FORMATTER_FRIENDLY_DATE_YEAR : DateTimeSerializer.FORMATTER_FRIENDLY_DATE);
     }
 
     public static LocalDate parseDateFriendly(String date) {
