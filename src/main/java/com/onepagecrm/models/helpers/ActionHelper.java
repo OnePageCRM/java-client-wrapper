@@ -6,7 +6,6 @@ import com.onepagecrm.models.internal.PredefinedAction;
 import com.onepagecrm.models.serializers.DateTimeSerializer;
 import com.onepagecrm.models.serializers.LocalDateSerializer;
 import com.onepagecrm.models.serializers.ZonedDateTimeSerializer;
-import org.threeten.bp.Instant;
 import org.threeten.bp.LocalDate;
 import org.threeten.bp.LocalDateTime;
 import org.threeten.bp.ZoneId;
@@ -145,63 +144,6 @@ public class ActionHelper {
                 ? action.getExactTime(zoneId)
                 : defaultDateTime(zoneId);
         return ZonedDateTimeSerializer.getInstance().format(exactTime, DateTimeHelper.timeDateYearFormat(is24hr));
-    }
-
-    // ----------------------------------------
-    // TODO: use below 2 methods or remove them!!
-
-    public static Action extractDate(ZoneId zoneId, boolean is24hr, Action action, String dateString) {
-        if (TextHelper.isEmpty(dateString)) {
-            return action;
-        }
-        if (action == null) {
-            action = new Action();
-        }
-
-        final Instant instant = parseDate(zoneId, is24hr, action.getStatus(), dateString);
-        final LocalDate date = instant != null ? LocalDateTime.ofInstant(instant, zoneId).toLocalDate() : null;
-
-        if (action.getStatus() == null) {
-            action.setStatus(Action.Status.OTHER); // TODO: verify!?
-        }
-
-        switch (action.getStatus()) {
-            case DATE:
-            case QUEUED_WITH_DATE: {
-                action.setDate(date);
-                break;
-            }
-            case DATE_TIME: {
-                action.setExactTime(instant);
-                action.setDate(date);
-                break;
-            }
-        }
-
-        return action;
-    }
-
-    public static Instant parseDate(ZoneId zoneId, boolean is24hr, Action.Status status, String dateString) {
-        if (status == null) {
-            status = Action.Status.DATE;
-        }
-
-        ZonedDateTime dateTime;
-
-        switch (status) {
-            default: {
-                dateTime = ZonedDateTimeSerializer.getInstance().parse(
-                        dateString, zoneId, DateTimeSerializer.FORMATTER_FRIENDLY_DATE_YEAR);
-                break;
-            }
-            case DATE_TIME: {
-                dateTime = ZonedDateTimeSerializer.getInstance().parse(
-                        dateString, zoneId, DateTimeHelper.timeDateYearFormat(is24hr));
-                break;
-            }
-        }
-
-        return dateTime != null ? dateTime.toInstant() : null;
     }
 
     /*

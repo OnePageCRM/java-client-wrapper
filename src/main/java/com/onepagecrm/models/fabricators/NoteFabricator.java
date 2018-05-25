@@ -38,13 +38,10 @@ public class NoteFabricator extends BaseFabricator {
                 .setAuthor("Cillian M.")
                 .setText(linkedDeal.getText() + "... NOTE")
                 .setContactId(linkedDeal.getContactId())
-                //.setDate(linkedDeal.getExpectedCloseDate()) // TODO: change once deals updated
-                .setDate(LocalDateSerializer.getInstance().parse("2016-05-24"))
+                .setDate(linkedDeal.getExpectedCloseDate())
                 .setLinkedDealId(linkedDeal.getId())
-                //.setCreatedAt(linkedDeal.getCreatedAt())
-                //.setModifiedAt(linkedDeal.getModifiedAt());
-                .setCreatedAt(InstantSerializer.getInstance().parse("2016-05-24T15:13:05Z"))
-                .setModifiedAt(InstantSerializer.getInstance().parse("2016-05-24T15:13:05Z"));
+                .setCreatedAt(linkedDeal.getCreatedAt())
+                .setModifiedAt(linkedDeal.getModifiedAt());
     }
 
     public static List<Note> list() {
