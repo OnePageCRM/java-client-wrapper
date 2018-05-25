@@ -28,6 +28,7 @@ public abstract class DateTimeSerializer<T extends DefaultInterfaceTemporalAcces
 
     // Friendly (mixes).
     public static final String PATTERN_FRIENDLY_TIME = "HH:mm";
+    public static final String PATTERN_FRIENDLY_TIME_12_HR = "hh:mm";
     public static final String PATTERN_FRIENDLY_TIME_AM_PM = "hh:mma";
     public static final String PATTERN_FRIENDLY_DATE = "MMM dd";
     public static final String PATTERN_FRIENDLY_DATE_YEAR = "MMM dd, yyyy";
@@ -43,14 +44,14 @@ public abstract class DateTimeSerializer<T extends DefaultInterfaceTemporalAcces
 
     public static final DateTimeFormatter FORMATTER_FRIENDLY_TIME = ofPattern(PATTERN_FRIENDLY_TIME);
     public static final DateTimeFormatter FORMATTER_FRIENDLY_TIME_AM_PM = new DateTimeFormatterBuilder()
-            .appendPattern(PATTERN_FRIENDLY_TIME)
+            .appendPattern(PATTERN_FRIENDLY_TIME_12_HR)
             .appendText(ChronoField.AMPM_OF_DAY, AM_PM_LOOKUP)
             .toFormatter(); // "hh:mma" | PATTERN_FRIENDLY_TIME_AM_PM
     public static final DateTimeFormatter FORMATTER_FRIENDLY_DATE = ofPattern(PATTERN_FRIENDLY_DATE);
     public static final DateTimeFormatter FORMATTER_FRIENDLY_DATE_YEAR = ofPattern(PATTERN_FRIENDLY_DATE_YEAR);
     public static final DateTimeFormatter FORMATTER_FRIENDLY_TIME_DATE_YEAR = ofPattern(PATTERN_FRIENDLY_TIME_DATE_YEAR);
     public static final DateTimeFormatter FORMATTER_FRIENDLY_TIME_AM_PM_DATE_YEAR = new DateTimeFormatterBuilder()
-            .appendPattern(PATTERN_FRIENDLY_TIME)
+            .appendPattern(PATTERN_FRIENDLY_TIME_12_HR)
             .appendText(ChronoField.AMPM_OF_DAY, AM_PM_LOOKUP)
             .appendPattern(String.format(" %s", PATTERN_FRIENDLY_DATE_YEAR))
             .toFormatter(); // "hh:mma MMM dd, yyyy" | PATTERN_FRIENDLY_TIME_AM_PM_DATE_YEAR
