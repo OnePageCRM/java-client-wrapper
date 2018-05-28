@@ -65,7 +65,7 @@ public class Note extends ApiResource implements Serializable {
 
     private Note update() throws OnePageException {
         Request request = new PutRequest(
-                withId(NOTES_ENDPOINT, this.id),
+                withId(NOTES_ENDPOINT),
                 null,
                 NoteSerializer.toJsonObject(this)
         );
@@ -80,7 +80,7 @@ public class Note extends ApiResource implements Serializable {
     }
 
     public DeleteResult delete() throws OnePageException {
-        Request request = new DeleteRequest(withId(NOTES_ENDPOINT, this.id));
+        Request request = new DeleteRequest(withId(NOTES_ENDPOINT));
         Response response = request.send();
         return DeleteResultSerializer.fromString(this.id, response.getResponseBody());
     }

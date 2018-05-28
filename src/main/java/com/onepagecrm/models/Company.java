@@ -80,7 +80,7 @@ public class Company extends ApiResource implements Serializable {
 
     private Company update() throws OnePageException {
         Request request = new PutRequest(
-                withId(COMPANIES_ENDPOINT, this.id),
+                withId(COMPANIES_ENDPOINT),
                 null,
                 CompanySerializer.toJsonObject(this)
         );
@@ -91,9 +91,9 @@ public class Company extends ApiResource implements Serializable {
         return company;
     }
 
-    public static Company byId(String companyId) throws OnePageException {
+    public static Company byId(String id) throws OnePageException {
         Request request = new GetRequest(
-                withId(COMPANIES_ENDPOINT, companyId),
+                withId(COMPANIES_ENDPOINT, id),
                 null
         );
         Response response = request.send();
@@ -103,7 +103,7 @@ public class Company extends ApiResource implements Serializable {
 
     public Company partial(Company updateValues) throws OnePageException {
         Request request = new PutRequest(
-                withId(COMPANIES_ENDPOINT, this.id),
+                withId(COMPANIES_ENDPOINT),
                 "?" + QUERY_PARTIAL,
                 CompanySerializer.toJsonObject(updateValues)
         );
