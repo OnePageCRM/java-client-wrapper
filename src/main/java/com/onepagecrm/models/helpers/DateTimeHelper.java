@@ -41,13 +41,13 @@ public class DateTimeHelper {
         return Instant.now(SystemClock.getInstance());
     }
 
-    public static DateTimeFormatter timeFormat(boolean is24hr) { // DateSerializer#getDateTimeYearFormat
+    public static DateTimeFormatter timeFormat(boolean is24hr) {
         return is24hr
                 ? DateTimeSerializer.FORMATTER_FRIENDLY_TIME
                 : DateTimeSerializer.FORMATTER_FRIENDLY_TIME_AM_PM;
     }
 
-    public static DateTimeFormatter timeDateYearFormat(boolean is24hr) { // DateSerializer#getDateTimeYearFormat
+    public static DateTimeFormatter timeDateYearFormat(boolean is24hr) {
         return is24hr
                 ? DateTimeSerializer.FORMATTER_FRIENDLY_TIME_DATE_YEAR
                 : DateTimeSerializer.FORMATTER_FRIENDLY_TIME_AM_PM_DATE_YEAR;

@@ -87,7 +87,7 @@ public class ActionHelper {
      * Dates.
      */
 
-    public static String formatFriendlyDate(Action action) { // Action#getFriendlyDateString
+    public static String formatFriendlyDate(Action action) {
         if (action == null) {
             return null;
         }
