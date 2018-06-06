@@ -35,6 +35,7 @@ public class Note extends ApiResource implements Serializable {
     private String contactId;
     private Date date;
     private String linkedDealId;
+    private List<String> userIdsToNotify;
     private List<Attachment> attachments;
     private Date createdAt;
     private Date modifiedAt;
@@ -208,6 +209,15 @@ public class Note extends ApiResource implements Serializable {
 
     public Note setModifiedAt(Date modifiedAt) {
         this.modifiedAt = modifiedAt;
+        return this;
+    }
+
+    public List<String> getUserIdsToNotify() {
+        return userIdsToNotify;
+    }
+
+    public Note setUserIdsToNotify(List<String> userIdsToNotify) {
+        this.userIdsToNotify = userIdsToNotify;
         return this;
     }
 }
