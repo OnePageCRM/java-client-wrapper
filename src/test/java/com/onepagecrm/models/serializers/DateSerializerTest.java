@@ -1,11 +1,9 @@
 package com.onepagecrm.models.serializers;
 
 import com.onepagecrm.BaseTest;
+import com.onepagecrm.TestHelper;
 
-import java.util.Calendar;
 import java.util.Date;
-import java.util.GregorianCalendar;
-import java.util.TimeZone;
 
 /**
  * Created by Cillian Myles <cillian@onepagecrm.com> on 20/07/2016.
@@ -23,29 +21,8 @@ public class DateSerializerTest extends BaseTest {
     @Override
     protected void setUp() throws Exception {
         super.setUp();
-        Calendar theBeginningCal = new GregorianCalendar();
-        theBeginningCal.setTimeZone(TimeZone.getTimeZone("UTC"));
-        theBeginningCal.set(Calendar.YEAR, 1970);
-        theBeginningCal.set(Calendar.MONTH, Calendar.JANUARY);
-        theBeginningCal.set(Calendar.DAY_OF_MONTH, 1);
-        theBeginningCal.set(Calendar.AM_PM, Calendar.AM);
-        theBeginningCal.set(Calendar.HOUR, 0);
-        theBeginningCal.set(Calendar.MINUTE, 0);
-        theBeginningCal.set(Calendar.SECOND, 0);
-        theBeginningCal.set(Calendar.MILLISECOND, 0);
-        theBeginning = theBeginningCal.getTime();
-
-        Calendar theOtherCal = new GregorianCalendar();
-        theOtherCal.setTimeZone(TimeZone.getTimeZone("UTC"));
-        theOtherCal.set(Calendar.YEAR, 2016);
-        theOtherCal.set(Calendar.MONTH, Calendar.JULY);
-        theOtherCal.set(Calendar.DAY_OF_MONTH, 1);
-        theOtherCal.set(Calendar.AM_PM, Calendar.AM);
-        theOtherCal.set(Calendar.HOUR, 8);
-        theOtherCal.set(Calendar.MINUTE, 0);
-        theOtherCal.set(Calendar.SECOND, 0);
-        theOtherCal.set(Calendar.MILLISECOND, 0);
-        julyFirst2016Morning8 = theOtherCal.getTime();
+        theBeginning = TestHelper.dateTheBeginning();
+        julyFirst2016Morning8 = TestHelper.dateJuly1st2016Morning8();
     }
 
     public void testTimestampParsing() throws Exception {
