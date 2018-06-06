@@ -50,6 +50,7 @@ public class NoteSerializer extends BaseSerializer {
                 .setLinkedDealId(!noteObject.isNull(LINKED_DEAL_ID_TAG) ? noteObject.optString(LINKED_DEAL_ID_TAG) : null)
                 .setCreatedAt(InstantSerializer.getInstance().parse(noteObject.optString(CREATED_AT_TAG)))
                 .setModifiedAt(InstantSerializer.getInstance().parse(noteObject.optString(MODIFIED_AT_TAG)))
+                .setUserIdsToNotify(toListOfStrings(noteObject.optJSONArray(USER_IDS_TO_NOTIFY_TAG)))
                 .setAttachments(AttachmentSerializer.fromJsonArray(noteObject.optJSONArray(ATTACHMENTS_TAG)));
     }
 
@@ -76,6 +77,7 @@ public class NoteSerializer extends BaseSerializer {
         addJsonStringValue(note.getLinkedDealId(), noteObject, LINKED_DEAL_ID_TAG);
         addJsonStringValue(InstantSerializer.getInstance().format(note.getCreatedAt()), noteObject, CREATED_AT_TAG);
         addJsonStringValue(InstantSerializer.getInstance().format(note.getModifiedAt()), noteObject, MODIFIED_AT_TAG);
+        addJsonArray(toJsonStringArray(note.getUserIdsToNotify()), noteObject, USER_IDS_TO_NOTIFY_TAG);
         return noteObject.toString();
     }
 
