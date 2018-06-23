@@ -38,6 +38,7 @@ public class Call extends ApiResource implements Serializable {
     private String via;
     private String recordingLink;
     private String text;
+    private List<String> userIdsToNotify;
     private List<Attachment> attachments;
     private Date createdAt;
     private Date modifiedAt;
@@ -238,6 +239,15 @@ public class Call extends ApiResource implements Serializable {
 
     public Call setModifiedAt(Date modifiedAt) {
         this.modifiedAt = modifiedAt;
+        return this;
+    }
+
+    public List<String> getUserIdsToNotify() {
+        return userIdsToNotify;
+    }
+
+    public Call setUserIdsToNotify(List<String> userIdsToNotify) {
+        this.userIdsToNotify = userIdsToNotify;
         return this;
     }
 }
