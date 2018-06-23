@@ -73,7 +73,7 @@ public class CallSerializer extends BaseSerializer {
                 .setRecordingLink(callObject.optString(RECORDING_LINK_TAG))
                 .setCreatedAt(DateSerializer.fromFormattedString(callObject.optString(CREATED_AT_TAG)))
                 .setModifiedAt(DateSerializer.fromFormattedString(callObject.optString(MODIFIED_AT_TAG)))
-                .setUserIdsToNotify(toListOfStrings(callObject.optJSONArray(USER_IDS_TO_NOTIFY)))
+                .setUserIdsToNotify(toListOfStrings(callObject.optJSONArray(USER_IDS_TO_NOTIFY_TAG)))
                 .setAttachments(AttachmentSerializer.fromJsonArray(callObject.optJSONArray(ATTACHMENTS_TAG)));
     }
 
@@ -101,7 +101,7 @@ public class CallSerializer extends BaseSerializer {
         addJsonStringValue(call.getVia(), callObject, VIA_TAG);
         addJsonStringValue(call.getAuthor(), callObject, AUTHOR_TAG);
         addJsonStringValue(call.getPhoneNumber(), callObject, PHONE_NUMBER_TAG);
-        addJsonArray(toJsonStringArray(call.getUserIdsToNotify()), callObject, USER_IDS_TO_NOTIFY);
+        addJsonArray(toJsonStringArray(call.getUserIdsToNotify()), callObject, USER_IDS_TO_NOTIFY_TAG);
         return callObject.toString();
     }
 
