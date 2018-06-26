@@ -13,9 +13,11 @@ import com.onepagecrm.net.request.GetRequest;
 import com.onepagecrm.net.request.PostRequest;
 import com.onepagecrm.net.request.PutRequest;
 import com.onepagecrm.net.request.Request;
+import org.threeten.bp.Instant;
+import org.threeten.bp.ZoneId;
+import org.threeten.bp.ZonedDateTime;
 
 import java.io.Serializable;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -23,27 +25,28 @@ import java.util.Map;
 /**
  * @author Cillian Myles (cillian@onepagecrm.com) on 31/07/2017.
  */
+@SuppressWarnings("unused")
 public class Call extends ApiResource implements Serializable {
 
-    /**
+    /*
      * Member variables.
      */
 
     private String id;
     private String author;
     private CallResult callResult;
-    private Date time;
+    private Instant time;
     private String contactId;
     private String phoneNumber;
     private String via;
     private String recordingLink;
     private String text;
     private List<Attachment> attachments;
-    private Date createdAt;
-    private Date modifiedAt;
+    private Instant createdAt;
+    private Instant modifiedAt;
 
-    /**
-     * API methods
+    /*
+     * API methods.
      */
 
     public Call save() throws OnePageException {
@@ -52,7 +55,7 @@ public class Call extends ApiResource implements Serializable {
 
     private Call update() throws OnePageException {
         Request request = new PutRequest(
-                addIdToEndpoint(CALLS_ENDPOINT, this.id),
+                withId(CALLS_ENDPOINT),
                 null,
                 CallSerializer.toJsonObject(this)
         );
@@ -72,14 +75,14 @@ public class Call extends ApiResource implements Serializable {
         return CallSerializer.fromString(response.getResponseBody());
     }
 
-    public static Call byId(String callId) throws OnePageException {
-        Request request = new GetRequest(addIdToEndpoint(CALLS_ENDPOINT, callId), null);
+    public static Call byId(String id) throws OnePageException {
+        Request request = new GetRequest(withId(CALLS_ENDPOINT, id), null);
         Response response = request.send();
         return CallSerializer.fromString(response.getResponseBody());
     }
 
     public DeleteResult delete() throws OnePageException {
-        Request request = new DeleteRequest(addIdToEndpoint(CALLS_ENDPOINT, this.id));
+        Request request = new DeleteRequest(withId(CALLS_ENDPOINT));
         Response response = request.send();
         return DeleteResultSerializer.fromString(this.id, response.getResponseBody());
     }
@@ -110,21 +113,22 @@ public class Call extends ApiResource implements Serializable {
         return CallListSerializer.fromString(response.getResponseBody());
     }
 
-    private static String addIdToEndpoint(String endpoint, String callId) {
-        return endpoint + "/" + callId;
-    }
-
-    /**
-     * Utility methods
+    /*
+     * Utility methods.
      */
 
     public boolean hasAttachments() {
         return this.attachments != null && !attachments.isEmpty();
     }
 
-    /**
-     * Object methods
+    /*
+     * Object methods.
      */
+
+    @Override
+    public String toString() {
+        return CallSerializer.toJsonObject(this);
+    }
 
     @Override
     public String getId() {
@@ -135,11 +139,6 @@ public class Call extends ApiResource implements Serializable {
     public Call setId(String id) {
         this.id = id;
         return this;
-    }
-
-    @Override
-    public String toString() {
-        return CallSerializer.toJsonObject(this);
     }
 
     public String getAuthor() {
@@ -160,12 +159,21 @@ public class Call extends ApiResource implements Serializable {
         return this;
     }
 
-    public Date getTime() {
+    public Instant getTime() {
         return time;
     }
 
-    public Call setTime(Date time) {
+    public ZonedDateTime getTime(ZoneId zoneId) {
+        return time != null ? ZonedDateTime.ofInstant(time, zoneId) : null;
+    }
+
+    public Call setTime(Instant time) {
         this.time = time;
+        return this;
+    }
+
+    public Call setTime(ZonedDateTime time) {
+        this.time = time != null ? time.toInstant() : null;
         return this;
     }
 
@@ -223,20 +231,28 @@ public class Call extends ApiResource implements Serializable {
         return this;
     }
 
-    public Date getCreatedAt() {
+    public Instant getCreatedAt() {
         return createdAt;
     }
 
-    public Call setCreatedAt(Date createdAt) {
+    public ZonedDateTime getCreatedAt(ZoneId zoneId) {
+        return createdAt != null ? ZonedDateTime.ofInstant(createdAt, zoneId) : null;
+    }
+
+    public Call setCreatedAt(Instant createdAt) {
         this.createdAt = createdAt;
         return this;
     }
 
-    public Date getModifiedAt() {
+    public Instant getModifiedAt() {
         return modifiedAt;
     }
 
-    public Call setModifiedAt(Date modifiedAt) {
+    public ZonedDateTime getModifiedAt(ZoneId zoneId) {
+        return modifiedAt != null ? ZonedDateTime.ofInstant(modifiedAt, zoneId) : null;
+    }
+
+    public Call setModifiedAt(Instant modifiedAt) {
         this.modifiedAt = modifiedAt;
         return this;
     }

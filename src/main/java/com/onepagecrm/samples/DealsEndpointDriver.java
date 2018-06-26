@@ -6,8 +6,8 @@ import com.onepagecrm.models.Account;
 import com.onepagecrm.models.ContactList;
 import com.onepagecrm.models.Deal;
 import com.onepagecrm.models.User;
-import com.onepagecrm.models.serializers.DateSerializer;
 import com.onepagecrm.net.request.Request;
+import org.threeten.bp.LocalDate;
 
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -64,7 +64,7 @@ public class DealsEndpointDriver {
                 .setText("This is the regular deal text right here!")
                 .setName("Regular wrapper deal")
                 .setStage(50)
-                .setExpectedCloseDate(DateSerializer.fromFormattedString("2016-01-01"))
+                .setExpectedCloseDate(LocalDate.parse("2016-01-01"))
                 .save();
 
         Deal multiMonth = new Deal()
@@ -75,7 +75,7 @@ public class DealsEndpointDriver {
                 .setText("This is the multi-month deal text right here!")
                 .setName("Multi-month wrapper deal")
                 .setStage(25)
-                .setExpectedCloseDate(DateSerializer.fromFormattedString("2016-01-01"))
+                .setExpectedCloseDate(LocalDate.parse("2016-01-01"))
                 .save();
 
         if (regDeal.isValid() && multiMonth.isValid()) {

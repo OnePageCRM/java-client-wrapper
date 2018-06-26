@@ -1,31 +1,38 @@
 package com.onepagecrm.models.internal;
 
-import java.io.Serializable;
-import java.util.Date;
+import com.onepagecrm.models.helpers.TextHelper;
+import org.threeten.bp.Instant;
+import org.threeten.bp.ZoneId;
+import org.threeten.bp.ZonedDateTime;
 
-import static com.onepagecrm.models.internal.Utilities.notNullOrEmpty;
+import java.io.Serializable;
 
 /**
  * Created by Cillian Myles <cillian@onepagecrm.com> on 13/06/2016.
  */
+@SuppressWarnings("unused")
 public class SalesCycleClosure implements Serializable {
+
+    /*
+     * Member variables.
+     */
 
     private String contactId;
     private String userId;
-    private Date closedAt;
+    private Instant closedAt;
     private String comment;
 
-    public SalesCycleClosure() {
-
-    }
+    /*
+     * Object methods.
+     */
 
     @Override
     public boolean equals(Object object) {
-        if (object == null || !(object instanceof SalesCycleClosure)) {
+        if (!(object instanceof SalesCycleClosure)) {
             return false;
         }
         SalesCycleClosure toCompare = (SalesCycleClosure) object;
-        if (!notNullOrEmpty(userId) || !notNullOrEmpty(toCompare.getUserId())) {
+        if (TextHelper.isEmpty(userId) || TextHelper.isEmpty(toCompare.getUserId())) {
             return false;
         }
         if (!userId.equals(toCompare.getUserId())) {
@@ -33,8 +40,8 @@ public class SalesCycleClosure implements Serializable {
         }
 
         boolean lBothNull = contactId == null && toCompare.getContactId() == null;
-        boolean lSameNonNull = notNullOrEmpty(contactId)
-                && notNullOrEmpty(toCompare.getContactId())
+        boolean lSameNonNull = !TextHelper.isEmpty(contactId)
+                && !TextHelper.isEmpty(toCompare.getContactId())
                 && contactId.equals(toCompare.getContactId());
 
         return lBothNull || lSameNonNull;
@@ -58,11 +65,15 @@ public class SalesCycleClosure implements Serializable {
         return this;
     }
 
-    public Date getClosedAt() {
+    public Instant getClosedAt() {
         return closedAt;
     }
 
-    public SalesCycleClosure setClosedAt(Date closedAt) {
+    public ZonedDateTime getClosedAt(ZoneId zoneId) {
+        return closedAt != null ? ZonedDateTime.ofInstant(closedAt, zoneId) : null;
+    }
+
+    public SalesCycleClosure setClosedAt(Instant closedAt) {
         this.closedAt = closedAt;
         return this;
     }
@@ -79,7 +90,8 @@ public class SalesCycleClosure implements Serializable {
     @Override
     public String toString() {
         return "SalesCycleClosure{" +
-                "userId='" + userId + '\'' +
+                "contactId='" + contactId + '\'' +
+                ", userId='" + userId + '\'' +
                 ", closedAt=" + closedAt +
                 ", comment='" + comment + '\'' +
                 '}';
