@@ -15,7 +15,8 @@ import java.util.Properties;
 import java.util.logging.Logger;
 
 /**
- * @author Cillian Myles <cillian@onepagecrm.com> on 13/10/2017.
+ * Created by Cillian Myles on 28/06/2018.
+ * Copyright (c) 2018 OnePageCRM. All rights reserved.
  */
 public class API500Driver {
 
