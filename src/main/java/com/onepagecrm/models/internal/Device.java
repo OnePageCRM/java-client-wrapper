@@ -10,23 +10,36 @@ import com.onepagecrm.net.request.DeleteRequest;
 import com.onepagecrm.net.request.GetRequest;
 import com.onepagecrm.net.request.PostRequest;
 import com.onepagecrm.net.request.Request;
+import org.threeten.bp.Instant;
 
-import java.util.Date;
 import java.util.List;
 
 /**
  * Created by Cillian Myles <cillian@onepagecrm.com> on 26/10/2016.
  */
+@SuppressWarnings("unused")
 public class Device extends ApiResource {
+
+    /*
+     * Constants.
+     */
 
     public static final String TYPE_ANDROID = "android_app";
     public static final String TYPE_IOS = "ios_app";
 
+    /*
+     * Member variables.
+     */
+
     private String id;
     private String deviceId;
     private Boolean actionWithTime;
-    private Date subscribedAt;
+    private Instant subscribedAt;
     private String deviceType;
+
+    /*
+     * API methods.
+     */
 
     public static List<Device> list() throws OnePageException {
         Request request = new GetRequest(DEVICE_ENDPOINT);
@@ -45,21 +58,18 @@ public class Device extends ApiResource {
     }
 
     public DeleteResult delete() throws OnePageException {
-        final String resourceId = this.id;
-        Request request = new DeleteRequest(
-                withId(DEVICE_ENDPOINT, resourceId),
-                null
-        );
+        Request request = new DeleteRequest(withId(DEVICE_ENDPOINT), null);
         Response response = request.send();
-        return DeleteResultSerializer.fromString(resourceId, response.getResponseBody());
+        return DeleteResultSerializer.fromString(this.id, response.getResponseBody());
     }
 
-    public Device() {
+    /*
+     * Object methods.
+     */
 
-    }
-
-    private String withId(String endpoint, String id) {
-        return endpoint + "/" + id;
+    @Override
+    public String toString() {
+        return DeviceSerializer.toJsonObject(this);
     }
 
     @Override
@@ -71,11 +81,6 @@ public class Device extends ApiResource {
     public Device setId(String id) {
         this.id = id;
         return this;
-    }
-
-    @Override
-    public String toString() {
-        return DeviceSerializer.toJsonObject(this);
     }
 
     public String getDeviceId() {
@@ -96,11 +101,11 @@ public class Device extends ApiResource {
         return this;
     }
 
-    public Date getSubscribedAt() {
+    public Instant getSubscribedAt() {
         return subscribedAt;
     }
 
-    public Device setSubscribedAt(Date subscribedAt) {
+    public Device setSubscribedAt(Instant subscribedAt) {
         this.subscribedAt = subscribedAt;
         return this;
     }

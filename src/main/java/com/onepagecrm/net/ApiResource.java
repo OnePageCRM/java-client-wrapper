@@ -17,9 +17,15 @@ public abstract class ApiResource extends BaseResource implements Serializable {
     public static final String CONTACTS_ENDPOINT = "contacts";
     public static final String MULTIPLE_CONTACTS_ENDPOINT = "contacts/show_multiple";
     public static final String CLOSE_SALES_CYCLE_ENDPOINT = "contacts/{id}/close_sales_cycle";
+    public static final String CONTACT_PHOTO_ENDPOINT = "contacts/{id}/contact_photo";
+    public static final String STAR_CONTACT_ENDPOINT = "contacts/{id}/star";
+    public static final String UNSTAR_CONTACT_ENDPOINT = "contacts/{id}/unstar";
+    public static final String SPLIT_CONTACT_ENDPOINT = "contacts/{id}/split";
     public static final String GOOGLE_CONTACTS_ENDPOINT = "contacts/{id}/google_contacts";
     public static final String CALLS_ENDPOINT = "calls";
     public static final String CUSTOM_FIELDS_ENDPOINT = "custom_fields";
+    public static final String COMPANY_FIELDS_ENDPOINT = "company_fields";
+    public static final String DEAL_FIELDS_ENDPOINT = "deal_fields";
     public static final String COUNTRIES_ENDPOINT = "countries";
     public static final String TAGS_ENDPOINT = "tags";
     public static final String DEALS_ENDPOINT = "deals";
@@ -34,8 +40,6 @@ public abstract class ApiResource extends BaseResource implements Serializable {
     public static final String DEVICE_ENDPOINT = "firebase";
     public static final String COMPANIES_ENDPOINT = "companies";
     public static final String LINKED_CONTACTS_ENDPOINT = "companies/{id}/linked_contacts";
-    public static final String COMPANY_FIELDS_ENDPOINT = "company_fields";
-    public static final String DEAL_FIELDS_ENDPOINT = "deal_fields";
     public static final String ATTACHMENTS_ENDPOINT = "attachments";
     public static final String GOOGLE_LOGIN_ENDPOINT = "google_plus/login";
     public static final String GOOGLE_SIGNUP_ENDPOINT = "google_plus/signup";
@@ -64,5 +68,21 @@ public abstract class ApiResource extends BaseResource implements Serializable {
 
     public boolean isValid() {
         return this.getId() != null && !this.getId().equals("");
+    }
+
+    protected String withId(String endpoint) {
+        return withId(endpoint, this.getId());
+    }
+
+    protected static String withId(String endpoint, String id) {
+        return endpoint + "/" + id;
+    }
+
+    protected String subEndpointWithId(String endpoint, String subEndpoint) {
+        return subEndpointWithId(endpoint, this.getId(), subEndpoint);
+    }
+
+    protected static String subEndpointWithId(String endpoint, String id, String subEndpoint) {
+        return withId(endpoint, id) + "/" + subEndpoint;
     }
 }

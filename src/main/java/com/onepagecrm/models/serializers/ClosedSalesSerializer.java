@@ -12,18 +12,20 @@ import java.util.Map;
 /**
  * Created by Cillian Myles <cillian@onepagecrm.com> on 15/06/2016.
  */
+@SuppressWarnings("WeakerAccess")
 public class ClosedSalesSerializer extends BaseSerializer {
 
     public static SalesCycleClosure fromJsonObject(JSONObject closureObject, String contactId) {
         return new SalesCycleClosure()
                 .setUserId(closureObject.optString(USER_ID_TAG))
-                .setClosedAt(DateSerializer.fromTimestamp(String.valueOf(closureObject.optInt(CLOSED_AT_TAG))))
+                .setClosedAt(InstantSerializer.getInstance().ofSeconds(closureObject.optLong(CLOSED_AT_TAG)))
                 .setComment((closureObject.isNull(COMMENT_TAG) ? null : closureObject.optString(COMMENT_TAG)))
                 .setContactId(contactId);
     }
 
     public static List<SalesCycleClosure> fromJsonArray(JSONArray closureArray, String contactId) {
         List<SalesCycleClosure> closures = new LinkedList<>();
+        if (closureArray == null) return closures;
         for (int i = 0; i < closureArray.length(); i++) {
             JSONObject closureObject = closureArray.optJSONObject(i);
             SalesCycleClosure closure = fromJsonObject(closureObject, contactId);
@@ -34,6 +36,7 @@ public class ClosedSalesSerializer extends BaseSerializer {
 
     public static Map<String, SalesCycleClosure> mapFromJsonArray(JSONArray closureArray, String contactId) {
         Map<String, SalesCycleClosure> closures = new HashMap<>();
+        if (closureArray == null) return closures;
         for (int i = 0; i < closureArray.length(); i++) {
             JSONObject closureObject = closureArray.optJSONObject(i);
             SalesCycleClosure closure = fromJsonObject(closureObject, contactId);

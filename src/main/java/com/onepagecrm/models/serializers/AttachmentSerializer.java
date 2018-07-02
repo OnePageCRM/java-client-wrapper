@@ -14,6 +14,7 @@ import java.util.logging.Logger;
 /**
  * @author Cillian Myles <cillian@onepagecrm.com> on 31/07/2017.
  */
+@SuppressWarnings("unused")
 public class AttachmentSerializer extends BaseSerializer {
 
     private static final Logger LOG = Logger.getLogger(AttachmentSerializer.class.getName());
@@ -49,7 +50,7 @@ public class AttachmentSerializer extends BaseSerializer {
                 .setUrl(attachmentObject.optString(URL_TAG))
                 .setSize(attachmentObject.optLong(SIZE_TAG))
                 .setProvider(Attachment.Provider.fromString(attachmentObject.optString(STORAGE_PROVIDER_TAG)))
-                .setExpiresAt(DateSerializer.fromFormattedString(attachmentObject.optString(URL_EXPIRES_AT_TAG)));
+                .setExpiresAt(InstantSerializer.getInstance().parse(attachmentObject.optString(URL_EXPIRES_AT_TAG)));
     }
 
     public static List<Attachment> fromJsonArray(JSONArray attachmentsArray) {
@@ -71,7 +72,7 @@ public class AttachmentSerializer extends BaseSerializer {
         addJsonLongValue(attachment.getSize(), attachmentObject, SIZE_TAG);
         addJsonObjectValue(attachment.getProvider(), attachmentObject, STORAGE_PROVIDER_TAG);
         addJsonStringValue(
-                DateSerializer.toFormattedDateTimeString(attachment.getExpiresAt()),
+                InstantSerializer.getInstance().format(attachment.getExpiresAt()),
                 attachmentObject,
                 URL_EXPIRES_AT_TAG
         );
