@@ -120,7 +120,7 @@ The following is an example of a method which will:
              .setStatus("pending")
              .setContactId(first.getId())
              .setAmount(33.33d)
-             .setDate(new Date())
+             .setDate(LocalDate.now())
              .setText("Java Wrapper Deal Text")
              .setName("Java Wrapper Deal Name")
              .save();

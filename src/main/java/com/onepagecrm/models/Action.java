@@ -1,25 +1,22 @@
 package com.onepagecrm.models;
 
 import com.onepagecrm.exceptions.OnePageException;
+import com.onepagecrm.models.helpers.ActionHelper;
 import com.onepagecrm.models.internal.Paginator;
 import com.onepagecrm.models.internal.PredefinedAction;
 import com.onepagecrm.models.internal.PredefinedActionList;
 import com.onepagecrm.models.serializers.ActionSerializer;
-import com.onepagecrm.models.serializers.DateSerializer;
 import com.onepagecrm.models.serializers.PredefinedActionSerializer;
 import com.onepagecrm.net.ApiResource;
 import com.onepagecrm.net.Response;
-import com.onepagecrm.net.request.DeleteRequest;
-import com.onepagecrm.net.request.GetRequest;
-import com.onepagecrm.net.request.PostRequest;
-import com.onepagecrm.net.request.PutRequest;
-import com.onepagecrm.net.request.Request;
+import com.onepagecrm.net.request.*;
+import org.threeten.bp.Instant;
+import org.threeten.bp.LocalDate;
+import org.threeten.bp.ZoneId;
+import org.threeten.bp.ZonedDateTime;
 
 import java.io.Serializable;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.Map;
-import java.util.TimeZone;
 
 /**
  * @author Cillian Myles (cillian@onepagecrm.com) on 29/06/2017.
@@ -29,8 +26,8 @@ public class Action extends ApiResource implements Serializable {
 
     private static final long serialVersionUID = -7486991046434989805L;
 
-    /**
-     * Constants
+    /*
+     * Constants.
      */
 
     private static final String STATUS_ASAP = "asap";
@@ -42,7 +39,7 @@ public class Action extends ApiResource implements Serializable {
     private static final String STATUS_DONE = "done";
     private static final String STATUS_OTHER = "other"; // Catch all.
 
-    /**
+    /*
      * Member variables.
      */
 
@@ -96,16 +93,16 @@ public class Action extends ApiResource implements Serializable {
     private String assigneeId;
     private String contactId;
     private String text;
-    private Date createdAt;
-    private Date modifiedAt;
+    private Instant createdAt;
+    private Instant modifiedAt;
     private Status status;
-    private Date date;
-    private Date exactTime;
-    private int dateColor;
+    private LocalDate date;
+    private Instant exactTime;
+    private int flagColor;
     private Integer position;
 
-    /**
-     * API methods
+    /*
+     * API methods.
      */
 
     public Action save() throws OnePageException {
@@ -114,7 +111,7 @@ public class Action extends ApiResource implements Serializable {
 
     private Action update() throws OnePageException {
         Request request = new PutRequest(
-                addActionIdToEndpoint(ACTIONS_ENDPOINT),
+                withId(ACTIONS_ENDPOINT),
                 null,
                 ActionSerializer.toJsonObject(this)
         );
@@ -129,7 +126,7 @@ public class Action extends ApiResource implements Serializable {
     }
 
     public void delete() throws OnePageException {
-        Request request = new DeleteRequest(ACTIONS_ENDPOINT + "/" + this.getId());
+        Request request = new DeleteRequest(withId(ACTIONS_ENDPOINT));
         Response response = request.send();
     }
 
@@ -175,47 +172,12 @@ public class Action extends ApiResource implements Serializable {
         return new PredefinedActionList(PredefinedActionSerializer.fromString(response.getResponseBody()));
     }
 
-    /**
-     * Caution - TimeZone is UTC and will not function as expected if using something different.
-     *
-     * @param predefined - PredefinedAction to be promoted.
-     * @return The current action which has taken on the text and date of the PredefinedAction.
-     */
-    public Action promote(PredefinedAction predefined) {
-        this.setText(predefined.getText());
-        // Add the extra days to the date of the action.
-        Calendar calendar = Calendar.getInstance(TimeZone.getTimeZone("UTC"));
-        calendar.setTime(this.date == null ? new Date() : this.date);
-        calendar.add(Calendar.DATE, predefined.getDays());
-        this.setDate(calendar.getTime());
-        // Add the extra days to the exact time for Date & Time.
-        calendar.set(Calendar.HOUR_OF_DAY, 9);
-        calendar.set(Calendar.MINUTE, 0);
-        calendar.set(Calendar.SECOND, 0);
-        calendar.set(Calendar.MILLISECOND, 0);
-        this.setExactTime(calendar.getTime());
-        return this;
-    }
-
-    private String addActionIdToEndpoint(String endpoint) {
-        return endpoint + "/" + this.id;
-    }
-
-    /**
-     * Utility methods
+    /*
+     * Utility methods.
      */
 
-    public String getFriendlyDateString() {
-        if (this.date != null) {
-            // Return date in format yyyy-MM-dd (uppercase).
-            return DateSerializer.toFriendlyDateString(this.date).toUpperCase();
-        } else if (this.status != null) {
-            // Return status (uppercase).
-            return this.status.toString().toUpperCase();
-        } else {
-            // This is needed to correctly display contacts w/out NA's in Action Stream.
-            return null;
-        }
+    public Action promote(ZoneId zoneId, PredefinedAction predefined) {
+        return ActionHelper.promote(zoneId, predefined);
     }
 
     public boolean isQueued() {
@@ -227,8 +189,20 @@ public class Action extends ApiResource implements Serializable {
                 this.status == Status.DATE_TIME || this.status == Status.WAITING);
     }
 
-    /**
-     * Object methods
+    public String getFriendlyDate() {
+        return ActionHelper.formatFriendlyDate(this);
+    }
+
+    public String getFriendlyActionText(ZoneId zoneId, boolean is24hr) {
+        return ActionHelper.formatFriendlyActionText(zoneId, is24hr, this);
+    }
+
+    public String getFriendlyTimeAndDate(ZoneId zoneId, boolean is24hr) {
+        return ActionHelper.formatFriendlyTimeAndDate(zoneId, is24hr, this);
+    }
+
+    /*
+     * Object methods.
      */
 
     @Override
@@ -274,20 +248,28 @@ public class Action extends ApiResource implements Serializable {
         return this;
     }
 
-    public Date getCreatedAt() {
+    public Instant getCreatedAt() {
         return createdAt;
     }
 
-    public Action setCreatedAt(Date createdAt) {
+    public ZonedDateTime getCreatedAt(ZoneId zoneId) {
+        return createdAt != null ? ZonedDateTime.ofInstant(createdAt, zoneId) : null;
+    }
+
+    public Action setCreatedAt(Instant createdAt) {
         this.createdAt = createdAt;
         return this;
     }
 
-    public Date getModifiedAt() {
+    public Instant getModifiedAt() {
         return modifiedAt;
     }
 
-    public Action setModifiedAt(Date modifiedAt) {
+    public ZonedDateTime getModifiedAt(ZoneId zoneId) {
+        return modifiedAt != null ? ZonedDateTime.ofInstant(modifiedAt, zoneId) : null;
+    }
+
+    public Action setModifiedAt(Instant modifiedAt) {
         this.modifiedAt = modifiedAt;
         return this;
     }
@@ -301,30 +283,39 @@ public class Action extends ApiResource implements Serializable {
         return this;
     }
 
-    public Date getDate() {
+    public LocalDate getDate() {
         return date;
     }
 
-    public Action setDate(Date date) {
+    public Action setDate(LocalDate date) {
         this.date = date;
         return this;
     }
 
-    public Date getExactTime() {
+    public Instant getExactTime() {
         return exactTime;
     }
 
-    public Action setExactTime(Date exactTime) {
+    public ZonedDateTime getExactTime(ZoneId zoneId) {
+        return exactTime != null ? ZonedDateTime.ofInstant(exactTime, zoneId) : null;
+    }
+
+    public Action setExactTime(Instant exactTime) {
         this.exactTime = exactTime;
         return this;
     }
 
-    public int getDateColor() {
-        return dateColor;
+    public Action setExactTime(ZonedDateTime zonedDateTime) {
+        this.exactTime = zonedDateTime != null ? zonedDateTime.toInstant() : null;
+        return this;
     }
 
-    public Action setDateColor(int dateColor) {
-        this.dateColor = dateColor;
+    public int getFlagColor() {
+        return flagColor;
+    }
+
+    public Action setFlagColor(int flagColor) {
+        this.flagColor = flagColor;
         return this;
     }
 

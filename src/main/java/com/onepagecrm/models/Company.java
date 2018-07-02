@@ -3,22 +3,15 @@ package com.onepagecrm.models;
 import com.onepagecrm.exceptions.OnePageException;
 import com.onepagecrm.models.internal.DeleteResult;
 import com.onepagecrm.models.internal.Paginator;
-import com.onepagecrm.models.serializers.CompanyListSerializer;
-import com.onepagecrm.models.serializers.CompanySerializer;
-import com.onepagecrm.models.serializers.DeleteResultSerializer;
-import com.onepagecrm.models.serializers.LinkedContactSerializer;
-import com.onepagecrm.models.serializers.LinkedContactsSerializer;
-import com.onepagecrm.models.serializers.LoginSerializer;
+import com.onepagecrm.models.serializers.*;
 import com.onepagecrm.net.ApiResource;
 import com.onepagecrm.net.Response;
-import com.onepagecrm.net.request.DeleteRequest;
-import com.onepagecrm.net.request.GetRequest;
-import com.onepagecrm.net.request.PostRequest;
-import com.onepagecrm.net.request.PutRequest;
-import com.onepagecrm.net.request.Request;
+import com.onepagecrm.net.request.*;
+import org.threeten.bp.Instant;
+import org.threeten.bp.ZoneId;
+import org.threeten.bp.ZonedDateTime;
 
 import java.io.Serializable;
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -29,6 +22,10 @@ import static com.onepagecrm.models.internal.Utilities.notNullOrEmpty;
  */
 @SuppressWarnings({"unused", "WeakerAccess", "SameParameterValue", "UnusedReturnValue"})
 public class Company extends ApiResource implements Serializable {
+
+    /*
+     * Member variables.
+     */
 
     private String id;
     private String name;
@@ -44,12 +41,16 @@ public class Company extends ApiResource implements Serializable {
     private Integer contactsCount;
     private ContactList contacts;
     private DealList pendingDeals;
-    private Date createdAt;
-    private Date modifiedAt;
+    private Instant createdAt;
+    private Instant modifiedAt;
     private Boolean syncingStatus;
     private String syncedStatusId;
     private Boolean syncingTags;
     private List<Tag> syncedTags;
+
+    /*
+     * API methods.
+     */
 
     public Company save() throws OnePageException {
         return this.isValid() ? update() : create();
@@ -70,7 +71,7 @@ public class Company extends ApiResource implements Serializable {
 
     private Company update() throws OnePageException {
         Request request = new PutRequest(
-                addIdToEndpoint(COMPANIES_ENDPOINT, this.id),
+                withId(COMPANIES_ENDPOINT),
                 null,
                 CompanySerializer.toJsonObject(this)
         );
@@ -81,9 +82,9 @@ public class Company extends ApiResource implements Serializable {
         return company;
     }
 
-    public static Company byId(String companyId) throws OnePageException {
+    public static Company byId(String id) throws OnePageException {
         Request request = new GetRequest(
-                addIdToEndpoint(COMPANIES_ENDPOINT, companyId),
+                withId(COMPANIES_ENDPOINT, id),
                 null
         );
         Response response = request.send();
@@ -93,7 +94,7 @@ public class Company extends ApiResource implements Serializable {
 
     public Company partial(Company updateValues) throws OnePageException {
         Request request = new PutRequest(
-                addIdToEndpoint(COMPANIES_ENDPOINT, this.id),
+                withId(COMPANIES_ENDPOINT),
                 "?" + QUERY_PARTIAL,
                 CompanySerializer.toJsonObject(updateValues)
         );
@@ -155,7 +156,7 @@ public class Company extends ApiResource implements Serializable {
 
     public static DeleteResult unlinkContact(String companyId, String contactId) throws OnePageException {
         String endpoint = LINKED_CONTACTS_ENDPOINT.replace("{id}", companyId);
-        Request request = new DeleteRequest(addIdToEndpoint(endpoint, contactId), null);
+        Request request = new DeleteRequest(withId(endpoint, contactId), null);
         Response response = request.send();
         String responseBody = response.getResponseBody();
         DeleteResult deleteResult = DeleteResultSerializer.fromString(contactId, responseBody);
@@ -163,25 +164,9 @@ public class Company extends ApiResource implements Serializable {
         return deleteResult;
     }
 
-    private static String addIdToEndpoint(String endpoint, String id) {
-        return endpoint + "/" + id;
-    }
-
-    @Override
-    public String getId() {
-        return id;
-    }
-
-    @Override
-    public Company setId(String id) {
-        this.id = id;
-        return this;
-    }
-
-    @Override
-    public String toString() {
-        return CompanySerializer.toJsonObject(this);
-    }
+    /*
+     * Utility methods.
+     */
 
     public boolean dataToLoseWithDeletion() {
         return isValid() && (notNullOrEmpty(description) ||
@@ -193,6 +178,26 @@ public class Company extends ApiResource implements Serializable {
 
     public boolean multiContact() {
         return contactsCount != null && contactsCount > 1;
+    }
+
+    /*
+     * Object methods.
+     */
+
+    @Override
+    public String toString() {
+        return CompanySerializer.toJsonObject(this);
+    }
+
+    @Override
+    public String getId() {
+        return id;
+    }
+
+    @Override
+    public Company setId(String id) {
+        this.id = id;
+        return this;
     }
 
     public String getName() {
@@ -312,20 +317,28 @@ public class Company extends ApiResource implements Serializable {
         return this;
     }
 
-    public Date getCreatedAt() {
+    public Instant getCreatedAt() {
         return createdAt;
     }
 
-    public Company setCreatedAt(Date createdAt) {
+    public ZonedDateTime getCreatedAt(ZoneId zoneId) {
+        return createdAt != null ? ZonedDateTime.ofInstant(createdAt, zoneId) : null;
+    }
+
+    public Company setCreatedAt(Instant createdAt) {
         this.createdAt = createdAt;
         return this;
     }
 
-    public Date getModifiedAt() {
+    public Instant getModifiedAt() {
         return modifiedAt;
     }
 
-    public Company setModifiedAt(Date modifiedAt) {
+    public ZonedDateTime getModifiedAt(ZoneId zoneId) {
+        return modifiedAt != null ? ZonedDateTime.ofInstant(modifiedAt, zoneId) : null;
+    }
+
+    public Company setModifiedAt(Instant modifiedAt) {
         this.modifiedAt = modifiedAt;
         return this;
     }

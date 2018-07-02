@@ -1,6 +1,7 @@
 package com.onepagecrm.models;
 
 import com.onepagecrm.exceptions.OnePageException;
+import com.onepagecrm.models.helpers.TextHelper;
 import com.onepagecrm.models.internal.CustomFieldValue;
 import com.onepagecrm.models.serializers.CustomFieldSerializer;
 import com.onepagecrm.net.ApiResource;
@@ -16,6 +17,10 @@ import java.util.Map;
 
 public class CustomField extends ApiResource implements Serializable {
 
+    /*
+     * Constants.
+     */
+
     public static final String CF_TYPE_CONTACT = "contact";
     public static final String CF_TYPE_COMPANY = "company";
     public static final String CF_TYPE_DEAL = "deal";
@@ -28,6 +33,10 @@ public class CustomField extends ApiResource implements Serializable {
     public static final String TYPE_NUMBER = "number";
     public static final String TYPE_SINGLE_LINE_TEXT = "single_line_text";
 
+    /*
+     * Member variables.
+     */
+
     private String id;
     private String name;
     private Integer position;
@@ -36,6 +45,41 @@ public class CustomField extends ApiResource implements Serializable {
     private List<String> choices;
     private Integer reminderDays;
     private CustomFieldValue value;
+
+    /*
+     * API methods.
+     */
+
+    public String save() throws OnePageException {
+        return this.isValid() ? update() : create();
+    }
+
+    public String create() throws OnePageException {
+        Request request = new PostRequest(
+                endpoint(cfType),
+                null,
+                CustomFieldSerializer.toJsonObjectNew(this)
+        );
+        Response response = request.send();
+        return response.getResponseBody();
+    }
+
+    public String update() throws OnePageException {
+        Request request = new PostRequest(
+                withId(endpoint(cfType)),
+                null,
+                CustomFieldSerializer.toJsonObjectNew(this)
+        );
+        Response response = request.send();
+        return response.getResponseBody();
+    }
+
+    private String endpoint(String cfType) {
+        if (TextHelper.isEmpty(cfType)) return CUSTOM_FIELDS_ENDPOINT;
+        if (CF_TYPE_COMPANY.equals(cfType)) return COMPANY_FIELDS_ENDPOINT;
+        if (CF_TYPE_DEAL.equals(cfType)) return DEAL_FIELDS_ENDPOINT;
+        return CUSTOM_FIELDS_ENDPOINT;
+    }
 
     public static List<CustomField> listContacts() throws OnePageException {
         Map<String, Object> params = new HashMap<>();
@@ -73,20 +117,11 @@ public class CustomField extends ApiResource implements Serializable {
         return CustomFieldSerializer.fromString(responseBody, CF_TYPE_DEAL);
     }
 
-    public String save() throws OnePageException {
-        Request request = new PostRequest(
-                CUSTOM_FIELDS_ENDPOINT,
-                null,
-                CustomFieldSerializer.toJsonObjectNew(this)
-        );
-        Response response = request.send();
-        return response.getResponseBody();
-    }
+    /*
+     * Object methods.
+     */
 
-    public CustomField() {
-
-    }
-
+    @SuppressWarnings("CopyConstructorMissesField")
     public CustomField(CustomField customField) {
         this.id = customField.getId();
         this.name = customField.getName();
@@ -95,6 +130,15 @@ public class CustomField extends ApiResource implements Serializable {
         this.choices = customField.getChoices();
         this.reminderDays = customField.getReminderDays();
         this.value = customField.getValue();
+    }
+
+    public CustomField() {
+
+    }
+
+    @Override
+    public String toString() {
+        return CustomFieldSerializer.toJsonObject(this);
     }
 
     @Override
@@ -106,11 +150,6 @@ public class CustomField extends ApiResource implements Serializable {
     public CustomField setId(String id) {
         this.id = id;
         return this;
-    }
-
-    @Override
-    public String toString() {
-        return CustomFieldSerializer.toJsonObject(this);
     }
 
     public String getName() {

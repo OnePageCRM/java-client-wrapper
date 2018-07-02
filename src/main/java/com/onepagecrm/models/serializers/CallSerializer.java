@@ -68,11 +68,11 @@ public class CallSerializer extends BaseSerializer {
                 .setAuthor(callObject.optString(AUTHOR_TAG))
                 .setPhoneNumber(phoneNumber)
                 .setText(callObject.optString(TEXT_TAG))
-                .setTime(DateSerializer.fromTimestamp(callObject.optString(CALL_TIME_INT_TAG)))
+                .setTime(InstantSerializer.getInstance().ofSeconds(callObject.optLong(CALL_TIME_INT_TAG)))
                 .setContactId(callObject.optString(CONTACT_ID_TAG))
                 .setRecordingLink(callObject.optString(RECORDING_LINK_TAG))
-                .setCreatedAt(DateSerializer.fromFormattedString(callObject.optString(CREATED_AT_TAG)))
-                .setModifiedAt(DateSerializer.fromFormattedString(callObject.optString(MODIFIED_AT_TAG)))
+                .setCreatedAt(InstantSerializer.getInstance().parse(callObject.optString(CREATED_AT_TAG)))
+                .setModifiedAt(InstantSerializer.getInstance().parse(callObject.optString(MODIFIED_AT_TAG)))
                 .setUserIdsToNotify(toListOfStrings(callObject.optJSONArray(USER_IDS_TO_NOTIFY_TAG)))
                 .setAttachments(AttachmentSerializer.fromJsonArray(callObject.optJSONArray(ATTACHMENTS_TAG)));
     }
@@ -94,10 +94,22 @@ public class CallSerializer extends BaseSerializer {
         addJsonStringValue(call.getId(), callObject, ID_TAG);
         addJsonStringValue(call.getText(), callObject, TEXT_TAG);
         addJsonStringValue(call.getCallResult().getId(), callObject, CALL_RESULT_TAG);
-        addJsonLongValue(DateSerializer.toTimestamp(call.getTime()), callObject, CALL_TIME_INT_TAG);
+        addJsonLongValue(
+                InstantSerializer.getInstance().seconds(call.getTime()),
+                callObject,
+                CALL_TIME_INT_TAG
+        );
         addJsonStringValue(call.getContactId(), callObject, CONTACT_ID_TAG);
-        addJsonStringValue(DateSerializer.toFormattedDateTimeString(call.getCreatedAt()), callObject, CREATED_AT_TAG);
-        addJsonStringValue(DateSerializer.toFormattedDateTimeString(call.getModifiedAt()), callObject, MODIFIED_AT_TAG);
+        addJsonStringValue(
+                InstantSerializer.getInstance().format(call.getCreatedAt()),
+                callObject,
+                CREATED_AT_TAG
+        );
+        addJsonStringValue(
+                InstantSerializer.getInstance().format(call.getModifiedAt()),
+                callObject,
+                MODIFIED_AT_TAG
+        );
         addJsonStringValue(call.getVia(), callObject, VIA_TAG);
         addJsonStringValue(call.getAuthor(), callObject, AUTHOR_TAG);
         addJsonStringValue(call.getPhoneNumber(), callObject, PHONE_NUMBER_TAG);
@@ -107,12 +119,14 @@ public class CallSerializer extends BaseSerializer {
 
     public static String toJsonArray(List<Call> calls) {
         JSONArray callsArray = new JSONArray();
-        for (int i = 0; i < calls.size(); i++) {
-            try {
-                callsArray.put(new JSONObject(toJsonObject(calls.get(i))));
-            } catch (JSONException e) {
-                LOG.severe("Error creating JSON out of Call(s).");
-                LOG.severe(e.toString());
+        if (calls != null && !calls.isEmpty()) {
+            for (Call call : calls) {
+                try {
+                    callsArray.put(new JSONObject(toJsonObject(call)));
+                } catch (JSONException e) {
+                    LOG.severe("Error creating JSON out of Call(s).");
+                    LOG.severe(e.toString());
+                }
             }
         }
         return callsArray.toString();

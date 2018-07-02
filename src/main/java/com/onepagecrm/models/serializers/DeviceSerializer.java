@@ -40,15 +40,14 @@ public class DeviceSerializer extends BaseSerializer {
                 .setDeviceId(deviceObject.optString(DEVICE_ID_TAG))
                 .setDeviceType(deviceObject.optString(DEVICE_TYPE_TAG))
                 .setActionWithTime(deviceObject.optBoolean(ACTION_WITH_TIME_TAG))
-                .setSubscribedAt(DateSerializer.fromFormattedString(deviceObject.optString(SUBSCRIBED_AT_TAG)));
+                .setSubscribedAt(InstantSerializer.getInstance().parse(deviceObject.optString(SUBSCRIBED_AT_TAG)));
     }
 
     public static List<Device> fromJsonArray(JSONArray devicesArray) {
         List<Device> devices = new LinkedList<>();
         if (devicesArray != null) {
             for (int i = 0; i < devicesArray.length(); ++i) {
-                devices.add(
-                        fromJsonObject(devicesArray.optJSONObject(i).optJSONObject(FCM_DEVICE_TAG)));
+                devices.add(fromJsonObject(devicesArray.optJSONObject(i).optJSONObject(FCM_DEVICE_TAG)));
             }
         }
         return devices;
@@ -62,7 +61,7 @@ public class DeviceSerializer extends BaseSerializer {
             addJsonStringValue(device.getDeviceType(), deviceObject, DEVICE_TYPE_TAG);
             addJsonBooleanValue(device.getActionWithTime(), deviceObject, ACTION_WITH_TIME_TAG);
             addJsonStringValue(
-                    DateSerializer.toFormattedDateTimeString(device.getSubscribedAt()),
+                    InstantSerializer.getInstance().format(device.getSubscribedAt()),
                     deviceObject,
                     SUBSCRIBED_AT_TAG
             );
@@ -73,9 +72,9 @@ public class DeviceSerializer extends BaseSerializer {
     public static String toJsonArray(List<Device> devices) {
         JSONArray devicesArray = new JSONArray();
         if (devices != null && !devices.isEmpty()) {
-            for (int i = 0; i < devices.size(); i++) {
+            for (Device device : devices) {
                 try {
-                    devicesArray.put(new JSONObject(toJsonObject(devices.get(i))));
+                    devicesArray.put(new JSONObject(toJsonObject(device)));
                 } catch (JSONException e) {
                     LOG.severe("Error creating JSONArray out of list of Devices.");
                     LOG.severe(e.toString());

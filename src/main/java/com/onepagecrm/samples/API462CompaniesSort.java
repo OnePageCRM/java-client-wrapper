@@ -5,13 +5,13 @@ import com.onepagecrm.exceptions.OnePageException;
 import com.onepagecrm.models.Company;
 import com.onepagecrm.models.CompanyList;
 import com.onepagecrm.models.User;
-import com.onepagecrm.models.serializers.DateSerializer;
+import com.onepagecrm.models.serializers.InstantSerializer;
 import com.onepagecrm.net.request.Request;
+import org.threeten.bp.Instant;
 
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
@@ -117,8 +117,8 @@ public class API462CompaniesSort {
 
         // created_at sorting.
         createdAtManual.getList().sort((c1, c2) -> {
-            final long cmp1 = c1.getCreatedAt() != null ? DateSerializer.toTimestamp(c1.getCreatedAt()) : 0L;
-            final long cmp2 = c2.getCreatedAt() != null ? DateSerializer.toTimestamp(c2.getCreatedAt()) : 0L;
+            final long cmp1 = c1.getCreatedAt() != null ? InstantSerializer.getInstance().seconds(c1.getCreatedAt()) : 0L;
+            final long cmp2 = c2.getCreatedAt() != null ? InstantSerializer.getInstance().seconds(c2.getCreatedAt()) : 0L;
             return Long.compare(cmp1, cmp2);
         });
 
@@ -127,8 +127,8 @@ public class API462CompaniesSort {
         boolean createdSortOkay = true;
         i = 0;
         for (Company sorted : createdAtManual) {
-            Date sortedTime = sorted.getCreatedAt();
-            Date apiTime = createdAtAPI.get(i++).getCreatedAt();
+            Instant sortedTime = sorted.getCreatedAt();
+            Instant apiTime = createdAtAPI.get(i++).getCreatedAt();
             boolean match = ((sortedTime == null && apiTime == null)
                     || sortedTime != null && sortedTime.equals(apiTime));
             LOG.info("API: \"" + apiTime + "\" - SORT: \"" + sortedTime + "\" - match: " + match);
@@ -137,8 +137,8 @@ public class API462CompaniesSort {
 
         // modified_at sorting.
         modifiedAtManual.getList().sort((c1, c2) -> {
-            final long cmp1 = c1.getModifiedAt() != null ? DateSerializer.toTimestamp(c1.getModifiedAt()) : 0L;
-            final long cmp2 = c2.getModifiedAt() != null ? DateSerializer.toTimestamp(c2.getModifiedAt()) : 0L;
+            final long cmp1 = c1.getModifiedAt() != null ? InstantSerializer.getInstance().seconds(c1.getModifiedAt()) : 0L;
+            final long cmp2 = c2.getModifiedAt() != null ? InstantSerializer.getInstance().seconds(c2.getModifiedAt()) : 0L;
             return Long.compare(cmp1, cmp2);
         });
 
@@ -147,8 +147,8 @@ public class API462CompaniesSort {
         boolean modifiedSortOkay = true;
         i = 0;
         for (Company sorted : modifiedAtManual) {
-            Date sortedTime = sorted.getModifiedAt();
-            Date apiTime = modifiedAtAPI.get(i++).getModifiedAt();
+            Instant sortedTime = sorted.getModifiedAt();
+            Instant apiTime = modifiedAtAPI.get(i++).getModifiedAt();
             boolean match = ((sortedTime == null && apiTime == null)
                     || sortedTime != null && sortedTime.equals(apiTime));
             LOG.info("API: \"" + apiTime + "\" - SORT: \"" + sortedTime + "\" - match: " + match);
