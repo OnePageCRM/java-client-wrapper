@@ -11,6 +11,7 @@ import com.onepagecrm.models.serializers.LoginSerializer;
 import com.onepagecrm.models.serializers.StartupDataSerializer;
 import com.onepagecrm.net.request.GetRequest;
 import com.onepagecrm.net.request.GoogleAuthRequest;
+import com.onepagecrm.net.request.GoogleContactsAuthRequest;
 import com.onepagecrm.net.request.GoogleLoginRequest;
 import com.onepagecrm.net.request.LoginRequest;
 import com.onepagecrm.net.request.Request;
@@ -62,6 +63,12 @@ public interface API {
 
         public static LoginData authenticate(String oauth2Code) throws OnePageException {
             Request request = new GoogleAuthRequest(oauth2Code);
+            Response response = request.send();
+            return LoginDataSerializer.fromString(response.getResponseBody());
+        }
+
+        public static LoginData contacts(String oauth2Code) throws OnePageException {
+            Request request = new GoogleContactsAuthRequest(oauth2Code);
             Response response = request.send();
             return LoginDataSerializer.fromString(response.getResponseBody());
         }

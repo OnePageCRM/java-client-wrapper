@@ -18,6 +18,7 @@ public abstract class ApiResource extends BaseResource implements Serializable {
     public static final String MULTIPLE_CONTACTS_ENDPOINT = "contacts/show_multiple";
     public static final String CLOSE_SALES_CYCLE_ENDPOINT = "contacts/{id}/close_sales_cycle";
     public static final String GOOGLE_CONTACTS_ENDPOINT = "contacts/{id}/google_contacts";
+    public static final String GOOGLE_CONTACTS_AUTH_ENDPOINT = "google_contacts/authorize";
     public static final String CALLS_ENDPOINT = "calls";
     public static final String CUSTOM_FIELDS_ENDPOINT = "custom_fields";
     public static final String COUNTRIES_ENDPOINT = "countries";
