@@ -10,15 +10,15 @@ import com.onepagecrm.models.Email;
 import com.onepagecrm.models.Phone;
 import com.onepagecrm.models.Url;
 import com.onepagecrm.models.User;
+import com.onepagecrm.models.helpers.DateTimeHelper;
 import com.onepagecrm.models.internal.CustomFieldValue;
-import com.onepagecrm.models.serializers.DateSerializer;
+import com.onepagecrm.models.serializers.LocalDateSerializer;
 import com.onepagecrm.net.request.Request;
 
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Properties;
 import java.util.logging.Logger;
@@ -195,14 +195,13 @@ public class EditContactDriver {
 
             List<CustomField> customFields = loggedInUser.getAccount().customFields;
 
-            for (int i = 0; i < customFields.size(); i++) {
-                CustomField customField = customFields.get(i);
+            for (CustomField customField : customFields) {
 
                 if (customField.getType().equalsIgnoreCase(CustomField.TYPE_DATE) ||
                         customField.getType().equalsIgnoreCase(CustomField.TYPE_ANNIVERSARY)) {
 
                     CustomFieldValue newValue = new CustomFieldValue();
-                    newValue.setValue(DateSerializer.toFormattedDateString(new Date()));
+                    newValue.setValue(LocalDateSerializer.getInstance().format(DateTimeHelper.today()));
                     customField.setValue(newValue);
 
                 } else if (customField.getType().equalsIgnoreCase(CustomField.TYPE_DROPDOWN)) {

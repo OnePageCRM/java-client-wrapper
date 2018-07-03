@@ -13,9 +13,12 @@ import com.onepagecrm.net.request.GetRequest;
 import com.onepagecrm.net.request.PostRequest;
 import com.onepagecrm.net.request.PutRequest;
 import com.onepagecrm.net.request.Request;
+import org.threeten.bp.Instant;
+import org.threeten.bp.LocalDate;
+import org.threeten.bp.ZoneId;
+import org.threeten.bp.ZonedDateTime;
 
 import java.io.Serializable;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -23,9 +26,10 @@ import java.util.Map;
 /**
  * @author Cillian Myles (cillian@onepagecrm.com) on 31/07/2017.
  */
+@SuppressWarnings("unused")
 public class Note extends ApiResource implements Serializable {
 
-    /**
+    /*
      * Member variables.
      */
 
@@ -33,14 +37,15 @@ public class Note extends ApiResource implements Serializable {
     private String author;
     private String text;
     private String contactId;
-    private Date date;
+    private LocalDate date;
     private String linkedDealId;
+    private List<String> userIdsToNotify;
     private List<Attachment> attachments;
-    private Date createdAt;
-    private Date modifiedAt;
+    private Instant createdAt;
+    private Instant modifiedAt;
 
-    /**
-     * API methods
+    /*
+     * API methods.
      */
 
     public Note save() throws OnePageException {
@@ -61,7 +66,7 @@ public class Note extends ApiResource implements Serializable {
 
     private Note update() throws OnePageException {
         Request request = new PutRequest(
-                addIdToEndpoint(NOTES_ENDPOINT, this.id),
+                withId(NOTES_ENDPOINT),
                 null,
                 NoteSerializer.toJsonObject(this)
         );
@@ -69,14 +74,14 @@ public class Note extends ApiResource implements Serializable {
         return NoteSerializer.fromString(response.getResponseBody());
     }
 
-    public static Note byId(String noteId) throws OnePageException {
-        Request request = new GetRequest(addIdToEndpoint(NOTES_ENDPOINT, noteId), null);
+    public static Note byId(String id) throws OnePageException {
+        Request request = new GetRequest(withId(NOTES_ENDPOINT, id), null);
         Response response = request.send();
         return NoteSerializer.fromString(response.getResponseBody());
     }
 
     public DeleteResult delete() throws OnePageException {
-        Request request = new DeleteRequest(addIdToEndpoint(NOTES_ENDPOINT, this.id));
+        Request request = new DeleteRequest(withId(NOTES_ENDPOINT));
         Response response = request.send();
         return DeleteResultSerializer.fromString(this.id, response.getResponseBody());
     }
@@ -107,21 +112,22 @@ public class Note extends ApiResource implements Serializable {
         return NoteListSerializer.fromString(response.getResponseBody());
     }
 
-    private static String addIdToEndpoint(String endpoint, String noteId) {
-        return endpoint + "/" + noteId;
-    }
-
-    /**
-     * Utility methods
+    /*
+     * Utility methods.
      */
 
     public boolean hasAttachments() {
         return this.attachments != null && !attachments.isEmpty();
     }
 
-    /**
-     * Object methods
+    /*
+     * Object methods.
      */
+
+    @Override
+    public String toString() {
+        return NoteSerializer.toJsonObject(this);
+    }
 
     @Override
     public String getId() {
@@ -134,9 +140,8 @@ public class Note extends ApiResource implements Serializable {
         return this;
     }
 
-    @Override
-    public String toString() {
-        return NoteSerializer.toJsonObject(this);
+    public String getAuthor() {
+        return author;
     }
 
     public Note setAuthor(String author) {
@@ -144,8 +149,8 @@ public class Note extends ApiResource implements Serializable {
         return this;
     }
 
-    public String getAuthor() {
-        return author;
+    public String getText() {
+        return text;
     }
 
     public Note setText(String text) {
@@ -153,8 +158,8 @@ public class Note extends ApiResource implements Serializable {
         return this;
     }
 
-    public String getText() {
-        return text;
+    public String getContactId() {
+        return contactId;
     }
 
     public Note setContactId(String contactId) {
@@ -162,26 +167,22 @@ public class Note extends ApiResource implements Serializable {
         return this;
     }
 
-    public String getContactId() {
-        return contactId;
-    }
-
-    public Note setDate(Date date) {
-        this.date = date;
-        return this;
-    }
-
-    public Date getDate() {
+    public LocalDate getDate() {
         return date;
     }
 
-    public Note setLinkedDealId(String linkedDealId) {
-        this.linkedDealId = linkedDealId;
+    public Note setDate(LocalDate date) {
+        this.date = date;
         return this;
     }
 
     public String getLinkedDealId() {
         return linkedDealId;
+    }
+
+    public Note setLinkedDealId(String linkedDealId) {
+        this.linkedDealId = linkedDealId;
+        return this;
     }
 
     public List<Attachment> getAttachments() {
@@ -193,21 +194,38 @@ public class Note extends ApiResource implements Serializable {
         return this;
     }
 
-    public Date getCreatedAt() {
+    public Instant getCreatedAt() {
         return createdAt;
     }
 
-    public Note setCreatedAt(Date createdAt) {
+    public ZonedDateTime getCreatedAt(ZoneId zoneId) {
+        return createdAt != null ? ZonedDateTime.ofInstant(createdAt, zoneId) : null;
+    }
+
+    public Note setCreatedAt(Instant createdAt) {
         this.createdAt = createdAt;
         return this;
     }
 
-    public Date getModifiedAt() {
+    public Instant getModifiedAt() {
         return modifiedAt;
     }
 
-    public Note setModifiedAt(Date modifiedAt) {
+    public ZonedDateTime getModifiedAt(ZoneId zoneId) {
+        return modifiedAt != null ? ZonedDateTime.ofInstant(modifiedAt, zoneId) : null;
+    }
+
+    public Note setModifiedAt(Instant modifiedAt) {
         this.modifiedAt = modifiedAt;
+        return this;
+    }
+
+    public List<String> getUserIdsToNotify() {
+        return userIdsToNotify;
+    }
+
+    public Note setUserIdsToNotify(List<String> userIdsToNotify) {
+        this.userIdsToNotify = userIdsToNotify;
         return this;
     }
 }

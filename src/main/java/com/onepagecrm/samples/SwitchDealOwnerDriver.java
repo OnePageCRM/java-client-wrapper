@@ -2,9 +2,13 @@ package com.onepagecrm.samples;
 
 import com.onepagecrm.OnePageCRM;
 import com.onepagecrm.exceptions.OnePageException;
-import com.onepagecrm.models.*;
-import com.onepagecrm.models.serializers.DateSerializer;
+import com.onepagecrm.models.Account;
+import com.onepagecrm.models.ContactList;
+import com.onepagecrm.models.Deal;
+import com.onepagecrm.models.DealList;
+import com.onepagecrm.models.User;
 import com.onepagecrm.net.request.Request;
+import org.threeten.bp.LocalDate;
 
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -61,7 +65,7 @@ public class SwitchDealOwnerDriver {
                 .setAmount(27.99d)
                 .setText("Shouldn't be seen")
                 .setName("Wrapper Deal")
-                .setExpectedCloseDate(DateSerializer.fromFormattedString("2014-01-01"))
+                .setExpectedCloseDate(LocalDate.parse("2014-01-01"))
                 .save();
 
         // Update a deal to have different owner than me.
