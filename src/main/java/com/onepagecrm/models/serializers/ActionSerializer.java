@@ -2,11 +2,11 @@ package com.onepagecrm.models.serializers;
 
 import com.onepagecrm.exceptions.OnePageException;
 import com.onepagecrm.models.Action;
+import com.onepagecrm.models.helpers.ActionHelper;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.logging.Logger;
@@ -54,8 +54,6 @@ public class ActionSerializer extends BaseSerializer {
 
     public static Action fromJsonObject(JSONObject actionObject) {
         Action action = new Action();
-        String status = null;
-        Date exactTime = null;
         try {
             // Fix for some objects not having name.
             if (actionObject.has(ACTION_TAG)) {
@@ -75,32 +73,20 @@ public class ActionSerializer extends BaseSerializer {
                 action.setAssigneeId(actionObject.getString(ASSIGNEE_ID_TAG));
             }
             if (actionObject.has(CREATED_AT_TAG)) {
-                String createdAtStr = actionObject.getString(CREATED_AT_TAG);
-                Date createdAt = DateSerializer.fromFormattedString(createdAtStr);
-                action.setCreatedAt(createdAt);
+                action.setCreatedAt(InstantSerializer.getInstance().parse(actionObject.optString(CREATED_AT_TAG)));
             }
             if (actionObject.has(MODIFIED_AT_TAG)) {
-                String modifiedAtStr = actionObject.getString(MODIFIED_AT_TAG);
-                Date modifiedAt = DateSerializer.fromFormattedString(modifiedAtStr);
-                action.setModifiedAt(modifiedAt);
+                action.setModifiedAt(InstantSerializer.getInstance().parse(actionObject.optString(MODIFIED_AT_TAG)));
             }
             if (actionObject.has(STATUS_TAG)) {
-                status = actionObject.getString(STATUS_TAG);
+                String status = actionObject.getString(STATUS_TAG);
                 action.setStatus(Action.Status.fromString(status));
             }
             if (actionObject.has(DATE_TAG)) {
-                if (!actionObject.isNull(DATE_TAG)) {
-                    String dateStr = actionObject.getString(DATE_TAG);
-                    exactTime = DateSerializer.fromFormattedString(dateStr);
-                    action.setDate(exactTime);
-                }
+                action.setDate(LocalDateSerializer.getInstance().parse(actionObject.optString(DATE_TAG)));
             }
             if (actionObject.has(EXACT_TIME_TAG)) {
-                if (!actionObject.isNull(EXACT_TIME_TAG)) {
-                    String exactTimeStr = String.valueOf(actionObject.getInt(EXACT_TIME_TAG));
-                    exactTime = DateSerializer.fromTimestamp(exactTimeStr);
-                    action.setExactTime(exactTime);
-                }
+                action.setExactTime(InstantSerializer.getInstance().ofSeconds(actionObject.optLong(EXACT_TIME_TAG)));
             }
             if (actionObject.has(POSITION_TAG)) {
                 if (!actionObject.isNull(POSITION_TAG)) {
@@ -108,7 +94,8 @@ public class ActionSerializer extends BaseSerializer {
                     action.setPosition(position);
                 }
             }
-            action.setDateColor(DateSerializer.getDateColour(exactTime, status));
+            final int calculatedFlagColor = ActionHelper.calculateFlagColor(action);
+            action.setFlagColor(calculatedFlagColor);
 
             return action;
 
@@ -140,12 +127,12 @@ public class ActionSerializer extends BaseSerializer {
             addJsonStringValue(action.getText(), actionObject, TEXT_TAG);
             addJsonStringValue(action.getAssigneeId(), actionObject, ASSIGNEE_ID_TAG);
             addJsonStringValue(
-                    DateSerializer.toFormattedDateTimeString(action.getCreatedAt()),
+                    InstantSerializer.getInstance().format(action.getCreatedAt()),
                     actionObject,
                     CREATED_AT_TAG
             );
             addJsonStringValue(
-                    DateSerializer.toFormattedDateTimeString(action.getModifiedAt()),
+                    InstantSerializer.getInstance().format(action.getModifiedAt()),
                     actionObject,
                     MODIFIED_AT_TAG
             );
@@ -155,19 +142,19 @@ public class ActionSerializer extends BaseSerializer {
                     case DATE:
                     case QUEUED_WITH_DATE:
                         addJsonStringValue(
-                                DateSerializer.toFormattedDateString(action.getDate()),
+                                LocalDateSerializer.getInstance().format(action.getDate()),
                                 actionObject,
                                 DATE_TAG
                         );
                         break;
                     case DATE_TIME:
                         addJsonStringValue(
-                                DateSerializer.toFormattedDateString(action.getDate()),
+                                LocalDateSerializer.getInstance().format(action.getDate()),
                                 actionObject,
                                 DATE_TAG
                         );
                         addJsonLongValue(
-                                DateSerializer.toTimestamp(action.getExactTime()),
+                                InstantSerializer.getInstance().seconds(action.getExactTime()),
                                 actionObject,
                                 EXACT_TIME_TAG
                         );
@@ -181,9 +168,9 @@ public class ActionSerializer extends BaseSerializer {
     public static String toJsonArray(List<Action> actions) {
         JSONArray actionsArray = new JSONArray();
         if (actions != null && !actions.isEmpty()) {
-            for (int i = 0; i < actions.size(); i++) {
+            for (Action action : actions) {
                 try {
-                    actionsArray.put(new JSONObject(toJsonObject(actions.get(i))));
+                    actionsArray.put(new JSONObject(toJsonObject(action)));
                 } catch (JSONException e) {
                     LOG.severe("Error creating JSONArray out of list of Actions.");
                     LOG.severe(e.toString());

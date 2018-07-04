@@ -13,7 +13,7 @@ import com.onepagecrm.models.serializers.BaseSerializer;
 import com.onepagecrm.models.serializers.CallSerializer;
 import com.onepagecrm.models.serializers.ContactListSerializer;
 import com.onepagecrm.models.serializers.ContactSerializer;
-import com.onepagecrm.models.serializers.DateSerializer;
+import com.onepagecrm.models.serializers.InstantSerializer;
 import com.onepagecrm.models.serializers.LoginSerializer;
 
 import java.util.logging.Logger;
@@ -318,17 +318,17 @@ public class ResponseHandlerTest extends BaseTest {
                 "\"559689cb9b79b24686000025\",\"text\":\"\",\"call_time_int\":" +
                 "\"1435929035\",\"author\":\"\",\"phone_number\":\"\",\"via\":\"unknown\"," +
                 "\"call_result\":\"interested\",\"recording_link\":\"\",\"created_at\":" +
-                "\"2015-07-03 13:10:35 UTC\",\"modified_at\":\"2015-07-03 13:10:35 UTC\"," +
+                "\"2015-07-03T13:10:35Z\",\"modified_at\":\"2015-07-03T13:10:35Z\"," +
                 "\"contact_id\":\"55804f6b1787fa72b400002e\",\"attachments\":[]}}}";
 
         try {
             Call call = CallSerializer.fromString(createdResourceResponse);
 
             assertTrue("Success message misinterpreted", call.isValid());
-            assertTrue(call.getId().equals("559689cb9b79b24686000025"));
-            assertTrue(("" + DateSerializer.toTimestamp(call.getTime()) + "").equals("1435929035"));
-            assertTrue(call.getVia().equals("unknown"));
-            assertTrue(call.getContactId().equals("55804f6b1787fa72b400002e"));
+            assertEquals("559689cb9b79b24686000025", call.getId());
+            assertEquals((Long) 1435929035L, InstantSerializer.getInstance().seconds(call.getTime()));
+            assertEquals("unknown", call.getVia());
+            assertEquals("55804f6b1787fa72b400002e", call.getContactId());
 
         } catch (OnePageException e) {
             // We do not expect this exception to be thrown
@@ -387,7 +387,7 @@ public class ResponseHandlerTest extends BaseTest {
             ContactList actionStream = ContactListSerializer.fromString(response);
 
             assertTrue("Contacts not parsed correctly", !actionStream.isEmpty());
-            assertTrue("Incorrect number of contacts parsed", actionStream.size() == 18);
+            assertEquals("Incorrect number of contacts parsed", 18, actionStream.size());
 
         } catch (OnePageException e) {
             // Not expecting this.
@@ -407,7 +407,7 @@ public class ResponseHandlerTest extends BaseTest {
             ContactList contacts = ContactListSerializer.fromString(response);
 
             assertTrue("Contacts not parsed correctly", !contacts.isEmpty());
-            assertTrue("Incorrect number of contacts parsed", contacts.size() == 25);
+            assertEquals("Incorrect number of contacts parsed", 25, contacts.size());
 
         } catch (OnePageException e) {
             // Not expecting this.

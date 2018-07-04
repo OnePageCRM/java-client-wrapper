@@ -57,8 +57,8 @@ public class CompanySerializer extends BaseSerializer {
                 .setTotalWonAmount(companyObject.optDouble(TOTAL_WON_AMOUNT_TAG, 0d))
                 .setPendingDealsCount(companyObject.optInt(PENDING_DEALS_COUNT_TAG))
                 .setTotalPendingAmount(companyObject.optDouble(TOTAL_PENDING_AMOUNT_TAG, 0d))
-                .setCreatedAt(DateSerializer.fromFormattedString(companyObject.optString(CREATED_AT_TAG)))
-                .setModifiedAt(DateSerializer.fromFormattedString(companyObject.optString(MODIFIED_AT_TAG)))
+                .setCreatedAt(InstantSerializer.getInstance().parse(companyObject.optString(CREATED_AT_TAG)))
+                .setModifiedAt(InstantSerializer.getInstance().parse(companyObject.optString(MODIFIED_AT_TAG)))
                 .setContactsCount(companyObject.optInt(CONTACTS_COUNT_TAG))
                 .setSyncingStatus(companyObject.optBoolean(SYNCING_STATUS_TAG))
                 .setSyncedStatusId(nullChecks(companyObject.optString(SYNCED_STATUS_ID_TAG)))
@@ -153,9 +153,9 @@ public class CompanySerializer extends BaseSerializer {
 
     public static String toJsonArray(List<Company> companies) {
         JSONArray companiesArray = new JSONArray();
-        for (int i = 0; i < companies.size(); i++) {
+        for (Company company : companies) {
             try {
-                companiesArray.put(new JSONObject(toJsonObject(companies.get(i))));
+                companiesArray.put(new JSONObject(toJsonObject(company)));
             } catch (JSONException e) {
                 LOG.severe("Error creating JSON out of Company(s).");
                 LOG.severe(e.toString());
