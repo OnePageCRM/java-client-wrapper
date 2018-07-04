@@ -6,6 +6,8 @@ import com.onepagecrm.models.internal.PredefinedAction;
 import com.onepagecrm.models.serializers.DateTimeSerializer;
 import com.onepagecrm.models.serializers.LocalDateSerializer;
 import com.onepagecrm.models.serializers.ZonedDateTimeSerializer;
+
+import org.threeten.bp.DayOfWeek;
 import org.threeten.bp.LocalDate;
 import org.threeten.bp.LocalDateTime;
 import org.threeten.bp.ZoneId;
@@ -30,6 +32,8 @@ public class ActionHelper {
     public static final String STATUS_ASAP = "ASAP";
     public static final String STATUS_TODAY = "TODAY";
     public static final String STATUS_WAITING = "WAITING";
+    public static final String SUNDAY = "sunday";
+    public static final String WEEKEND = "weekend";
 
     public static final int COLOR_ASAP_OVERDUE = OPCRMColors.FLAG_RED;
     public static final int COLOR_TODAY = OPCRMColors.FLAG_ORANGE;
@@ -71,10 +75,27 @@ public class ActionHelper {
     }
 
     public static Action promote(ZoneId zoneId, PredefinedAction predefined) {
+        return promote(zoneId, predefined, null);
+    }
+
+    public static Action promote(ZoneId zoneId, PredefinedAction predefined, String notWorkingDays) {
         final String actionText = predefined != null ? predefined.getText() : null;
-        final int daysToBeAdded = predefined != null ? predefined.getDays() : 0;
+        int daysToBeAdded = predefined != null ? predefined.getDays() : 0;
+
         // Default date is TODAY at 9am.
         LocalDate today = DateTimeHelper.today();
+
+        // Skip weekend/sunday if set
+        if (notWorkingDays != null) {
+            boolean isSunday = today.getDayOfWeek().plus(daysToBeAdded) == DayOfWeek.SUNDAY;
+            boolean isSaturday = today.getDayOfWeek().plus(daysToBeAdded) == DayOfWeek.SATURDAY;
+            if (SUNDAY.equals(notWorkingDays) && isSunday) {
+                daysToBeAdded += 1;
+            } else if (WEEKEND.equals(notWorkingDays) && (isSunday || isSaturday)) {
+                daysToBeAdded += isSaturday ? 2 : 1;
+            }
+        }
+
         ZonedDateTime todayZdt = defaultDateTime(zoneId);
         // Apply the updated date/time to action.
         return new Action()
