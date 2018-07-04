@@ -59,7 +59,5 @@ public class API500Driver {
         for (PredefinedAction action : actions) {
             LOG.info("[" + (i++) + "] - " + action.toString());
         }
-
-        // TODO: ensure no errors thrown!?
     }
 }

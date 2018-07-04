@@ -32,7 +32,7 @@ public abstract class ApiResource extends BaseResource implements Serializable {
     public static final String ACTIONS_ENDPOINT = "actions";
     public static final String MARK_COMPLETE_ENDPOINT = "actions/{id}/mark_as_done";
     public static final String UNDO_COMPLETION_ENDPOINT = "actions/{id}/undo_completion";
-    public static final String PREDEFINED_ACTIONS_ENDPOINT = "predefined_actions/with_groups";
+    public static final String PREDEFINED_ACTIONS_ENDPOINT = "predefined_actions";
     public static final String NOTES_ENDPOINT = "notes";
     public static final String BOOTSTRAP_ENDPOINT = "bootstrap";
     public static final String STARTUP_ENDPOINT = "mobile/startup";
