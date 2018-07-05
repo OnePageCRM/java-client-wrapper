@@ -194,6 +194,7 @@ public class BaseSerializer {
     // SETTINGS TAGS
     public static final String TIME_ZONE_TAG = "time_zone";
     public static final String DATE_FORMAT_TAG = "date_format";
+    public static final String NOT_WORKING_DAYS_TAG = "not_working_days";
     public static final String LISTING_SIZE_TAG = "listing_size";
     public static final String POPULAR_COUNTRIES_TAG = "popular_countries";
     public static final String CURRENCY_SYMBOL_TAG = "currency_symbol";
