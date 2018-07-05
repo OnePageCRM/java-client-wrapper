@@ -14,13 +14,15 @@ import static com.onepagecrm.net.ApiResource.GOOGLE_SIGNUP_ENDPOINT;
  * Created by Anton S. on 3/07/2018.
  * Copyright (c) 2018 OnePageCRM. All rights reserved.
  */
-public class GoogleContactsAuthRequest extends Request {
+public class GoogleContactsAuthRequest extends PostRequest {
 
     public GoogleContactsAuthRequest(String oauth2Code) {
+        super(GOOGLE_CONTACTS_AUTH_ENDPOINT, null);
         init(oauth2Code, null);
     }
 
     public GoogleContactsAuthRequest(String oauth2Code, String serverId) {
+        super(GOOGLE_CONTACTS_AUTH_ENDPOINT, null);
         init(oauth2Code, serverId);
     }
 
