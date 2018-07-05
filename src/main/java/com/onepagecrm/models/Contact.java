@@ -223,6 +223,12 @@ public class Contact extends ApiResource implements Serializable {
         return contact;
     }
 
+    public Contact getEmailMessages() throws OnePageException {
+        Request request = new PutRequest(CONTACT_EMAILS_ENDPOINT.replace("{id}", this.getId()));
+        Response response = request.send();
+        return ContactSerializer.fromString(response.getResponseBody());
+    }
+
     /*
      * Utility methods.
      */
