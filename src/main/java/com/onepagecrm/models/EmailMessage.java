@@ -14,78 +14,87 @@ public class EmailMessage {
 
     private EmailRecipients recipients;
     private String subject;
-    private String plain_content;
+    private String plainContent;
     private String status;
 
     public String getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public EmailMessage setId(String id) {
         this.id = id;
+        return this;
     }
 
     public String getContactId() {
         return contactId;
     }
 
-    public void setContactId(String contactId) {
+    public EmailMessage setContactId(String contactId) {
         this.contactId = contactId;
+        return this;
     }
 
     public String getSendTime() {
         return sendTime;
     }
 
-    public void setSendTime(String sendTime) {
+    public EmailMessage setSendTime(String sendTime) {
         this.sendTime = sendTime;
+        return this;
     }
 
     public String getMessageId() {
         return messageId;
     }
 
-    public void setMessageId(String messageId) {
+    public EmailMessage setMessageId(String messageId) {
         this.messageId = messageId;
+        return this;
     }
 
     public String getSender() {
         return sender;
     }
 
-    public void setSender(String sender) {
+    public EmailMessage setSender(String sender) {
         this.sender = sender;
+        return this;
     }
 
     public EmailRecipients getRecipients() {
         return recipients;
     }
 
-    public void setRecipients(EmailRecipients recipients) {
+    public EmailMessage setRecipients(EmailRecipients recipients) {
         this.recipients = recipients;
+        return this;
     }
 
     public String getSubject() {
         return subject;
     }
 
-    public void setSubject(String subject) {
+    public EmailMessage setSubject(String subject) {
         this.subject = subject;
+        return this;
     }
 
-    public String getPlain_content() {
-        return plain_content;
+    public String getPlainContent() {
+        return plainContent;
     }
 
-    public void setPlain_content(String plain_content) {
-        this.plain_content = plain_content;
+    public EmailMessage setPlainContent(String plainContent) {
+        this.plainContent = plainContent;
+        return this;
     }
 
     public String getStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
+    public EmailMessage setStatus(String status) {
         this.status = status;
+        return this;
     }
 }

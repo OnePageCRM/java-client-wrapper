@@ -1,6 +1,8 @@
 package com.onepagecrm.models.serializers;
 
 import com.onepagecrm.models.Email;
+import com.onepagecrm.models.EmailMessage;
+import com.onepagecrm.models.EmailRecipients;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -14,8 +16,8 @@ public class EmailMessageSerializer extends BaseSerializer {
 
     private static final Logger LOG = Logger.getLogger(EmailMessageSerializer.class.getName());
 
-    public static List<Email> fromJsonArray(JSONArray emailsArray) {
-        List<Email> emails = new ArrayList<>();
+    public static List<EmailMessage> fromJsonArray(JSONArray emailsArray) {
+        List<EmailMessage> emails = new ArrayList<>();
         for (int j = 0; j < emailsArray.length(); j++) {
             JSONObject emailObject;
             try {
@@ -29,14 +31,37 @@ public class EmailMessageSerializer extends BaseSerializer {
         return emails;
     }
 
-    public static Email fromJsonObject(JSONObject emailObject) {
-        Email email = new Email();
+    public static EmailMessage fromJsonObject(JSONObject emailObject) {
+        EmailMessage email = new EmailMessage();
         try {
-            String type = emailObject.getString(TYPE_TAG);
-            String value = emailObject.getString(VALUE_TAG);
+            emailObject = emailObject.getJSONObject("email_message");
+            String id = emailObject.getString("id");
+            String contactId = emailObject.getString("contact_id");
+            String sendTime = emailObject.getString("send_time");
+            String sender = emailObject.getString("sender");
+            String subject = emailObject.getString("subject");
+            String plainContent = emailObject.getString("plain_content");
+
+            EmailRecipients recipients = new EmailRecipients();
+            JSONObject recipientsObject = emailObject.getJSONObject("recipients");
+
+            List<String> to = BaseSerializer.toListOfStrings(recipientsObject.getJSONArray("to"));
+            List<String> bcc = BaseSerializer.toListOfStrings(recipientsObject.getJSONArray("bcc"));
+            List<String> cc = BaseSerializer.toListOfStrings(recipientsObject.getJSONArray("cc"));
+
+            recipients.setTo(to)
+                    .setBcc(bcc)
+                    .setCc(cc);
+
+            email.setRecipients(recipients);
+
             return email
-                    .setType(type)
-                    .setValue(value);
+                    .setId(id)
+                    .setContactId(contactId)
+                    .setSendTime(sendTime)
+                    .setSender(sender)
+                    .setSubject(subject)
+                    .setPlainContent(plainContent);
         } catch (JSONException e) {
             LOG.severe("Error parsing email object");
             LOG.severe(e.toString());
@@ -44,23 +69,18 @@ public class EmailMessageSerializer extends BaseSerializer {
         return email;
     }
 
-    public static String toJsonObject(Email email) {
-        if (email.getValue() != null) {
-            JSONObject emailObject = new JSONObject();
-            addJsonStringValue(email.getType().toLowerCase(), emailObject, TYPE_TAG);
-            addJsonStringValue(email.getValue(), emailObject, VALUE_TAG);
-            return emailObject.toString();
-        } else {
-            return null;
-        }
+    public static String toJsonObject(EmailMessage email) {
+        JSONObject emailObject = new JSONObject();
+        // todo
+        return emailObject.toString();
     }
 
-    public static String toJsonArray(List<Email> emails) {
+    public static String toJsonArray(List<EmailMessage> emails) {
         JSONArray emailsArray = new JSONArray();
         if (emails != null && !emails.isEmpty()) {
             for (int i = 0; i < emails.size(); i++) {
                 try {
-                    if (emails.get(i).getValue() != null) {
+                    if (emails.get(i).getId() != null) {
                         emailsArray.put(new JSONObject(toJsonObject(emails.get(i))));
                     }
                 } catch (JSONException e) {
