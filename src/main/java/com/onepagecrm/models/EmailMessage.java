@@ -97,4 +97,8 @@ public class EmailMessage {
         this.status = status;
         return this;
     }
+
+    public boolean isValid() {
+        return plainContent != null && !plainContent.isEmpty();
+    }
 }
