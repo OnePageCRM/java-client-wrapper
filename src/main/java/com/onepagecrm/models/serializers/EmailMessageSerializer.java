@@ -1,5 +1,6 @@
 package com.onepagecrm.models.serializers;
 
+import com.onepagecrm.exceptions.OnePageException;
 import com.onepagecrm.models.Email;
 import com.onepagecrm.models.EmailMessage;
 import com.onepagecrm.models.EmailRecipients;
@@ -15,6 +16,21 @@ import java.util.logging.Logger;
 public class EmailMessageSerializer extends BaseSerializer {
 
     private static final Logger LOG = Logger.getLogger(EmailMessageSerializer.class.getName());
+
+    public static List<EmailMessage> fromString(String responseBody) throws OnePageException {
+        List<EmailMessage> result = new ArrayList<>();
+        try {
+            String parsedResponse = (String) BaseSerializer.fromString(responseBody);
+            JSONObject responseObject = new JSONObject(parsedResponse);
+            return fromJsonArray(responseObject.getJSONArray("email_messages"));
+        } catch (ClassCastException e) {
+            throw (OnePageException) BaseSerializer.fromString(responseBody);
+        } catch (Exception e) {
+            LOG.severe("Error parsing Contact object from response body");
+            LOG.severe(e.toString());
+        }
+        return result;
+    }
 
     public static List<EmailMessage> fromJsonArray(JSONArray emailsArray) {
         List<EmailMessage> emails = new ArrayList<>();
