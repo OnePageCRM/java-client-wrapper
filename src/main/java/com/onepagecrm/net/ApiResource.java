@@ -35,6 +35,7 @@ public abstract class ApiResource extends BaseResource implements Serializable {
     public static final String UNDO_COMPLETION_ENDPOINT = "actions/{id}/undo_completion";
     public static final String PREDEFINED_ACTIONS_ENDPOINT = "predefined_actions";
     public static final String NOTES_ENDPOINT = "notes";
+    public static final String EMAILS_ENDPOINT = "emails";
     public static final String BOOTSTRAP_ENDPOINT = "bootstrap";
     public static final String STARTUP_ENDPOINT = "mobile/startup";
     public static final String DEVICE_ENDPOINT = "firebase";

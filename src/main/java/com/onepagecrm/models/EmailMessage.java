@@ -1,12 +1,21 @@
 package com.onepagecrm.models;
 
+import com.onepagecrm.exceptions.OnePageException;
+import com.onepagecrm.models.internal.DeleteResult;
+import com.onepagecrm.models.serializers.DeleteResultSerializer;
+import com.onepagecrm.net.ApiResource;
+import com.onepagecrm.net.Response;
+import com.onepagecrm.net.request.DeleteRequest;
+import com.onepagecrm.net.request.Request;
 import java.io.Serializable;
+
+
 
 /**
  * Created by Anton S. on 05/07/2018
  */
 
-public class EmailMessage implements Serializable {
+public class EmailMessage extends ApiResource implements Serializable {
 
     private String id;
     private String contactId;
@@ -19,6 +28,13 @@ public class EmailMessage implements Serializable {
     private String plainContent;
     private String status;
 
+    public DeleteResult delete() throws OnePageException {
+        // todo fix endpoint
+        Request request = new DeleteRequest(withId(CONTACT_EMAILS_ENDPOINT.replace("{id}", contactId)));
+        Response response = request.send();
+        return DeleteResultSerializer.fromString(this.id, response.getResponseBody());
+    }
+
     public String getId() {
         return id;
     }
@@ -26,6 +42,11 @@ public class EmailMessage implements Serializable {
     public EmailMessage setId(String id) {
         this.id = id;
         return this;
+    }
+
+    @Override
+    public String toString() {
+        return null;
     }
 
     public String getContactId() {
