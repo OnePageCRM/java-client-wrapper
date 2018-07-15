@@ -1,10 +1,12 @@
 package com.onepagecrm.models;
 
+import java.io.Serializable;
+
 /**
  * Created by Anton S. on 05/07/2018
  */
 
-public class EmailMessage {
+public class EmailMessage implements Serializable {
 
     private String id;
     private String contactId;
