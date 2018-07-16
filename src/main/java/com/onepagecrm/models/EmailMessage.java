@@ -28,7 +28,7 @@ public class EmailMessage extends ApiResource implements Serializable {
     private String plainContent;
     private String status;
 
-    public DeleteResult delete() throws OnePageException {
+    public DeleteResult delete(String contactId) throws OnePageException {
         // todo fix endpoint
         Request request = new DeleteRequest(withId(CONTACT_EMAILS_ENDPOINT.replace("{id}", contactId)));
         Response response = request.send();
