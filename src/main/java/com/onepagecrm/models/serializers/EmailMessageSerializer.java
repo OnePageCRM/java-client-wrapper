@@ -50,20 +50,20 @@ public class EmailMessageSerializer extends BaseSerializer {
     public static EmailMessage fromJsonObject(JSONObject emailObject) {
         EmailMessage email = new EmailMessage();
         try {
-            emailObject = emailObject.getJSONObject("email_message");
-            String id = emailObject.getString("id");
-            String contactId = emailObject.getString("contact_id");
-            String sendTime = emailObject.getString("send_time");
-            String sender = emailObject.getString("sender");
-            String subject = emailObject.getString("subject");
-            String plainContent = emailObject.getString("plain_content");
+            emailObject = emailObject.optJSONObject(EMAIL_MESSAGE_TAG);
+            String id = emailObject.optString(ID_TAG);
+            String contactId = emailObject.optString(CONTACT_ID_TAG);
+            String sendTime = emailObject.optString(SEND_TIME_TAG);
+            String sender = emailObject.optString(SENDER_TAG);
+            String subject = emailObject.optString(SUBJECT_TAG);
+            String plainContent = emailObject.optString(PLAIN_CONTENT_TAG);
 
             EmailRecipients recipients = new EmailRecipients();
-            JSONObject recipientsObject = emailObject.getJSONObject("recipients");
+            JSONObject recipientsObject = emailObject.optJSONObject(RECIPIENTS_TAG);
 
-            List<String> to = BaseSerializer.toListOfStrings(recipientsObject.getJSONArray("to"));
-            List<String> bcc = BaseSerializer.toListOfStrings(recipientsObject.getJSONArray("bcc"));
-            List<String> cc = BaseSerializer.toListOfStrings(recipientsObject.getJSONArray("cc"));
+            List<String> to = BaseSerializer.toListOfStrings(recipientsObject.getJSONArray(TO_TAG));
+            List<String> bcc = BaseSerializer.toListOfStrings(recipientsObject.getJSONArray(BCC_TAG));
+            List<String> cc = BaseSerializer.toListOfStrings(recipientsObject.getJSONArray(CC_TAG));
 
             recipients.setTo(to)
                     .setBcc(bcc)
