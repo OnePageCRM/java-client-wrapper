@@ -152,6 +152,9 @@ public class DealSerializer extends BaseSerializer {
             if (dataObject.has(RELATED_NOTES_TAG)) {
                 deal.setRelatedNotes(NoteSerializer.fromJsonArray(dataObject.optJSONArray(RELATED_NOTES_TAG)));
             }
+            if (dataObject.has(DEAL_ITEMS_TAG)) {
+                deal.setDealItems(DealItemSerializer.fromJsonArray(dataObject.optJSONArray(DEAL_ITEMS_TAG)));
+            }
         } catch (JSONException e) {
             LOG.severe("Error parsing Deal object");
             LOG.severe(e.toString());
