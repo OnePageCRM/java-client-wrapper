@@ -101,7 +101,7 @@ public class BaseSerializer {
     public static final String DAYS_TAG = "days";
     public static final String ACTION_TAG = "action";
     public static final String ACTIONS_TAG = "actions";
-    public static final String DATE_COLOR_TAG = "date_color";
+    public static final String FLAG_COLOR_TAG = "flag_color";
     public static final String QUEUED_ACTION_TAG = "queued_action";
     public static final String QUEUED_ACTIONS_TAG = "queued_actions";
     public static final String PREDEFINED_ACTION_TAG = "predefined_action";
@@ -109,7 +109,7 @@ public class BaseSerializer {
     public static final String EXACT_TIME_TAG = "exact_time";
     public static final String EXACT_TIME_INT_TAG = "exact_time_int";
 
-    // CLOSED SALES CYCLE.
+    // CLOSED SALES CYCLE
     public static final String CLOSED_SALES_TAG = "closed_sales";
     public static final String CLOSED_AT_TAG = "closed_at";
     public static final String COMMENT_TAG = "comment";
@@ -195,6 +195,7 @@ public class BaseSerializer {
     // SETTINGS TAGS
     public static final String TIME_ZONE_TAG = "time_zone";
     public static final String DATE_FORMAT_TAG = "date_format";
+    public static final String NOT_WORKING_DAYS_TAG = "not_working_days";
     public static final String LISTING_SIZE_TAG = "listing_size";
     public static final String POPULAR_COUNTRIES_TAG = "popular_countries";
     public static final String CURRENCY_SYMBOL_TAG = "currency_symbol";
@@ -245,6 +246,7 @@ public class BaseSerializer {
     public static final String NOTE_TAG = "note";
     public static final String NOTES_TAG = "notes";
     public static final String LINKED_DEAL_ID_TAG = "linked_deal_id";
+    public static final String USER_IDS_TO_NOTIFY_TAG = "user_ids_to_notify";
 
     // FILTERS TAGS
     public static final String FILTER_TAG = "filter";

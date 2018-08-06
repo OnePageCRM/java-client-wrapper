@@ -26,6 +26,7 @@ public class CustomFieldValue implements Serializable {
         return null;
     }
 
+    @SuppressWarnings("unused")
     public String getStringValue() {
         String retString = "";
         if (stringValue != null) {

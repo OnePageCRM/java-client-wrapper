@@ -2,8 +2,9 @@ package com.onepagecrm.samples;
 
 import com.onepagecrm.OnePageCRM;
 import com.onepagecrm.exceptions.OnePageException;
+import com.onepagecrm.models.Action;
 import com.onepagecrm.models.User;
-import com.onepagecrm.models.internal.Device;
+import com.onepagecrm.models.internal.PredefinedAction;
 import com.onepagecrm.net.request.Request;
 
 import java.io.FileInputStream;
@@ -14,11 +15,12 @@ import java.util.Properties;
 import java.util.logging.Logger;
 
 /**
- * @author Cillian Myles <cillian@onepagecrm.com> on 14/11/2017.
+ * Created by Cillian Myles on 28/06/2018.
+ * Copyright (c) 2018 OnePageCRM. All rights reserved.
  */
-public class DeleteDevicesDriver {
+public class API500Driver {
 
-    private static final Logger LOG = Logger.getLogger(DeleteDevicesDriver.class.getName());
+    private static final Logger LOG = Logger.getLogger(API500Driver.class.getName());
 
     public static void main(String[] args) throws OnePageException {
         Properties prop = new Properties();
@@ -50,25 +52,12 @@ public class DeleteDevicesDriver {
                 prop.getProperty("username"),
                 prop.getProperty("password"));
 
-        LOG.info("Logged in User : " + loggedInUser);
+        LOG.info("Logged in User: " + loggedInUser);
 
-        // List all devices.
-        List<Device> devices = Device.list();
+        final List<PredefinedAction> actions = Action.listPredefined();
         int i = 0;
-        for (Device device : devices) {
-            LOG.info("Device[" + (i++) + "] : " + device);
-        }
-
-        // Delete all devices.
-        for (Device device : devices) {
-            device.delete();
-        }
-
-        // List again (should be none).
-        devices = Device.list();
-        i = 0;
-        for (Device device : devices) {
-            LOG.info("Device[" + (i++) + "] : " + device);
+        for (PredefinedAction action : actions) {
+            LOG.info("[" + (i++) + "] - " + action.toString());
         }
     }
 }

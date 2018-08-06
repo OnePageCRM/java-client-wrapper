@@ -4,8 +4,11 @@ import com.onepagecrm.exceptions.OnePageException;
 import com.onepagecrm.models.internal.LoginData;
 import com.onepagecrm.models.internal.Paginator;
 import com.onepagecrm.models.internal.PredefinedActionList;
-import com.onepagecrm.models.internal.Sales;
-import com.onepagecrm.models.serializers.*;
+import com.onepagecrm.models.serializers.BaseSerializer;
+import com.onepagecrm.models.serializers.CompanyListSerializer;
+import com.onepagecrm.models.serializers.ContactListSerializer;
+import com.onepagecrm.models.serializers.DealListSerializer;
+import com.onepagecrm.models.serializers.UserSerializer;
 import com.onepagecrm.net.API;
 import com.onepagecrm.net.ApiResource;
 import com.onepagecrm.net.Response;
@@ -21,8 +24,11 @@ public class User extends ApiResource implements Serializable {
 
     private static final long serialVersionUID = 1383622287570201668L;
 
-    public Account account;
+    /*
+     * Member variables.
+     */
 
+    public Account account;
     private String id;
     private String authKey;
     private String accountType;
@@ -33,15 +39,11 @@ public class User extends ApiResource implements Serializable {
     private String lastName;
     private String photoUrl;
     private String countryCode;
-    public boolean newUser;
-
+    private boolean newUser;
     private Integer allCount;
     private Integer streamCount;
     private Integer contactsCount;
-
     private List<String> accountRights;
-
-    private Sales sales;
 
     /* Auth-related API methods */
 
@@ -227,47 +229,9 @@ public class User extends ApiResource implements Serializable {
         return Action.listPredefined();
     }
 
-    public User() {
-
-    }
-
-    @Override
-    public String getId() {
-        return this.id;
-    }
-
-    @Override
-    public User setId(String id) {
-        this.id = id;
-        return this;
-    }
-
-    @Override
-    public String toString() {
-        return UserSerializer.toJsonObject(this);
-    }
-
-    @Override
-    public boolean equals(Object object) {
-        boolean idsEqual = super.equals(object);
-        boolean authKeysEqual = false;
-        if (object instanceof User) {
-            User toCompare = (User) object;
-            if (this.authKey == null && toCompare.authKey == null) {
-                authKeysEqual = true;
-            } else if (this.authKey != null && toCompare.authKey != null) {
-                authKeysEqual = this.authKey.equals(toCompare.authKey);
-            }
-        }
-        return idsEqual && authKeysEqual;
-    }
-
-    @Override
-    public boolean isValid() {
-        boolean idValid = super.isValid();
-        boolean authKeyValid = this.authKey != null && !this.authKey.equals("");
-        return idValid && authKeyValid;
-    }
+    /*
+     * Utility methods.
+     */
 
     public String getSimpleName() {
         if (lastName != null && !lastName.equals("")) {
@@ -312,6 +276,48 @@ public class User extends ApiResource implements Serializable {
 
     public boolean isOwner() {
         return accountRights != null && accountRights.contains(BaseSerializer.ADMIN_TAG);
+    }
+
+    /*
+     * Object methods.
+     */
+
+    @Override
+    public String toString() {
+        return UserSerializer.toJsonObject(this);
+    }
+
+    @Override
+    public boolean equals(Object object) {
+        boolean idsEqual = super.equals(object);
+        boolean authKeysEqual = false;
+        if (object instanceof User) {
+            User toCompare = (User) object;
+            if (this.authKey == null && toCompare.authKey == null) {
+                authKeysEqual = true;
+            } else if (this.authKey != null && toCompare.authKey != null) {
+                authKeysEqual = this.authKey.equals(toCompare.authKey);
+            }
+        }
+        return idsEqual && authKeysEqual;
+    }
+
+    @Override
+    public boolean isValid() {
+        boolean idValid = super.isValid();
+        boolean authKeyValid = this.authKey != null && !this.authKey.equals("");
+        return idValid && authKeyValid;
+    }
+
+    @Override
+    public String getId() {
+        return this.id;
+    }
+
+    @Override
+    public User setId(String id) {
+        this.id = id;
+        return this;
     }
 
     public String getAuthKey() {
@@ -383,15 +389,6 @@ public class User extends ApiResource implements Serializable {
 
     public User setPhotoUrl(String photoUrl) {
         this.photoUrl = photoUrl;
-        return this;
-    }
-
-    public Sales getSales() {
-        return sales;
-    }
-
-    public User setSales(Sales sales) {
-        this.sales = sales;
         return this;
     }
 

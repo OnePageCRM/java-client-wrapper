@@ -1,1 +1,19 @@
-{"status":0,"message":"Created","timestamp":1441288746,"data":{"call":{"id":"55e8522a9b79b25a27000189","via":"unknown","contact_id":"55d5d973e57c393e8a00009c","text":"JAVA","call_time_int":"1441288746","call_result":"interested","modified_at":"2015-09-03 13:59:06 UTC","created_at":"2015-09-03 13:59:06 UTC","author":"","attachments":[]}}}
+{
+  "status":0,
+  "message":"Created",
+  "timestamp":1441288746,
+  "data":{
+    "call":{
+      "id":"55e8522a9b79b25a27000189",
+      "via":"unknown",
+      "contact_id":"55d5d973e57c393e8a00009c",
+      "text":"JAVA",
+      "call_time_int":"1441288746",
+      "call_result":"interested",
+      "modified_at":"2015-09-03T13:59:06Z",
+      "created_at":"2015-09-03T13:59:06Z",
+      "author":"",
+      "attachments":[]
+    }
+  }
+}
