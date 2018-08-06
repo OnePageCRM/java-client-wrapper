@@ -503,6 +503,15 @@ public class Deal extends ApiResource implements Serializable {
         return this;
     }
 
+    public List<DealItem> getDealItems() {
+        return dealItems;
+    }
+
+    public Deal setDealItems(List<DealItem> dealItems) {
+        this.dealItems = dealItems;
+        return this;
+    }
+
     public static class ContactInfo implements Serializable {
         private String contactName;
         private String company;
