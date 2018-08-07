@@ -11,6 +11,7 @@ import com.onepagecrm.models.serializers.ContactSerializer;
 import com.onepagecrm.models.serializers.ContactSplitSerializer;
 import com.onepagecrm.models.serializers.DeleteResultSerializer;
 import com.onepagecrm.models.serializers.LoginSerializer;
+import com.onepagecrm.net.API;
 import com.onepagecrm.net.ApiResource;
 import com.onepagecrm.net.Response;
 import com.onepagecrm.net.request.DeleteRequest;
@@ -90,6 +91,8 @@ public class Contact extends ApiResource implements Serializable {
     private Company company;
     private List<String> linkedWithIds;
     private String linkedWithName;
+    private String googleId;
+    private String googleAccountEmail;
 
     /*
      * API methods.
@@ -123,6 +126,10 @@ public class Contact extends ApiResource implements Serializable {
         Contact contact = ContactSerializer.fromString(responseBody);
         LoginSerializer.updateDynamicResources(responseBody);
         return contact;
+    }
+
+    public Contact saveToGoogle() throws OnePageException {
+        return API.GoogleContacts.save(this);
     }
 
     public static Contact byId(String id) throws OnePageException {
@@ -640,6 +647,24 @@ public class Contact extends ApiResource implements Serializable {
     public Contact setLinkedWithId(String linkedWithId) {
         if (this.linkedWithIds == null) this.linkedWithIds = new ArrayList<>();
         this.linkedWithIds.add(linkedWithId);
+        return this;
+    }
+
+    public String getGoogleId() {
+        return googleId;
+    }
+
+    public Contact setGoogleId(String googleId) {
+        this.googleId = googleId;
+        return this;
+    }
+
+    public String getGoogleAccountEmail() {
+        return googleAccountEmail;
+    }
+
+    public Contact setGoogleAccountEmail(String googleAccountEmail) {
+        this.googleAccountEmail = googleAccountEmail;
         return this;
     }
 }

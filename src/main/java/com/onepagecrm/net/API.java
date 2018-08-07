@@ -2,18 +2,24 @@ package com.onepagecrm.net;
 
 import com.onepagecrm.OnePageCRM;
 import com.onepagecrm.exceptions.OnePageException;
+import com.onepagecrm.models.Contact;
 import com.onepagecrm.models.StartupData;
+import com.onepagecrm.models.helpers.TextHelper;
 import com.onepagecrm.models.internal.LoginData;
+import com.onepagecrm.models.serializers.ContactSerializer;
 import com.onepagecrm.models.serializers.LoginDataSerializer;
 import com.onepagecrm.models.serializers.LoginSerializer;
 import com.onepagecrm.models.serializers.StartupDataSerializer;
 import com.onepagecrm.net.request.GetRequest;
 import com.onepagecrm.net.request.GoogleAuthRequest;
+import com.onepagecrm.net.request.GoogleContactsAuthRequest;
 import com.onepagecrm.net.request.GoogleLoginRequest;
 import com.onepagecrm.net.request.LoginRequest;
+import com.onepagecrm.net.request.PostRequest;
 import com.onepagecrm.net.request.Request;
 
 import static com.onepagecrm.net.ApiResource.BOOTSTRAP_ENDPOINT;
+import static com.onepagecrm.net.ApiResource.GOOGLE_CONTACTS_ENDPOINT;
 import static com.onepagecrm.net.ApiResource.STARTUP_ENDPOINT;
 import static com.onepagecrm.net.request.Request.CUSTOM_URL_SERVER;
 import static com.onepagecrm.net.request.Request.DEFAULT_AUTH_SERVER;
@@ -68,6 +74,42 @@ public interface API {
             Request request = new GoogleAuthRequest(oauth2Code, serverId);
             Response response = request.send();
             return LoginDataSerializer.fromString(response.getResponseBody());
+        }
+    }
+
+    abstract class GoogleContacts {
+
+        public static void authorize(String oauth2Code) throws OnePageException {
+            Request request = new GoogleContactsAuthRequest(oauth2Code);
+            Response response = request.send();
+        }
+
+        public static Contact save(Contact contact) throws OnePageException {
+            if (contact == null || !contact.isValid()) {
+                throw new OnePageException("Contact must be non-null and valid")
+                        .setErrorMessage("Contact must be non-null and valid");
+            }
+
+            return TextHelper.isEmpty(contact.getGoogleId()) ? create(contact) : update(contact);
+        }
+
+        private static Contact create(Contact toBeSaved) throws OnePageException {
+            return saveImpl(toBeSaved, false);
+        }
+
+        private static Contact update(Contact toBeSaved) throws OnePageException {
+            return saveImpl(toBeSaved, true);
+        }
+
+        private static Contact saveImpl(Contact toBeSaved, boolean updating) throws OnePageException {
+            Request request = new PostRequest(
+                    GOOGLE_CONTACTS_ENDPOINT.replace("{id}", toBeSaved.getId()),
+                    null);
+            Response response = request.send();
+            String responseBody = response.getResponseBody();
+            Contact contact = ContactSerializer.fromString(responseBody);
+            LoginSerializer.updateDynamicResources(responseBody);
+            return contact;
         }
     }
 

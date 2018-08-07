@@ -11,6 +11,23 @@ import java.util.Map;
 public class PostRequest extends SignedRequest {
 
     /**
+     * Constructor which takes empty request body.
+     *
+     * @param endpoint
+     * @param query
+     */
+    public PostRequest(String endpoint, String query) {
+        setType();
+        setEndpointUrl(endpoint);
+        if (query == null) {
+            authenticate();
+        } else {
+            addQuery(query);
+            authenticate();
+        }
+    }
+
+    /**
      * Constructor which takes JSON string for request body.
      *
      * @param endpoint
