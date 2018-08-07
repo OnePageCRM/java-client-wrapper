@@ -70,12 +70,6 @@ public interface API {
             return LoginDataSerializer.fromString(response.getResponseBody());
         }
 
-        public static LoginData contacts(String oauth2Code) throws OnePageException {
-            Request request = new GoogleContactsAuthRequest(oauth2Code);
-            Response response = request.send();
-            return LoginDataSerializer.fromString(response.getResponseBody());
-        }
-
         public static LoginData signup(String oauth2Code, String serverId) throws OnePageException {
             Request request = new GoogleAuthRequest(oauth2Code, serverId);
             Response response = request.send();
