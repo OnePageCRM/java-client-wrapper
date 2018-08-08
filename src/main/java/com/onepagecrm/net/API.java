@@ -79,9 +79,13 @@ public interface API {
 
     abstract class GoogleContacts {
 
-        public static void authorize(String oauth2Code) throws OnePageException {
+        public static boolean authorize(String oauth2Code) throws OnePageException {
             Request request = new GoogleContactsAuthRequest(oauth2Code);
             Response response = request.send();
+            final int code = response != null ? response.getResponseCode() : -1;
+            final String body = response != null ? response.getResponseBody() : "{malformed-json-body[]}";
+            LoginSerializer.fromString(body); // only to throw exception
+            return code == 200 || code == 201;
         }
 
         public static Contact save(Contact contact) throws OnePageException {

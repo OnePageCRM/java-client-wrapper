@@ -1,14 +1,10 @@
 package com.onepagecrm.net.request;
 
 import com.onepagecrm.models.serializers.BaseSerializer;
-
 import org.json.JSONObject;
 
 import static com.onepagecrm.models.serializers.BaseSerializer.CODE_TAG;
-import static com.onepagecrm.models.serializers.BaseSerializer.ENDPOINT_TAG;
 import static com.onepagecrm.net.ApiResource.GOOGLE_CONTACTS_AUTH_ENDPOINT;
-import static com.onepagecrm.net.ApiResource.GOOGLE_LOGIN_ENDPOINT;
-import static com.onepagecrm.net.ApiResource.GOOGLE_SIGNUP_ENDPOINT;
 
 /**
  * Created by Anton S. on 3/07/2018.
@@ -18,15 +14,10 @@ public class GoogleContactsAuthRequest extends PostRequest {
 
     public GoogleContactsAuthRequest(String oauth2Code) {
         super(GOOGLE_CONTACTS_AUTH_ENDPOINT, null);
-        init(oauth2Code, null);
+        init(oauth2Code);
     }
 
-    public GoogleContactsAuthRequest(String oauth2Code, String serverId) {
-        super(GOOGLE_CONTACTS_AUTH_ENDPOINT, null);
-        init(oauth2Code, serverId);
-    }
-
-    private void init(String oauth2Code, String serverId) {
+    private void init(String oauth2Code) {
         setType();
         setEndpointUrl(GOOGLE_CONTACTS_AUTH_ENDPOINT);
 
