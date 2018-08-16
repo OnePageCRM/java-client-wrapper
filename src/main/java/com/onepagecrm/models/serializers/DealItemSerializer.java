@@ -29,7 +29,6 @@ public class DealItemSerializer extends BaseSerializer {
                 .setPrice(dataObject.optInt(PRICE_TAG))
                 .setAmount(dataObject.optInt(AMOUNT_TAG))
                 .setQuantity(dataObject.optString(QUANTITY_TAG))
-                .setId(dataObject.optString(ID_TAG))
                 .setDealId(dataObject.optString(DEAL_ID_TAG))
                 .setPredefinedItemId(dataObject.optString(PREDEFINED_ITEM_ID_TAG))
                 .setItemGroupId(dataObject.optString(ITEM_GROUP_ID_TAG))
