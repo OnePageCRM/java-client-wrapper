@@ -232,7 +232,7 @@ public class BaseSerializer {
     public static final String PENDING_DEALS_TAG = "pending_deals";
 
     public static final String DEAL_ITEMS_TAG = "deal_items";
-    public static final String PRICE_TAG = "amount";
+    public static final String PRICE_TAG = "price";
     public static final String QUANTITY_TAG = "qty";
     public static final String ITEM_GROUP_ID_TAG = "item_group_id";
     public static final String PREDEFINED_ITEM_ID_TAG = "predefined_item_id";
