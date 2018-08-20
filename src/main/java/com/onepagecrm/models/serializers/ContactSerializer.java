@@ -129,6 +129,12 @@ public class ContactSerializer extends BaseSerializer {
             if (contactObject.has(MODIFIED_AT_TAG)) {
                 contact.setModifiedAt(InstantSerializer.getInstance().parse(contactObject.optString(MODIFIED_AT_TAG)));
             }
+            // Google Contact data.
+            if (contactObject.has(GOOGLE_CONTACTS_DATA_TAG) && !contactObject.isNull(GOOGLE_CONTACTS_DATA_TAG)) {
+                JSONObject googleContactsDataObject = contactObject.getJSONObject(GOOGLE_CONTACTS_DATA_TAG);
+                contact.setGoogleId(googleContactsDataObject.optString(ID_TAG));
+                contact.setGoogleAccountEmail(googleContactsDataObject.optString(ACCOUNT_EMAIL_TAG));
+            }
             // Tags.
             if (contactObject.has(TAGS_TAG)) {
                 List<String> tagNames = BaseSerializer.toListOfStrings(contactObject.getJSONArray(TAGS_TAG));
