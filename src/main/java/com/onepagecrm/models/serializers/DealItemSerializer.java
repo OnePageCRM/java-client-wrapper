@@ -17,15 +17,15 @@ public class DealItemSerializer extends BaseSerializer {
                 .setId(dataObject.optString(ID_TAG))
                 .setName(dataObject.optString(NAME_TAG))
                 .setDescription(dataObject.optString(DESCRIPTION_TAG))
-                .setCost(dataObject.optInt(COST_TAG))
-                .setPrice(dataObject.optInt(PRICE_TAG))
+                .setCost(dataObject.optDouble(COST_TAG))
+                .setPrice(dataObject.optDouble(PRICE_TAG))
                 .setAmount(dataObject.optInt(AMOUNT_TAG))
-                .setQuantity(dataObject.optString(QUANTITY_TAG))
+                .setQuantity(dataObject.optInt(QUANTITY_TAG))
                 .setDealId(dataObject.optString(DEAL_ID_TAG))
                 .setPredefinedItemId(dataObject.optString(PREDEFINED_ITEM_ID_TAG))
                 .setItemGroupId(dataObject.optString(ITEM_GROUP_ID_TAG))
                 .setCreatedAt(dataObject.optString(CREATED_AT_TAG))
-                .setUpdatedAt(dataObject.optString(UPDATED_AT_TAG));
+                .setModifiedAt(dataObject.optString(UPDATED_AT_TAG));
     }
 
     public static List<DealItem> fromJsonArray(JSONArray dealItemsArray) {
@@ -47,10 +47,10 @@ public class DealItemSerializer extends BaseSerializer {
         addJsonStringValue(item.getId(), itemObject, ID_TAG);
         addJsonStringValue(item.getName(), itemObject, NAME_TAG);
         addJsonStringValue(item.getDescription(), itemObject, DESCRIPTION_TAG);
-        addJsonIntegerValue(item.getCost(), itemObject, COST_TAG);
-        addJsonIntegerValue(item.getPrice(), itemObject, PRICE_TAG);
+        addJsonDoubleValue(item.getCost(), itemObject, COST_TAG);
+        addJsonDoubleValue(item.getPrice(), itemObject, PRICE_TAG);
         addJsonIntegerValue(item.getAmount(), itemObject, AMOUNT_TAG);
-        addJsonStringValue(item.getQuantity(), itemObject, QUANTITY_TAG);
+        addJsonIntegerValue(item.getQuantity(), itemObject, QUANTITY_TAG);
         addJsonStringValue(item.getDealId(), itemObject, DEAL_ID_TAG);
         addJsonStringValue(item.getItemGroupId(), itemObject, ITEM_GROUP_ID_TAG);
         addJsonStringValue(item.getPredefinedItemId(), itemObject, PREDEFINED_ITEM_ID_TAG);

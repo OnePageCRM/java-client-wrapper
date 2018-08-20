@@ -10,15 +10,15 @@ public class DealItem implements Serializable {
     private String id;
     private String name;
     private String description;
-    private int cost; // TODO: Integer??
-    private int price;
-    private int amount;
-    private String quantity; // TODO: Integer??
+    private Double cost;
+    private Double price;
+    private Integer amount;
+    private Integer quantity;
     private String dealId;
     private String itemGroupId;
     private String predefinedItemId;
     private String createdAt; // TODO: Instant??
-    private String updatedAt;
+    private String modifiedAt; // TODO: Instant??
 
 
     public String getId() {
@@ -48,20 +48,20 @@ public class DealItem implements Serializable {
         return this;
     }
 
-    public int getCost() {
+    public Double getCost() {
         return cost;
     }
 
-    public DealItem setCost(int cost) {
+    public DealItem setCost(Double cost) {
         this.cost = cost;
         return this;
     }
 
-    public int getPrice() {
+    public Double getPrice() {
         return price;
     }
 
-    public DealItem setPrice(int price) {
+    public DealItem setPrice(Double price) {
         this.price = price;
         return this;
     }
@@ -111,20 +111,20 @@ public class DealItem implements Serializable {
         return this;
     }
 
-    public String getUpdatedAt() {
-        return updatedAt;
+    public String getModifiedAt() {
+        return modifiedAt;
     }
 
-    public DealItem setUpdatedAt(String updatedAt) {
-        this.updatedAt = updatedAt;
+    public DealItem setModifiedAt(String modifiedAt) {
+        this.modifiedAt = modifiedAt;
         return this;
     }
 
-    public String getQuantity() {
+    public Integer getQuantity() {
         return quantity;
     }
 
-    public DealItem setQuantity(String quantity) {
+    public DealItem setQuantity(Integer quantity) {
         this.quantity = quantity;
         return this;
     }
