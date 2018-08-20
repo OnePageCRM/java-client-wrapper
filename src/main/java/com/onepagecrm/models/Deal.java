@@ -80,6 +80,7 @@ public class Deal extends ApiResource implements Serializable {
     private ContactInfo contactInfo;
     private List<Note> relatedNotes;
     private List<Attachment> attachments;
+    private List<DealItem> dealItems;
 
     /*
      * API methods.
@@ -222,7 +223,11 @@ public class Deal extends ApiResource implements Serializable {
     }
 
     public boolean hasAttachments() {
-        return this.attachments != null && !attachments.isEmpty();
+        return this.attachments != null && !this.attachments.isEmpty();
+    }
+
+    public boolean hasDealItems() {
+        return this.dealItems != null && !this.dealItems.isEmpty();
     }
 
     /*
@@ -499,6 +504,15 @@ public class Deal extends ApiResource implements Serializable {
 
     public Deal setAttachments(List<Attachment> attachments) {
         this.attachments = attachments;
+        return this;
+    }
+
+    public List<DealItem> getDealItems() {
+        return dealItems;
+    }
+
+    public Deal setDealItems(List<DealItem> dealItems) {
+        this.dealItems = dealItems;
         return this;
     }
 
