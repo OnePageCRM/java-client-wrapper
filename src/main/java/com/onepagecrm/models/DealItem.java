@@ -10,14 +10,14 @@ public class DealItem implements Serializable {
     private String id;
     private String name;
     private String description;
-    private int cost;
+    private int cost; // TODO: Integer??
     private int price;
     private int amount;
-    private String quantity;
+    private String quantity; // TODO: Integer??
     private String dealId;
     private String itemGroupId;
     private String predefinedItemId;
-    private String createdAt;
+    private String createdAt; // TODO: Instant??
     private String updatedAt;
 
 

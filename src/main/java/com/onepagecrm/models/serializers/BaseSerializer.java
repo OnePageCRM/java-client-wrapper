@@ -231,12 +231,15 @@ public class BaseSerializer {
     public static final String COMPANY_TAG = "company";
     public static final String PENDING_DEALS_TAG = "pending_deals";
 
+    // DEAL ITEMS
     public static final String DEAL_ITEMS_TAG = "deal_items";
     public static final String PRICE_TAG = "amount";
     public static final String QUANTITY_TAG = "quantity";
     public static final String ITEM_GROUP_ID_TAG = "item_group_id";
     public static final String PREDEFINED_ITEM_ID_TAG = "predefined_item_id";
+    public static final String HAS_DEAL_ITEMS_TAG = "has_deal_items";
 
+    // TODO: investigate weird response types!!
 //            "quantity": "3.0",
 //            "position": null,
 //            "created_at": "2018-08-02T16:13:57Z",

@@ -204,6 +204,10 @@ public class DealSerializer extends BaseSerializer {
             LOG.severe("Error creating Deal Fields array while constructing Deal object");
             LOG.severe(e.toString());
         }
+        addJsonBooleanValue(deal.hasDealItems(), dealObject, HAS_DEAL_ITEMS_TAG);
+        if (deal.hasDealItems()) {
+            addJsonArray(DealItemSerializer.toJsonArray(deal.getDealItems()), dealObject, DEAL_ITEMS_TAG);
+        }
         return dealObject.toString();
     }
 

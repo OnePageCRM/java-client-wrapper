@@ -226,6 +226,10 @@ public class Deal extends ApiResource implements Serializable {
         return this.attachments != null && !attachments.isEmpty();
     }
 
+    public boolean hasDealItems() {
+        return this.dealItems != null && !this.dealItems.isEmpty();
+    }
+
     /*
      * Object methods.
      */
