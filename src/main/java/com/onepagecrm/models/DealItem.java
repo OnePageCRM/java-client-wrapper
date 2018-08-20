@@ -20,7 +20,6 @@ public class DealItem implements Serializable {
     private String createdAt; // TODO: Instant??
     private String modifiedAt; // TODO: Instant??
 
-
     public String getId() {
         return id;
     }
