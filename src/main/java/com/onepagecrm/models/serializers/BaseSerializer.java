@@ -239,12 +239,6 @@ public class BaseSerializer {
     public static final String PREDEFINED_ITEM_ID_TAG = "predefined_item_id";
     public static final String HAS_DEAL_ITEMS_TAG = "has_deal_items";
 
-    // TODO: investigate weird response types!!
-//            "quantity": "3.0",
-//            "position": null,
-//            "created_at": "2018-08-02T16:13:57Z",
-//            "updated_at": "2018-08-02T09:13:57.207-07:00"
-
     // NOTES
     public static final String NOTE_TAG = "note";
     public static final String NOTES_TAG = "notes";

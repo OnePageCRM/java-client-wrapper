@@ -19,7 +19,7 @@ public class DealItemSerializer extends BaseSerializer {
                 .setDescription(dataObject.optString(DESCRIPTION_TAG))
                 .setCost(dataObject.optDouble(COST_TAG))
                 .setPrice(dataObject.optDouble(PRICE_TAG))
-                .setAmount(dataObject.optInt(AMOUNT_TAG))
+                .setAmount(dataObject.optDouble(AMOUNT_TAG))
                 .setQuantity(dataObject.optInt(QUANTITY_TAG))
                 .setDealId(dataObject.optString(DEAL_ID_TAG))
                 .setPredefinedItemId(dataObject.optString(PREDEFINED_ITEM_ID_TAG))
@@ -49,7 +49,7 @@ public class DealItemSerializer extends BaseSerializer {
         addJsonStringValue(item.getDescription(), itemObject, DESCRIPTION_TAG);
         addJsonDoubleValue(item.getCost(), itemObject, COST_TAG);
         addJsonDoubleValue(item.getPrice(), itemObject, PRICE_TAG);
-        addJsonIntegerValue(item.getAmount(), itemObject, AMOUNT_TAG);
+        addJsonDoubleValue(item.getAmount(), itemObject, AMOUNT_TAG);
         addJsonIntegerValue(item.getQuantity(), itemObject, QUANTITY_TAG);
         addJsonStringValue(item.getDealId(), itemObject, DEAL_ID_TAG);
         addJsonStringValue(item.getItemGroupId(), itemObject, ITEM_GROUP_ID_TAG);

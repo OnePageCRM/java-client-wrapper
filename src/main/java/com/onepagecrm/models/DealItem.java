@@ -12,7 +12,7 @@ public class DealItem implements Serializable {
     private String description;
     private Double cost;
     private Double price;
-    private Integer amount;
+    private Double amount;
     private Integer quantity;
     private String dealId;
     private String itemGroupId;
@@ -66,11 +66,11 @@ public class DealItem implements Serializable {
         return this;
     }
 
-    public int getAmount() {
+    public Double getAmount() {
         return amount;
     }
 
-    public DealItem setAmount(int amount) {
+    public DealItem setAmount(Double amount) {
         this.amount = amount;
         return this;
     }
