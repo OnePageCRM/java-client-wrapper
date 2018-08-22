@@ -141,6 +141,9 @@ public class DealSerializer extends BaseSerializer {
             if (dataObject.has(RELATED_NOTES_TAG)) {
                 deal.setRelatedNotes(NoteSerializer.fromJsonArray(dataObject.optJSONArray(RELATED_NOTES_TAG)));
             }
+            if (dealObject.has(HAS_DEAL_ITEMS_TAG)) {
+                deal.setHasDealItems(dealObject.optBoolean(HAS_DEAL_ITEMS_TAG));
+            }
             if (dealObject.has(DEAL_ITEMS_TAG)) {
                 deal.setDealItems(DealItemSerializer.fromJsonArray(dealObject.optJSONArray(DEAL_ITEMS_TAG)));
             }
@@ -208,11 +211,14 @@ public class DealSerializer extends BaseSerializer {
             LOG.severe("Error creating Deal Fields array while constructing Deal object");
             LOG.severe(e.toString());
         }
-        // AND-926 if partial, want to be able to save deal items if there, but also don't just remove them by default
-        if (deal.hasDealItems() || !partial) {
+        // AND-926 always send "has_deal_items" flag.
+        if (partial && !deal.hasDealItems()) {
+            addJsonBooleanValue(deal.hasDealItemsReadOnly(), dealObject, HAS_DEAL_ITEMS_TAG);
+        } else {
             addJsonBooleanValue(deal.hasDealItems(), dealObject, HAS_DEAL_ITEMS_TAG);
-            addJsonArray(DealItemSerializer.toJsonArray(deal.getDealItems()), dealObject, DEAL_ITEMS_TAG);
         }
+        // AND-926 always send deal items if present.
+        addJsonArray(DealItemSerializer.toJsonArray(deal.getDealItems()), dealObject, DEAL_ITEMS_TAG);
         return dealObject.toString();
     }
 

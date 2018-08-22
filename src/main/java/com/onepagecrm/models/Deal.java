@@ -77,6 +77,7 @@ public class Deal extends ApiResource implements Serializable {
     private Instant createdAt;
     private Instant modifiedAt;
     private Boolean hasRelatedNotes;
+    private Boolean hasDealItems;
     private ContactInfo contactInfo;
     private List<Note> relatedNotes;
     private List<Attachment> attachments;
@@ -477,6 +478,19 @@ public class Deal extends ApiResource implements Serializable {
 
     public Deal setHasRelatedNotes(Boolean hasRelatedNotes) {
         this.hasRelatedNotes = hasRelatedNotes;
+        return this;
+    }
+
+    public Boolean getHasDealItems() {
+        return hasDealItems;
+    }
+
+    public boolean hasDealItemsReadOnly() {
+        return hasDealItems != null && hasDealItems;
+    }
+
+    public Deal setHasDealItems(Boolean hasDealItems) {
+        this.hasDealItems = hasDealItems;
         return this;
     }
 
