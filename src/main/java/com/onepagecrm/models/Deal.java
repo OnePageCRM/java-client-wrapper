@@ -173,7 +173,7 @@ public class Deal extends ApiResource implements Serializable {
         Request request = new PutRequest(
                 withId(DEALS_ENDPOINT),
                 "?" + QUERY_PARTIAL,
-                DealSerializer.toJsonObject(this)
+                DealSerializer.toJsonObject(this, true)
         );
         Response response = request.send();
         return DealSerializer.fromString(response.getResponseBody());

@@ -152,6 +152,10 @@ public class DealSerializer extends BaseSerializer {
     }
 
     public static String toJsonObject(Deal deal) {
+        return toJsonObject(deal, false);
+    }
+
+    public static String toJsonObject(Deal deal, boolean partial) {
         JSONObject dealObject = new JSONObject();
         addJsonStringValue(deal.getId(), dealObject, ID_TAG);
         addJsonDoubleValue(deal.getAmount(), dealObject, AMOUNT_TAG);
@@ -204,8 +208,9 @@ public class DealSerializer extends BaseSerializer {
             LOG.severe("Error creating Deal Fields array while constructing Deal object");
             LOG.severe(e.toString());
         }
-        addJsonBooleanValue(deal.hasDealItems(), dealObject, HAS_DEAL_ITEMS_TAG);
-        if (deal.hasDealItems()) {
+        // AND-926 if partial, want to be able to save deal items if there, but also don't just remove them by default
+        if (deal.hasDealItems() || !partial) {
+            addJsonBooleanValue(deal.hasDealItems(), dealObject, HAS_DEAL_ITEMS_TAG);
             addJsonArray(DealItemSerializer.toJsonArray(deal.getDealItems()), dealObject, DEAL_ITEMS_TAG);
         }
         return dealObject.toString();
