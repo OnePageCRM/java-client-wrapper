@@ -9,7 +9,6 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.Date;
 import java.util.logging.Logger;
 
 /**
@@ -63,19 +62,13 @@ public class DealSerializer extends BaseSerializer {
                 deal.setContactId(dealObject.getString(CONTACT_ID_TAG));
             }
             if (dealObject.has(CREATED_AT_TAG)) {
-                String createdAtStr = dealObject.getString(CREATED_AT_TAG);
-                Date createdAt = DateSerializer.fromFormattedString(createdAtStr);
-                deal.setCreatedAt(createdAt);
+                deal.setCreatedAt(InstantSerializer.getInstance().parse(dealObject.optString(CREATED_AT_TAG)));
             }
             if (dealObject.has(DATE_TAG)) {
-                String dateStr = dealObject.getString(DATE_TAG);
-                Date date = DateSerializer.fromFormattedString(dateStr);
-                deal.setDate(date);
+                deal.setDate(LocalDateSerializer.getInstance().parse(dealObject.optString(DATE_TAG)));
             }
             if (dealObject.has(EXPECTED_CLOSE_DATE_TAG)) {
-                String expectedCloseDateStr = dealObject.getString(EXPECTED_CLOSE_DATE_TAG);
-                Date expectedCloseDate = DateSerializer.fromFormattedString(expectedCloseDateStr);
-                deal.setExpectedCloseDate(expectedCloseDate);
+                deal.setExpectedCloseDate(LocalDateSerializer.getInstance().parse(dealObject.optString(EXPECTED_CLOSE_DATE_TAG)));
             }
             if (dealObject.has(MONTHS_TAG)) {
                 deal.setMonths(dealObject.getInt(MONTHS_TAG));
@@ -96,17 +89,13 @@ public class DealSerializer extends BaseSerializer {
                 deal.setTotalAmount(dealObject.getDouble(TOTAL_AMOUNT_TAG));
             }
             if (dealObject.has(MODIFIED_AT_TAG)) {
-                String modifiedAtStr = dealObject.getString(MODIFIED_AT_TAG);
-                Date modifiedAt = DateSerializer.fromFormattedString(modifiedAtStr);
-                deal.setModifiedAt(modifiedAt);
+                deal.setModifiedAt(InstantSerializer.getInstance().parse(dealObject.optString(MODIFIED_AT_TAG)));
             }
             if (dealObject.has(HAS_RELATED_NOTES_TAG)) {
                 deal.setHasRelatedNotes(dealObject.getBoolean(HAS_RELATED_NOTES_TAG));
             }
             if (dealObject.has(CLOSE_DATE_TAG) && !dealObject.isNull(CLOSE_DATE_TAG)) {
-                String closeDateStr = dealObject.getString(CLOSE_DATE_TAG);
-                Date closeDate = DateSerializer.fromFormattedString(closeDateStr);
-                deal.setCloseDate(closeDate);
+                deal.setCloseDate(LocalDateSerializer.getInstance().parse(dealObject.optString(CLOSE_DATE_TAG)));
             }
             if (dealObject.has(CONTACT_INFO_TAG)) {
                 JSONObject contactInfoObj = dealObject.getJSONObject(CONTACT_INFO_TAG);
@@ -152,6 +141,12 @@ public class DealSerializer extends BaseSerializer {
             if (dataObject.has(RELATED_NOTES_TAG)) {
                 deal.setRelatedNotes(NoteSerializer.fromJsonArray(dataObject.optJSONArray(RELATED_NOTES_TAG)));
             }
+            if (dealObject.has(HAS_DEAL_ITEMS_TAG)) {
+                deal.setHasDealItems(dealObject.optBoolean(HAS_DEAL_ITEMS_TAG));
+            }
+            if (dealObject.has(DEAL_ITEMS_TAG)) {
+                deal.setDealItems(DealItemSerializer.fromJsonArray(dealObject.optJSONArray(DEAL_ITEMS_TAG)));
+            }
         } catch (JSONException e) {
             LOG.severe("Error parsing Deal object");
             LOG.severe(e.toString());
@@ -160,6 +155,10 @@ public class DealSerializer extends BaseSerializer {
     }
 
     public static String toJsonObject(Deal deal) {
+        return toJsonObject(deal, false);
+    }
+
+    public static String toJsonObject(Deal deal, boolean partial) {
         JSONObject dealObject = new JSONObject();
         addJsonStringValue(deal.getId(), dealObject, ID_TAG);
         addJsonDoubleValue(deal.getAmount(), dealObject, AMOUNT_TAG);
@@ -167,17 +166,17 @@ public class DealSerializer extends BaseSerializer {
         addJsonStringValue(deal.getText(), dealObject, TEXT_TAG);
         addJsonStringValue(deal.getContactId(), dealObject, CONTACT_ID_TAG);
         addJsonStringValue(
-                DateSerializer.toFormattedDateTimeString(deal.getCreatedAt()),
+                InstantSerializer.getInstance().format(deal.getCreatedAt()),
                 dealObject,
                 CREATED_AT_TAG
         );
         addJsonStringValue(
-                DateSerializer.toFormattedDateString(deal.getDate()),
+                LocalDateSerializer.getInstance().format(deal.getDate()),
                 dealObject,
                 DATE_TAG
         );
         addJsonStringValue(
-                DateSerializer.toFormattedDateString(deal.getExpectedCloseDate()),
+                LocalDateSerializer.getInstance().format(deal.getExpectedCloseDate()),
                 dealObject,
                 EXPECTED_CLOSE_DATE_TAG
         );
@@ -188,13 +187,13 @@ public class DealSerializer extends BaseSerializer {
         addJsonStringValue(deal.getStatus(), dealObject, STATUS_TAG);
         addJsonDoubleValue(deal.getTotalAmount(), dealObject, TOTAL_AMOUNT_TAG);
         addJsonStringValue(
-                DateSerializer.toFormattedDateTimeString(deal.getModifiedAt()),
+                InstantSerializer.getInstance().format(deal.getModifiedAt()),
                 dealObject,
                 MODIFIED_AT_TAG
         );
         addJsonBooleanValue(deal.getHasRelatedNotes(), dealObject, HAS_RELATED_NOTES_TAG);
         addJsonStringValue(
-                DateSerializer.toFormattedDateString(deal.getCloseDate()),
+                LocalDateSerializer.getInstance().format(deal.getCloseDate()),
                 dealObject,
                 CLOSE_DATE_TAG
         );
@@ -212,15 +211,23 @@ public class DealSerializer extends BaseSerializer {
             LOG.severe("Error creating Deal Fields array while constructing Deal object");
             LOG.severe(e.toString());
         }
+        // AND-926 always send "has_deal_items" flag.
+        if (partial && !deal.hasDealItems()) {
+            addJsonBooleanValue(deal.hasDealItemsReadOnly(), dealObject, HAS_DEAL_ITEMS_TAG);
+        } else {
+            addJsonBooleanValue(deal.hasDealItems(), dealObject, HAS_DEAL_ITEMS_TAG);
+        }
+        // AND-926 always send deal items if present.
+        addJsonArray(DealItemSerializer.toJsonArray(deal.getDealItems()), dealObject, DEAL_ITEMS_TAG);
         return dealObject.toString();
     }
 
     public static String toJsonArray(DealList deals) {
         JSONArray dealsArray = new JSONArray();
         if (deals != null && !deals.isEmpty()) {
-            for (int i = 0; i < deals.size(); i++) {
+            for (Deal deal : deals) {
                 try {
-                    dealsArray.put(new JSONObject(toJsonObject(deals.get(i))));
+                    dealsArray.put(new JSONObject(toJsonObject(deal)));
                 } catch (JSONException e) {
                     LOG.severe("Error creating JSONArray out of Deals");
                     LOG.severe(e.toString());
@@ -228,66 +235,5 @@ public class DealSerializer extends BaseSerializer {
             }
         }
         return dealsArray.toString();
-    }
-
-    // TODO: tidy up below methods
-
-    public static JSONObject toJsonObjectForPartial(Deal deal) {
-        JSONObject dealObject = new JSONObject();
-        if (deal == null) return dealObject;
-        addJsonStringValue(stringValue(deal.getId()), dealObject, ID_TAG);
-        addJsonStringValue(stringValue(deal.getContactId()), dealObject, CONTACT_ID_TAG);
-        addJsonStringValue(stringValue(deal.getName()), dealObject, NAME_TAG);
-        addJsonStringValue(stringValue(deal.getOwnerId()), dealObject, OWNER_ID_TAG);
-        addJsonStringValue(stringValue(deal.getStage()), dealObject, STAGE_TAG);
-        addJsonStringValue(stringValue(deal.getStatus()), dealObject, STATUS_TAG);
-        addJsonStringValue(stringValue(deal.getAuthor()), dealObject, AUTHOR_TAG);
-        addJsonStringValue(stringValue(deal.getText()), dealObject, TEXT_TAG);
-        addJsonStringValue(
-                stringValue(DateSerializer.toFormattedDateString(deal.getDate())),
-                dealObject,
-                DATE_TAG
-        );
-        addJsonStringValue(
-                stringValue(DateSerializer.toFormattedDateString(deal.getExpectedCloseDate())),
-                dealObject,
-                EXPECTED_CLOSE_DATE_TAG
-        );
-
-        addJsonStringValue(
-                DateSerializer.toFormattedDateString(deal.getCloseDate()),
-                dealObject,
-                CLOSE_DATE_TAG
-        );
-        addJsonStringValue(stringValue(deal.getAmount(), "0"), dealObject, AMOUNT_TAG);
-        addJsonStringValue(stringValue(deal.getMonths(), "1"), dealObject, MONTHS_TAG);
-        addJsonStringValue(stringValue(deal.getTotalAmount(), "0"), dealObject, TOTAL_AMOUNT_TAG);
-        addJsonStringValue(stringValue(deal.getCost(), "0"), dealObject, COST_TAG);
-        addJsonStringValue(stringValue(deal.getMargin(), "0"), dealObject, MARGIN_TAG);
-        addJsonStringValue(stringValue(deal.getTotalCost(), "0"), dealObject, TOTAL_COST_TAG);
-        addJsonStringValue(stringValue(deal.getCommission(), "0"), dealObject, COMMISSION_TAG);
-        addJsonStringValue(stringValue(deal.getCommissionPercentage(), "0"), dealObject, COMMISSION_PERCENTAGE_TAG);
-        addJsonObjectValue(deal.getCommissionBase(), dealObject, COMMISSION_BASE_TAG);
-        addJsonObjectValue(deal.getCommissionType(), dealObject, COMMISSION_TYPE_TAG);
-        try {
-            JSONArray dealFieldsArray = new JSONArray(CustomFieldSerializer.toJsonArray(deal.getDealFields()));
-            addJsonArray(dealFieldsArray, dealObject, DEAL_FIELDS_TAG);
-        } catch (JSONException e) {
-            LOG.severe("Error creating Deal Fields array while constructing Deal object");
-            LOG.severe(e.toString());
-        }
-        return dealObject;
-    }
-
-    private static final String NULL = "null";
-
-    private static String stringValue(Object value) {
-        return stringValue(value, "");
-    }
-
-    private static String stringValue(Object value, String defaultValue) {
-        String toString = String.valueOf(value);
-        boolean validToString = value != null && !toString.equalsIgnoreCase(NULL) && !toString.endsWith("@" + value.hashCode());
-        return validToString ? toString : defaultValue;
     }
 }

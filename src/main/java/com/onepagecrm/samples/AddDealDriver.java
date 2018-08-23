@@ -5,12 +5,12 @@ import com.onepagecrm.exceptions.OnePageException;
 import com.onepagecrm.models.Contact;
 import com.onepagecrm.models.Deal;
 import com.onepagecrm.models.User;
+import com.onepagecrm.models.helpers.DateTimeHelper;
 import com.onepagecrm.net.request.Request;
 
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.Date;
 import java.util.Properties;
 import java.util.logging.Logger;
 
@@ -55,7 +55,7 @@ public class AddDealDriver {
                 .setStatus("pending")
                 .setContactId(first.getId())
                 .setAmount(33.33d)
-                .setDate(new Date())
+                .setDate(DateTimeHelper.today())
                 .setText("Java Wrapper Deal Text")
                 .setName("Java Wrapper Deal Name")
                 .save();

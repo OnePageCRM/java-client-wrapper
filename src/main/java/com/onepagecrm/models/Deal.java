@@ -15,10 +15,13 @@ import com.onepagecrm.net.request.GetRequest;
 import com.onepagecrm.net.request.PostRequest;
 import com.onepagecrm.net.request.PutRequest;
 import com.onepagecrm.net.request.Request;
+import org.threeten.bp.Instant;
+import org.threeten.bp.LocalDate;
+import org.threeten.bp.ZoneId;
+import org.threeten.bp.ZonedDateTime;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -32,8 +35,8 @@ import static com.onepagecrm.models.internal.Commission.Type.PERCENTAGE;
 @SuppressWarnings({"unused", "WeakerAccess", "UnusedReturnValue"})
 public class Deal extends ApiResource implements Serializable {
 
-    /**
-     * Constants
+    /*
+     * Constants.
      */
 
     public static final String STATUS_WON = "won";
@@ -43,41 +46,45 @@ public class Deal extends ApiResource implements Serializable {
     public static final String TYPE_COMPANY = "company";
     public static final String RELATED_NOTES_FIELDS = "fields=notes(all)";
 
-    /**
+    /*
      * Member variables.
      */
 
     private String id;
-    private Double amount;
-    private String author;
-    private String text;
-    private ContactInfo contactInfo;
     private String contactId;
-    private Date createdAt;
-    private Date date;
-    private Date expectedCloseDate;
-    private Integer months;
-    private String name;
     private String ownerId;
-    private Integer stage;
-    private String status;
-    private Double totalAmount;
-    private Date modifiedAt;
-    private Boolean hasRelatedNotes;
-    private List<Note> relatedNotes;
-    private Date closeDate;
-    private List<CustomField> dealFields;
+    private String name;
+    private Double amount;
+    private Integer months;
     private Double cost;
-    private Double margin;
+    private Double totalAmount;
     private Double totalCost;
-    private Double commission;
+    private Double margin;
     private Commission.Base commissionBase;
     private Commission.Type commissionType;
+    private Double commission;
     private Double commissionPercentage;
-    private List<Attachment> attachments;
+    private LocalDate expectedCloseDate;
+    private LocalDate closeDate;
+    private LocalDate date;
+    private Integer stage;
+    private String status;
+    private String text;
+    private List<CustomField> dealFields;
 
-    /**
-     * API methods
+    // Read-only members.
+    private String author;
+    private Instant createdAt;
+    private Instant modifiedAt;
+    private Boolean hasRelatedNotes;
+    private Boolean hasDealItems;
+    private ContactInfo contactInfo;
+    private List<Note> relatedNotes;
+    private List<Attachment> attachments;
+    private List<DealItem> dealItems;
+
+    /*
+     * API methods.
      */
 
     public Deal save() throws OnePageException {
@@ -96,7 +103,7 @@ public class Deal extends ApiResource implements Serializable {
 
     private Deal update() throws OnePageException {
         Request request = new PutRequest(
-                addIdToEndpoint(DEALS_ENDPOINT, this.id),
+                withId(DEALS_ENDPOINT),
                 null,
                 DealSerializer.toJsonObject(this)
         );
@@ -104,9 +111,9 @@ public class Deal extends ApiResource implements Serializable {
         return DealSerializer.fromString(response.getResponseBody());
     }
 
-    public static Deal byId(String dealId) throws OnePageException {
+    public static Deal byId(String id) throws OnePageException {
         Request request = new GetRequest(
-                addIdToEndpoint(DEALS_ENDPOINT, dealId),
+                withId(DEALS_ENDPOINT, id),
                 "?" + RELATED_NOTES_FIELDS
         );
         Response response = request.send();
@@ -165,33 +172,29 @@ public class Deal extends ApiResource implements Serializable {
 
     public Deal partial() throws OnePageException {
         Request request = new PutRequest(
-                addIdToEndpoint(DEALS_ENDPOINT, this.id),
+                withId(DEALS_ENDPOINT),
                 "?" + QUERY_PARTIAL,
-                DealSerializer.toJsonObject(this)
+                DealSerializer.toJsonObject(this, true)
         );
         Response response = request.send();
         return DealSerializer.fromString(response.getResponseBody());
     }
 
     public DeleteResult delete() throws OnePageException {
-        Request request = new DeleteRequest(addIdToEndpoint(DEALS_ENDPOINT, this.id));
+        Request request = new DeleteRequest(withId(DEALS_ENDPOINT));
         Response response = request.send();
         return DeleteResultSerializer.fromString(this.id, response.getResponseBody());
     }
 
     public List<Note> relatedNotes() throws OnePageException {
-        Request request = new GetRequest(addIdToEndpoint(DEALS_ENDPOINT, this.id), "?" + RELATED_NOTES_FIELDS);
+        Request request = new GetRequest(withId(DEALS_ENDPOINT), "?" + RELATED_NOTES_FIELDS);
         Response response = request.send();
         Deal deal = DealSerializer.fromString(response.getResponseBody());
-        return deal.hasRelatedNotes() ? deal.getRelatedNotes() : new ArrayList<Note>();
+        return deal.hasRelatedNotes() ? deal.getRelatedNotes() : new ArrayList<>();
     }
 
-    private static String addIdToEndpoint(String endpoint, String id) {
-        return endpoint + "/" + id;
-    }
-
-    /**
-     * Utility methods
+    /*
+     * Utility methods.
      */
 
     public boolean isMulti() {
@@ -221,11 +224,15 @@ public class Deal extends ApiResource implements Serializable {
     }
 
     public boolean hasAttachments() {
-        return this.attachments != null && !attachments.isEmpty();
+        return this.attachments != null && !this.attachments.isEmpty();
     }
 
-    /**
-     * Object methods
+    public boolean hasDealItems() {
+        return this.dealItems != null && !this.dealItems.isEmpty();
+    }
+
+    /*
+     * Object methods.
      */
 
     @Override
@@ -244,33 +251,6 @@ public class Deal extends ApiResource implements Serializable {
         return this;
     }
 
-    public Double getAmount() {
-        return amount;
-    }
-
-    public Deal setAmount(Double amount) {
-        this.amount = amount;
-        return this;
-    }
-
-    public String getAuthor() {
-        return author;
-    }
-
-    public Deal setAuthor(String author) {
-        this.author = author;
-        return this;
-    }
-
-    public String getText() {
-        return text;
-    }
-
-    public Deal setText(String text) {
-        this.text = text;
-        return this;
-    }
-
     public String getContactId() {
         return contactId;
     }
@@ -280,39 +260,12 @@ public class Deal extends ApiResource implements Serializable {
         return this;
     }
 
-    public Date getCreatedAt() {
-        return createdAt;
+    public String getOwnerId() {
+        return ownerId;
     }
 
-    public Deal setCreatedAt(Date createdAt) {
-        this.createdAt = createdAt;
-        return this;
-    }
-
-    public Date getDate() {
-        return date;
-    }
-
-    public Deal setDate(Date date) {
-        this.date = date;
-        return this;
-    }
-
-    public Date getExpectedCloseDate() {
-        return expectedCloseDate;
-    }
-
-    public Deal setExpectedCloseDate(Date expectedCloseDate) {
-        this.expectedCloseDate = expectedCloseDate;
-        return this;
-    }
-
-    public Integer getMonths() {
-        return months;
-    }
-
-    public Deal setMonths(Integer months) {
-        this.months = months;
+    public Deal setOwnerId(String ownerId) {
+        this.ownerId = ownerId;
         return this;
     }
 
@@ -325,12 +278,120 @@ public class Deal extends ApiResource implements Serializable {
         return this;
     }
 
-    public String getOwnerId() {
-        return ownerId;
+    public Double getAmount() {
+        return amount;
     }
 
-    public Deal setOwnerId(String ownerId) {
-        this.ownerId = ownerId;
+    public Deal setAmount(Double amount) {
+        this.amount = amount;
+        return this;
+    }
+
+    public Integer getMonths() {
+        return months;
+    }
+
+    public Deal setMonths(Integer months) {
+        this.months = months;
+        return this;
+    }
+
+    public Double getCost() {
+        return cost;
+    }
+
+    public Deal setCost(Double cost) {
+        this.cost = cost;
+        return this;
+    }
+
+    public Double getTotalAmount() {
+        return totalAmount;
+    }
+
+    public Deal setTotalAmount(Double totalAmount) {
+        this.totalAmount = totalAmount;
+        return this;
+    }
+
+    public Double getTotalCost() {
+        return totalCost;
+    }
+
+    public Deal setTotalCost(Double totalCost) {
+        this.totalCost = totalCost;
+        return this;
+    }
+
+    public Double getMargin() {
+        return margin;
+    }
+
+    public Deal setMargin(Double margin) {
+        this.margin = margin;
+        return this;
+    }
+
+    public Commission.Base getCommissionBase() {
+        return commissionBase;
+    }
+
+    public Deal setCommissionBase(Commission.Base commissionBase) {
+        this.commissionBase = commissionBase;
+        return this;
+    }
+
+    public Commission.Type getCommissionType() {
+        return commissionType;
+    }
+
+    public Deal setCommissionType(Commission.Type commissionType) {
+        this.commissionType = commissionType;
+        return this;
+    }
+
+    public Double getCommission() {
+        return commission;
+    }
+
+    public Deal setCommission(Double commission) {
+        this.commission = commission;
+        return this;
+    }
+
+    public Double getCommissionPercentage() {
+        return commissionPercentage;
+    }
+
+    public Deal setCommissionPercentage(Double commissionPercentage) {
+        this.commissionPercentage = commissionPercentage;
+        return this;
+    }
+
+    public LocalDate getExpectedCloseDate() {
+        return expectedCloseDate;
+    }
+
+    public Deal setExpectedCloseDate(LocalDate expectedCloseDate) {
+        this.expectedCloseDate = expectedCloseDate;
+        return this;
+    }
+
+    public LocalDate getCloseDate() {
+        return closeDate;
+    }
+
+    public Deal setCloseDate(LocalDate closeDate) {
+        this.closeDate = closeDate;
+        return this;
+    }
+
+    public LocalDate getDate() {
+        return date;
+    }
+
+    public Deal setDate(LocalDate date) {
+        this.date = date;
         return this;
     }
 
@@ -352,20 +413,57 @@ public class Deal extends ApiResource implements Serializable {
         return this;
     }
 
-    public Double getTotalAmount() {
-        return totalAmount;
+    public String getText() {
+        return text;
     }
 
-    public Deal setTotalAmount(Double totalAmount) {
-        this.totalAmount = totalAmount;
+    public Deal setText(String text) {
+        this.text = text;
         return this;
     }
 
-    public Date getModifiedAt() {
+    public List<CustomField> getDealFields() {
+        return dealFields;
+    }
+
+    public Deal setDealFields(List<CustomField> dealFields) {
+        this.dealFields = dealFields;
+        return this;
+    }
+
+    // Read-only accessors.
+
+    public String getAuthor() {
+        return author;
+    }
+
+    public Deal setAuthor(String author) {
+        this.author = author;
+        return this;
+    }
+
+    public Instant getCreatedAt() {
+        return createdAt;
+    }
+
+    public ZonedDateTime getCreatedAt(ZoneId zoneId) {
+        return createdAt != null ? ZonedDateTime.ofInstant(createdAt, zoneId) : null;
+    }
+
+    public Deal setCreatedAt(Instant createdAt) {
+        this.createdAt = createdAt;
+        return this;
+    }
+
+    public Instant getModifiedAt() {
         return modifiedAt;
     }
 
-    public Deal setModifiedAt(Date modifiedAt) {
+    public ZonedDateTime getModifiedAt(ZoneId zoneId) {
+        return modifiedAt != null ? ZonedDateTime.ofInstant(modifiedAt, zoneId) : null;
+    }
+
+    public Deal setModifiedAt(Instant modifiedAt) {
         this.modifiedAt = modifiedAt;
         return this;
     }
@@ -383,12 +481,16 @@ public class Deal extends ApiResource implements Serializable {
         return this;
     }
 
-    public Date getCloseDate() {
-        return closeDate;
+    public Boolean getHasDealItems() {
+        return hasDealItems;
     }
 
-    public Deal setCloseDate(Date closeDate) {
-        this.closeDate = closeDate;
+    public boolean hasDealItemsReadOnly() {
+        return hasDealItems != null && hasDealItems;
+    }
+
+    public Deal setHasDealItems(Boolean hasDealItems) {
+        this.hasDealItems = hasDealItems;
         return this;
     }
 
@@ -407,6 +509,24 @@ public class Deal extends ApiResource implements Serializable {
 
     public Deal setRelatedNotes(List<Note> relatedNotes) {
         this.relatedNotes = relatedNotes;
+        return this;
+    }
+
+    public List<Attachment> getAttachments() {
+        return attachments;
+    }
+
+    public Deal setAttachments(List<Attachment> attachments) {
+        this.attachments = attachments;
+        return this;
+    }
+
+    public List<DealItem> getDealItems() {
+        return dealItems;
+    }
+
+    public Deal setDealItems(List<DealItem> dealItems) {
+        this.dealItems = dealItems;
         return this;
     }
 
@@ -431,86 +551,5 @@ public class Deal extends ApiResource implements Serializable {
             this.company = company;
             return this;
         }
-    }
-
-    public List<CustomField> getDealFields() {
-        return dealFields;
-    }
-
-    public Deal setDealFields(List<CustomField> dealFields) {
-        this.dealFields = dealFields;
-        return this;
-    }
-
-    public Double getCost() {
-        return cost;
-    }
-
-    public Deal setCost(Double cost) {
-        this.cost = cost;
-        return this;
-    }
-
-    public Double getMargin() {
-        return margin;
-    }
-
-    public Deal setMargin(Double margin) {
-        this.margin = margin;
-        return this;
-    }
-
-    public Double getTotalCost() {
-        return totalCost;
-    }
-
-    public Deal setTotalCost(Double totalCost) {
-        this.totalCost = totalCost;
-        return this;
-    }
-
-    public Double getCommission() {
-        return commission;
-    }
-
-    public Deal setCommission(Double commission) {
-        this.commission = commission;
-        return this;
-    }
-
-    public Commission.Base getCommissionBase() {
-        return commissionBase;
-    }
-
-    public Deal setCommissionBase(Commission.Base commissionBase) {
-        this.commissionBase = commissionBase;
-        return this;
-    }
-
-    public Commission.Type getCommissionType() {
-        return commissionType;
-    }
-
-    public Deal setCommissionType(Commission.Type commissionType) {
-        this.commissionType = commissionType;
-        return this;
-    }
-
-    public Double getCommissionPercentage() {
-        return commissionPercentage;
-    }
-
-    public Deal setCommissionPercentage(Double commissionPercentage) {
-        this.commissionPercentage = commissionPercentage;
-        return this;
-    }
-
-    public List<Attachment> getAttachments() {
-        return attachments;
-    }
-
-    public Deal setAttachments(List<Attachment> attachments) {
-        this.attachments = attachments;
-        return this;
     }
 }

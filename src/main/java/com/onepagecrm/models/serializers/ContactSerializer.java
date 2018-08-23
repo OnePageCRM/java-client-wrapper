@@ -20,12 +20,12 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
 
+@SuppressWarnings("unused")
 public class ContactSerializer extends BaseSerializer {
 
     private static final Logger LOG = Logger.getLogger(ContactSerializer.class.getName());
@@ -124,14 +124,16 @@ public class ContactSerializer extends BaseSerializer {
                 contact.setStatusId(contactObject.getString(STATUS_ID_TAG));
             }
             if (contactObject.has(CREATED_AT_TAG)) {
-                String createdAtStr = contactObject.getString(CREATED_AT_TAG);
-                Date createdAt = DateSerializer.fromFormattedString(createdAtStr);
-                contact.setCreatedAt(createdAt);
+                contact.setCreatedAt(InstantSerializer.getInstance().parse(contactObject.optString(CREATED_AT_TAG)));
             }
             if (contactObject.has(MODIFIED_AT_TAG)) {
-                String modifiedAtStr = contactObject.getString(MODIFIED_AT_TAG);
-                Date modifiedAt = DateSerializer.fromFormattedString(modifiedAtStr);
-                contact.setModifiedAt(modifiedAt);
+                contact.setModifiedAt(InstantSerializer.getInstance().parse(contactObject.optString(MODIFIED_AT_TAG)));
+            }
+            // Google Contact data.
+            if (contactObject.has(GOOGLE_CONTACTS_DATA_TAG) && !contactObject.isNull(GOOGLE_CONTACTS_DATA_TAG)) {
+                JSONObject googleContactsDataObject = contactObject.getJSONObject(GOOGLE_CONTACTS_DATA_TAG);
+                contact.setGoogleId(googleContactsDataObject.optString(ID_TAG));
+                contact.setGoogleAccountEmail(googleContactsDataObject.optString(ACCOUNT_EMAIL_TAG));
             }
             // Tags.
             if (contactObject.has(TAGS_TAG)) {
@@ -232,9 +234,6 @@ public class ContactSerializer extends BaseSerializer {
 
     /**
      * Serialize Contact object to JSON.
-     *
-     * @param contact
-     * @return
      */
     public static String toJsonObjectFull(Contact contact) {
 
@@ -272,9 +271,6 @@ public class ContactSerializer extends BaseSerializer {
 
     /**
      * Serialize Contact object to JSON.
-     *
-     * @param contact
-     * @return
      */
     public static String toJsonObject(Contact contact) {
 
@@ -368,9 +364,9 @@ public class ContactSerializer extends BaseSerializer {
     public static String toJsonArray(ContactList contacts) {
         JSONArray contactsArray = new JSONArray();
         if (contacts != null && !contacts.isEmpty()) {
-            for (int i = 0; i < contacts.size(); i++) {
+            for (Contact contact : contacts) {
                 try {
-                    String contactString = toJsonObject(contacts.get(i));
+                    String contactString = toJsonObject(contact);
                     contactsArray.put(new JSONObject(contactString));
                 } catch (JSONException e) {
                     LOG.severe("Error serializing Contacts array out of ContactList");

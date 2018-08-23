@@ -5,12 +5,12 @@ import com.onepagecrm.exceptions.OnePageException;
 import com.onepagecrm.models.Contact;
 import com.onepagecrm.models.Note;
 import com.onepagecrm.models.User;
+import com.onepagecrm.models.helpers.DateTimeHelper;
 import com.onepagecrm.net.request.Request;
 
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.Date;
 import java.util.Properties;
 import java.util.logging.Logger;
 
@@ -53,7 +53,7 @@ public class AddNoteDriver {
         new Note()
                 .setContactId(first.getId())
                 .setText("Java Wrapper Note")
-                .setDate(new Date())
+                .setDate(DateTimeHelper.today())
                 .setLinkedDealId(null)
                 .save();
     }

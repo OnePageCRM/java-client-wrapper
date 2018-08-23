@@ -7,10 +7,11 @@ import static com.onepagecrm.models.internal.Utilities.notNullOrEmpty;
 /**
  * @author Cillian Myles <cillian@onepagecrm.com> on 22/06/2017.
  */
+@SuppressWarnings("unused")
 public abstract class Commission implements Serializable {
 
-    /**
-     * Constants
+    /*
+     * Constants.
      */
 
     private final static String BASE_MARGIN = "margin";
@@ -22,7 +23,7 @@ public abstract class Commission implements Serializable {
     private final static String TYPE_NONE = "none";
     private final static String TYPE_OTHER = "other"; // Catch all.
 
-    /**
+    /*
      * Member variables.
      */
 

@@ -8,6 +8,7 @@ public class Settings implements Serializable {
     private Reminder reminder;
     private String timeZone;
     private String dateFormat;
+    private String notWorkingDays;
     private Boolean militaryTime;
     private Integer listingSize;
     private String currency;
@@ -276,6 +277,15 @@ public class Settings implements Serializable {
 
     public Settings setCostSetup(CostSetup costSetup) {
         this.costSetup = costSetup;
+        return this;
+    }
+
+    public String getNotWorkingDays() {
+        return notWorkingDays;
+    }
+
+    public Settings setNotWorkingDays(String notWorkingDays) {
+        this.notWorkingDays = notWorkingDays;
         return this;
     }
 }

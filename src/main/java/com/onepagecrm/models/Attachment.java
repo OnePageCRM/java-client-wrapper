@@ -12,14 +12,16 @@ import com.onepagecrm.net.request.DeleteRequest;
 import com.onepagecrm.net.request.PostRequest;
 import com.onepagecrm.net.request.PutRequest;
 import com.onepagecrm.net.request.Request;
+import org.threeten.bp.Instant;
+import org.threeten.bp.ZoneId;
+import org.threeten.bp.ZonedDateTime;
 
 import java.io.Serializable;
-import java.util.Date;
 
 /**
  * @author Cillian Myles <cillian@onepagecrm.com> on 31/07/2017.
  */
-@SuppressWarnings({"WeakerAccess", "unused"})
+@SuppressWarnings({"unused", "WeakerAccess", "SpellCheckingInspection"})
 public class Attachment extends ApiResource implements Serializable {
 
     /*
@@ -118,14 +120,14 @@ public class Attachment extends ApiResource implements Serializable {
     private Provider provider;
     private String url;
     private Long size;
-    private Date expiresAt;
+    private Instant expiresAt;
 
     private String referenceId;
     private ReferenceType referenceType;
     private String externalUrl;
 
     /*
-     * API methods
+     * API methods.
      */
 
     public Attachment save(String contactId, S3FileReference fileRef) throws OnePageException {
@@ -134,7 +136,7 @@ public class Attachment extends ApiResource implements Serializable {
 
     private Attachment update(String contactId, S3FileReference fileRef) throws OnePageException {
         Request request = new PutRequest(
-                addIdToEndpoint(ATTACHMENTS_ENDPOINT),
+                withId(ATTACHMENTS_ENDPOINT),
                 null,
                 AttachmentSerializer.toJsonString(this, contactId, fileRef)
         );
@@ -159,17 +161,13 @@ public class Attachment extends ApiResource implements Serializable {
     }
 
     public DeleteResult delete() throws OnePageException {
-        Request request = new DeleteRequest(addIdToEndpoint(ATTACHMENTS_ENDPOINT), null);
+        Request request = new DeleteRequest(withId(ATTACHMENTS_ENDPOINT), null);
         Response response = request.send();
         return DeleteResultSerializer.fromString(this.id, response.getResponseBody());
     }
 
-    private String addIdToEndpoint(String endpoint) {
-        return endpoint + "/" + this.id;
-    }
-
     /*
-     * Utility methods
+     * Utility methods.
      */
 
     public String getFileExtension() {
@@ -177,7 +175,7 @@ public class Attachment extends ApiResource implements Serializable {
     }
 
     /*
-     * Object methods
+     * Object methods.
      */
 
     public Attachment() {
@@ -203,6 +201,11 @@ public class Attachment extends ApiResource implements Serializable {
     }
 
     @Override
+    public String toString() {
+        return AttachmentSerializer.toJsonString(this);
+    }
+
+    @Override
     public String getId() {
         return this.id;
     }
@@ -211,11 +214,6 @@ public class Attachment extends ApiResource implements Serializable {
     public Attachment setId(String id) {
         this.id = id;
         return this;
-    }
-
-    @Override
-    public String toString() {
-        return AttachmentSerializer.toJsonString(this);
     }
 
     public String getFilename() {
@@ -254,11 +252,15 @@ public class Attachment extends ApiResource implements Serializable {
         return this;
     }
 
-    public Date getExpiresAt() {
+    public Instant getExpiresAt() {
         return expiresAt;
     }
 
-    public Attachment setExpiresAt(Date expiresAt) {
+    public ZonedDateTime getExpiresAt(ZoneId zoneId) {
+        return expiresAt != null ? ZonedDateTime.ofInstant(expiresAt, zoneId) : null;
+    }
+
+    public Attachment setExpiresAt(Instant expiresAt) {
         this.expiresAt = expiresAt;
         return this;
     }

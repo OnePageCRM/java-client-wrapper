@@ -46,10 +46,11 @@ public class NoteSerializer extends BaseSerializer {
                 .setAuthor(noteObject.optString(AUTHOR_TAG))
                 .setText(noteObject.optString(TEXT_TAG))
                 .setContactId(noteObject.optString(CONTACT_ID_TAG))
-                .setDate(DateSerializer.fromFormattedString(noteObject.optString(DATE_TAG)))
+                .setDate(LocalDateSerializer.getInstance().parse(noteObject.optString(DATE_TAG)))
                 .setLinkedDealId(!noteObject.isNull(LINKED_DEAL_ID_TAG) ? noteObject.optString(LINKED_DEAL_ID_TAG) : null)
-                .setCreatedAt(DateSerializer.fromFormattedString(noteObject.optString(CREATED_AT_TAG)))
-                .setModifiedAt(DateSerializer.fromFormattedString(noteObject.optString(MODIFIED_AT_TAG)))
+                .setCreatedAt(InstantSerializer.getInstance().parse(noteObject.optString(CREATED_AT_TAG)))
+                .setModifiedAt(InstantSerializer.getInstance().parse(noteObject.optString(MODIFIED_AT_TAG)))
+                .setUserIdsToNotify(toListOfStrings(noteObject.optJSONArray(USER_IDS_TO_NOTIFY_TAG)))
                 .setAttachments(AttachmentSerializer.fromJsonArray(noteObject.optJSONArray(ATTACHMENTS_TAG)));
     }
 
@@ -72,20 +73,24 @@ public class NoteSerializer extends BaseSerializer {
         addJsonStringValue(note.getAuthor(), noteObject, AUTHOR_TAG);
         addJsonStringValue(note.getText(), noteObject, TEXT_TAG);
         addJsonStringValue(note.getContactId(), noteObject, CONTACT_ID_TAG);
-        addJsonStringValue(DateSerializer.toFormattedDateTimeString(note.getCreatedAt()), noteObject, CREATED_AT_TAG);
-        addJsonStringValue(DateSerializer.toFormattedDateString(note.getDate()), noteObject, DATE_TAG);
+        addJsonStringValue(LocalDateSerializer.getInstance().format(note.getDate()), noteObject, DATE_TAG);
         addJsonStringValue(note.getLinkedDealId(), noteObject, LINKED_DEAL_ID_TAG);
+        addJsonStringValue(InstantSerializer.getInstance().format(note.getCreatedAt()), noteObject, CREATED_AT_TAG);
+        addJsonStringValue(InstantSerializer.getInstance().format(note.getModifiedAt()), noteObject, MODIFIED_AT_TAG);
+        addJsonArray(toJsonStringArray(note.getUserIdsToNotify()), noteObject, USER_IDS_TO_NOTIFY_TAG);
         return noteObject.toString();
     }
 
     public static String toJsonArray(List<Note> notes) {
         JSONArray notesArray = new JSONArray();
-        for (int i = 0; i < notes.size(); i++) {
-            try {
-                notesArray.put(new JSONObject(toJsonObject(notes.get(i))));
-            } catch (JSONException e) {
-                LOG.severe("Error creating JSON out of Note(s).");
-                LOG.severe(e.toString());
+        if (notes != null && !notes.isEmpty()) {
+            for (Note note : notes) {
+                try {
+                    notesArray.put(new JSONObject(toJsonObject(note)));
+                } catch (JSONException e) {
+                    LOG.severe("Error creating JSON out of Note(s).");
+                    LOG.severe(e.toString());
+                }
             }
         }
         return notesArray.toString();
