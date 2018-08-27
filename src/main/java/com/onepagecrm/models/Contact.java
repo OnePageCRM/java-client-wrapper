@@ -10,6 +10,7 @@ import com.onepagecrm.models.serializers.ContactPhotoSerializer;
 import com.onepagecrm.models.serializers.ContactSerializer;
 import com.onepagecrm.models.serializers.ContactSplitSerializer;
 import com.onepagecrm.models.serializers.DeleteResultSerializer;
+import com.onepagecrm.models.serializers.EmailMessageSerializer;
 import com.onepagecrm.models.serializers.LoginSerializer;
 import com.onepagecrm.net.API;
 import com.onepagecrm.net.ApiResource;
@@ -148,6 +149,12 @@ public class Contact extends ApiResource implements Serializable {
         );
         Response response = request.send();
         return ContactListSerializer.fromString(response.getResponseBody());
+    }
+
+    public static List<EmailMessage> getEmailMessages(String contactId) throws OnePageException {
+        Request request = new GetRequest(CONTACT_EMAILS_ENDPOINT.replace("{id}", contactId));
+        Response response = request.send();
+        return EmailMessageSerializer.fromString(response.getResponseBody());
     }
 
     public Contact partial(Contact updateValues) throws OnePageException {
