@@ -1,10 +1,8 @@
 package com.onepagecrm.models.serializers;
 
 import com.onepagecrm.exceptions.OnePageException;
-import com.onepagecrm.models.Email;
 import com.onepagecrm.models.EmailMessage;
 import com.onepagecrm.models.EmailRecipients;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;

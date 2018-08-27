@@ -3,18 +3,19 @@ package com.onepagecrm.models;
 import com.onepagecrm.exceptions.OnePageException;
 import com.onepagecrm.models.internal.DeleteResult;
 import com.onepagecrm.models.serializers.DeleteResultSerializer;
+import com.onepagecrm.models.serializers.EmailMessageSerializer;
 import com.onepagecrm.net.ApiResource;
 import com.onepagecrm.net.Response;
 import com.onepagecrm.net.request.DeleteRequest;
 import com.onepagecrm.net.request.Request;
+
 import java.io.Serializable;
-
-
 
 /**
  * Created by Anton S. on 05/07/2018
  */
 
+@SuppressWarnings({"unused", "UnusedReturnValue"})
 public class EmailMessage extends ApiResource implements Serializable {
 
     private String id;
@@ -34,6 +35,15 @@ public class EmailMessage extends ApiResource implements Serializable {
         return DeleteResultSerializer.fromString(this.id, response.getResponseBody());
     }
 
+    public boolean isValid() {
+        return plainContent != null && !plainContent.isEmpty();
+    }
+
+    @Override
+    public String toString() {
+        return EmailMessageSerializer.toJsonObject(this);
+    }
+
     public String getId() {
         return id;
     }
@@ -41,11 +51,6 @@ public class EmailMessage extends ApiResource implements Serializable {
     public EmailMessage setId(String id) {
         this.id = id;
         return this;
-    }
-
-    @Override
-    public String toString() {
-        return null;
     }
 
     public String getContactId() {
@@ -118,9 +123,5 @@ public class EmailMessage extends ApiResource implements Serializable {
     public EmailMessage setStatus(String status) {
         this.status = status;
         return this;
-    }
-
-    public boolean isValid() {
-        return plainContent != null && !plainContent.isEmpty();
     }
 }
