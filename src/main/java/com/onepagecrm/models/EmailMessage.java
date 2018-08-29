@@ -10,6 +10,7 @@ import com.onepagecrm.net.request.DeleteRequest;
 import com.onepagecrm.net.request.Request;
 
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * Created by Anton S. on 05/07/2018
@@ -27,7 +28,10 @@ public class EmailMessage extends ApiResource implements Serializable {
     private EmailRecipients recipients;
     private String subject;
     private String plainContent;
+    private String htmlContent;
     private String status;
+
+    private List<Attachment> attachments;
 
     public DeleteResult delete(String contactId) throws OnePageException {
         Request request = new DeleteRequest(withId(CONTACT_EMAILS_ENDPOINT.replace("{id}", contactId)));
@@ -122,6 +126,24 @@ public class EmailMessage extends ApiResource implements Serializable {
 
     public EmailMessage setStatus(String status) {
         this.status = status;
+        return this;
+    }
+
+    public String getHtmlContent() {
+        return htmlContent;
+    }
+
+    public EmailMessage setHtmlContent(String htmlContent) {
+        this.htmlContent = htmlContent;
+        return this;
+    }
+
+    public List<Attachment> getAttachments() {
+        return attachments;
+    }
+
+    public EmailMessage setAttachments(List<Attachment> attachments) {
+        this.attachments = attachments;
         return this;
     }
 }

@@ -1,6 +1,7 @@
 package com.onepagecrm.models.serializers;
 
 import com.onepagecrm.exceptions.OnePageException;
+import com.onepagecrm.models.Attachment;
 import com.onepagecrm.models.EmailMessage;
 import com.onepagecrm.models.EmailRecipients;
 import org.json.JSONArray;
@@ -55,6 +56,7 @@ public class EmailMessageSerializer extends BaseSerializer {
             String sender = emailObject.optString(SENDER_TAG);
             String subject = emailObject.optString(SUBJECT_TAG);
             String plainContent = emailObject.optString(PLAIN_CONTENT_TAG);
+            String htmlContent = emailObject.optString(HTML_CONTENT_TAG);
 
             EmailRecipients recipients = new EmailRecipients();
             JSONObject recipientsObject = emailObject.optJSONObject(RECIPIENTS_TAG);
@@ -62,6 +64,8 @@ public class EmailMessageSerializer extends BaseSerializer {
             List<String> to = BaseSerializer.toListOfStrings(recipientsObject.getJSONArray(TO_TAG));
             List<String> bcc = BaseSerializer.toListOfStrings(recipientsObject.getJSONArray(BCC_TAG));
             List<String> cc = BaseSerializer.toListOfStrings(recipientsObject.getJSONArray(CC_TAG));
+
+            List<Attachment> attachments = AttachmentSerializer.fromJsonArray(emailObject.optJSONArray(ATTACHMENTS_TAG));
 
             recipients.setTo(to)
                     .setBcc(bcc)
@@ -75,7 +79,10 @@ public class EmailMessageSerializer extends BaseSerializer {
                     .setSendTime(sendTime)
                     .setSender(sender)
                     .setSubject(subject)
-                    .setPlainContent(plainContent);
+                    .setPlainContent(plainContent)
+                    .setHtmlContent(htmlContent)
+                    .setAttachments(attachments);
+
         } catch (JSONException e) {
             LOG.severe("Error parsing email object");
             LOG.severe(e.toString());

@@ -254,6 +254,7 @@ public class BaseSerializer {
     public static final String SENDER_TAG = "sender";
     public static final String EMAIL_MESSAGE_TAG = "email_message";
     public static final String PLAIN_CONTENT_TAG = "plain_content";
+    public static final String HTML_CONTENT_TAG = "html_content";
     public static final String SEND_TIME_TAG = "send_time";
     public static final String RECIPIENTS_TAG = "recipients";
     public static final String TO_TAG = "to";
