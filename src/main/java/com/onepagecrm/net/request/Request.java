@@ -126,7 +126,7 @@ public abstract class Request {
     protected static final String APP_US_URL = "https://app.onepagecrm.com";
     protected static final String APP_EU_URL = "https://eu.onepagecrm.com";
     protected static final String DEV_URL = "http://dev.onepagecrm.com";
-    protected static final String STAGING_URL = "http://staging.onepagecrm.com";
+    protected static final String STAGING_URL = "https://staging.onepagecrm.com";
     protected static final String ATLAS_URL = "http://atlas.dev.onepagecrm.com";
     protected static final String CALYPSO_URL = "http://calypso.dev.onepagecrm.com";
     protected static final String DEIMOS_URL = "http://deimos.dev.onepagecrm.com";

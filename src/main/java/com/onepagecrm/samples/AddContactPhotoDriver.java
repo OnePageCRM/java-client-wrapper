@@ -14,9 +14,9 @@ import java.io.InputStream;
 import java.util.Properties;
 import java.util.logging.Logger;
 
-public class AddPhotoResourceDriver {
+public class AddContactPhotoDriver {
 
-    private static final Logger LOG = Logger.getLogger(AddPhotoResourceDriver.class.getName());
+    private static final Logger LOG = Logger.getLogger(AddContactPhotoDriver.class.getName());
 
     public static void main(String[] args) throws OnePageException {
         Properties prop = new Properties();
@@ -42,27 +42,22 @@ public class AddPhotoResourceDriver {
             }
         }
 
-        OnePageCRM.setServer(Request.DEV_SERVER);
+        final String imagePath = "src/test/res/image_encode/cillian.jpg";
+        final String data = FileUtilities.getResourceContents(imagePath);
+        LOG.info("RAW image data: " + data);
+        final String b64EncodedData = FileUtilities.encodeImage(imagePath);
+        LOG.info("Base64 encoded String: " + b64EncodedData);
 
+        OnePageCRM.setServer(Request.STAGING_SERVER);
         User loggedInUser = User.login(
                 prop.getProperty("username"),
                 prop.getProperty("password"));
+        LOG.info("Logged User: " + loggedInUser);
 
-        LOG.info("Logged in User : " + loggedInUser);
-
-        ContactList stream = loggedInUser.searchActionStream("AND-724");
-        Contact contact = stream.get(0);
-
-        String imagePath = "src/test/res/image_encode/cillian.jpg";
-
-        String resource = FileUtilities.getResourceContents(imagePath);
-        LOG.info("RAW : " + resource);
-
-        String b64EncodedString = FileUtilities.encodeImage(imagePath);
-        LOG.info("Base64 encoded String : " + b64EncodedString);
-
-        contact.addPhoto(b64EncodedString);
-
+        final String name = "Bloggs";
+        final ContactList stream = loggedInUser.searchActionStream(name);
+        final Contact contact = stream.get(0);
+        contact.addPhoto(b64EncodedData);
         LOG.info(contact.toString());
     }
 }
