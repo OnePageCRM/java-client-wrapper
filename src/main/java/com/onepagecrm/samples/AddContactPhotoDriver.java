@@ -42,7 +42,7 @@ public class AddContactPhotoDriver {
             }
         }
 
-        final String imagePath = "src/test/res/image_encode/cillian.jpg";
+        final String imagePath = "src/test/res/image_encode/onepage-logo.png";
         final String data = FileUtilities.getResourceContents(imagePath);
         LOG.info("RAW image data: " + data);
         final String b64EncodedData = FileUtilities.encodeImage(imagePath);
