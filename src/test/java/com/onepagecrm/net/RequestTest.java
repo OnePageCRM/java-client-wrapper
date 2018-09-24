@@ -20,8 +20,8 @@ public class RequestTest {
     private static final String API_URL_DEFAULT = "https://app.onepagecrm.com/api/v3";
     private static final String APP_NAME_DEFAULT = "APP/US";
 
-    private static final String APP_URL_STAGING = "http://staging.onepagecrm.com";
-    private static final String API_URL_STAGING = "http://staging.onepagecrm.com/api/v3";
+    private static final String APP_URL_STAGING = "https://staging.onepagecrm.com";
+    private static final String API_URL_STAGING = "https://staging.onepagecrm.com/api/v3";
     private static final String APP_NAME_STAGING = "STAGING";
 
     private static final String APP_URL_EU = "https://eu.onepagecrm.com";
@@ -31,7 +31,7 @@ public class RequestTest {
     // Authentication/SSO details (dev/prod)
     private static final int AUTH_SERVER_DEV = -2;
     private static final int AUTH_SERVER_PROD = -1;
-    private static final String AUTH_URL_DEV = "http://sso.dev.onepagecrm.com";
+    private static final String AUTH_URL_DEV = "https://sso.dev.onepagecrm.com";
     private static final String AUTH_URL_PROD = "https://secure.onepagecrm.com";
 
     @Test
