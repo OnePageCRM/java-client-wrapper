@@ -15,8 +15,7 @@ import java.util.List;
 /**
  * Created by Anton S. on 05/07/2018
  */
-
-@SuppressWarnings({"unused", "UnusedReturnValue"})
+@SuppressWarnings("unused")
 public class EmailMessage extends ApiResource implements Serializable {
 
     private String id;
@@ -24,13 +23,11 @@ public class EmailMessage extends ApiResource implements Serializable {
     private String sendTime;
     private String messageId;
     private String sender;
-
-    private EmailRecipients recipients;
     private String subject;
     private String plainContent;
     private String htmlContent;
     private String status;
-
+    private EmailRecipients recipients;
     private List<Attachment> attachments;
 
     public DeleteResult delete(String contactId) throws OnePageException {
@@ -45,7 +42,7 @@ public class EmailMessage extends ApiResource implements Serializable {
 
     @Override
     public String toString() {
-        return EmailMessageSerializer.toJsonObject(this);
+        return EmailMessageSerializer.toJsonString(this);
     }
 
     public String getId() {

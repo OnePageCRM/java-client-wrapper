@@ -6,8 +6,7 @@ import java.util.List;
 /**
  * Created by Anton S. on 05/07/2018
  */
-
-@SuppressWarnings({"unused", "UnusedReturnValue"})
+@SuppressWarnings("unused")
 public class EmailRecipients implements Serializable {
 
     private List<String> to;
