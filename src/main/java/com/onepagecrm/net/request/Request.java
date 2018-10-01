@@ -1,6 +1,7 @@
 package com.onepagecrm.net.request;
 
 import com.onepagecrm.OnePageCRM;
+import com.onepagecrm.exceptions.ConnectivityException;
 import com.onepagecrm.exceptions.OnePageException;
 import com.onepagecrm.exceptions.TimeoutException;
 import com.onepagecrm.models.internal.Utilities;
@@ -15,6 +16,7 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.ProtocolException;
 import java.net.URL;
+import java.net.UnknownHostException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
@@ -602,7 +604,7 @@ public abstract class Request {
     /**
      * Acquire the HTTP response code, message and body.
      */
-    private void getResponse() {
+    private void getResponse() throws OnePageException {
         response = new Response();
 
         getResponseCode();
@@ -617,9 +619,11 @@ public abstract class Request {
         LOG.info(Utilities.repeatedString("*", 40));
     }
 
-    private void getResponseCode() {
+    private void getResponseCode() throws OnePageException {
         try {
             response.setResponseCode(connection.getResponseCode());
+        } catch (UnknownHostException e) {
+            throw new ConnectivityException();
         } catch (IOException e) {
             LOG.severe("Could not get response code");
             LOG.severe(e.toString());
