@@ -15,5 +15,6 @@ public class ConnectivityException extends OnePageException {
 
     private ConnectivityException(String message) {
         super(message);
+        this.setErrorMessage(message);
     }
 }
