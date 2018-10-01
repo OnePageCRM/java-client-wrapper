@@ -250,10 +250,13 @@ public class BaseSerializer {
     public static final String USER_IDS_TO_NOTIFY_TAG = "user_ids_to_notify";
 
     // EMAILS
+    public static final String EMAIL_MESSAGES_TAG = "email_messages";
+    public static final String MESSAGE_ID_TAG = "message_id";
     public static final String SUBJECT_TAG = "subject";
     public static final String SENDER_TAG = "sender";
     public static final String EMAIL_MESSAGE_TAG = "email_message";
     public static final String PLAIN_CONTENT_TAG = "plain_content";
+    public static final String HTML_CONTENT_TAG = "html_content";
     public static final String SEND_TIME_TAG = "send_time";
     public static final String RECIPIENTS_TAG = "recipients";
     public static final String TO_TAG = "to";
