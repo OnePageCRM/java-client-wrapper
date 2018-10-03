@@ -389,10 +389,14 @@ public class BaseSerializer {
     public static final String LINK_TYPE_TAG = "link_type";
 
     // NOTIFICATIONS
-    public static final String CONTACT_IDS_TAG = "contact_ids";
+    public static final String NOTIFICATION_TYPE_TAG = "notification_type";
+    public static final String ASSIGNED_ACTION_TAG = "assigned_action";
     public static final String ACTION_TYPE_TAG = "action_type";
-    public static final String OPEN_NOTE_TAG = "open_note";
     public static final String OPEN_CONTACT_TAG = "open_contact";
+    public static final String OPEN_NOTE_TAG = "open_note";
+    public static final String OPEN_CALL_TAG = "open_call";
+    public static final String CONTACT_IDS_TAG = "contact_ids";
+    public static final String FAKE_FILTER_ID_TAG = "fake_filter_id";
 
     // VIDEO LINKS
     public static final String VIDEO_TUTORIALS_TAG = "video_tutorials";
