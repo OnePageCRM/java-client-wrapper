@@ -7,6 +7,7 @@ public class InvalidListingTypeException extends OnePageException {
 
     public InvalidListingTypeException(String message) {
         super(message);
+        this.setErrorMessage(message);
     }
 
     public InvalidListingTypeException setErrorMessage(String errorMessage) {
