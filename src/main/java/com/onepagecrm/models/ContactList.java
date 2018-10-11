@@ -36,15 +36,15 @@ public class ContactList extends ResourceList<Contact> implements Serializable {
     public ContactList nextPage(Map<String, Object> params) throws OnePageException {
         this.paginator.getNextPageNo();
         switch (type) {
-            case AS_LISTING:
-            case AS_MULTIPLE_LISTING: {
+            case AS_LISTING: {
                 return Account.loggedInUser.actionStream(params, paginator);
             }
             case AZ_LISTING:
             case AZ_MULTIPLE_LISTING: {
                 return Account.loggedInUser.contacts(params, paginator);
             }
-            case AS_TEAM_LISTING: {
+            case AS_TEAM_LISTING:
+            case AS_MULTIPLE_LISTING: {
                 return Account.loggedInUser.teamStream(params, paginator);
             }
             default: {
@@ -57,8 +57,7 @@ public class ContactList extends ResourceList<Contact> implements Serializable {
     public ContactList refresh(Map<String, Object> params) throws OnePageException {
         ContactList list = new ContactList();
         switch (type) {
-            case AS_LISTING:
-            case AS_MULTIPLE_LISTING: {
+            case AS_LISTING: {
                 list = Account.loggedInUser.actionStream(params, (paginator = new Paginator()));
                 break;
             }
@@ -67,7 +66,8 @@ public class ContactList extends ResourceList<Contact> implements Serializable {
                 list = Account.loggedInUser.contacts(params, (paginator = new Paginator()));
                 break;
             }
-            case AS_TEAM_LISTING: {
+            case AS_TEAM_LISTING:
+            case AS_MULTIPLE_LISTING: {
                 list = Account.loggedInUser.teamStream(params, (paginator = new Paginator()));
                 break;
             }
