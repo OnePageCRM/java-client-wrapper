@@ -54,18 +54,21 @@ public class EmailMessageSerializer extends BaseSerializer {
 
         return new EmailMessage()
                 .setId(emailObject.optString(ID_TAG))
-                .setContactId(emailObject.optString(CONTACT_ID_TAG))
-                .setSendTime(emailObject.optString(SEND_TIME_TAG))
+                .setType(EmailMessage.Type.fromString(emailObject.optString(TYPE_TAG)))
+                .setContactIds(BaseSerializer.toListOfStrings(emailObject.optJSONArray(CONTACT_IDS_TAG)))
+                .setSendTime(InstantSerializer.getInstance().parse(emailObject.optString(SEND_TIME_TAG)))
                 .setMessageId(emailObject.optString(MESSAGE_ID_TAG))
                 .setSender(emailObject.optString(SENDER_TAG))
-                .setSubject(emailObject.optString(SUBJECT_TAG))
-                .setPlainContent(emailObject.optString(PLAIN_CONTENT_TAG))
-                .setHtmlContent(emailObject.optString(HTML_CONTENT_TAG))
-                .setStatus(emailObject.optString(STATUS_TAG))
                 .setRecipients(new EmailRecipients()
                         .setTo(BaseSerializer.toListOfStrings(recipientsObject.optJSONArray(TO_TAG)))
                         .setBcc(BaseSerializer.toListOfStrings(recipientsObject.optJSONArray(BCC_TAG)))
                         .setCc(BaseSerializer.toListOfStrings(recipientsObject.optJSONArray(CC_TAG))))
+                .setUrl(emailObject.optString(URL_TAG))
+                .setSubject(emailObject.optString(SUBJECT_TAG))
+                .setPlainContent(emailObject.optString(PLAIN_CONTENT_TAG))
+                .setHtmlContent(emailObject.optString(HTML_CONTENT_TAG))
+                .setStatus(EmailMessage.Status.fromString(emailObject.optString(STATUS_TAG)))
+                .setIncoming(emailObject.optBoolean(INCOMING_EMAIL_ATG, false))
                 .setAttachments(AttachmentSerializer.fromJsonArray(emailObject.optJSONArray(ATTACHMENTS_TAG)));
     }
 
