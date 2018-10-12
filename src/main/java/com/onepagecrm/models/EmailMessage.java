@@ -1,12 +1,14 @@
 package com.onepagecrm.models;
 
 import com.onepagecrm.exceptions.OnePageException;
+import com.onepagecrm.models.helpers.TextHelper;
 import com.onepagecrm.models.internal.DeleteResult;
 import com.onepagecrm.models.serializers.DeleteResultSerializer;
 import com.onepagecrm.models.serializers.EmailMessageSerializer;
 import com.onepagecrm.net.ApiResource;
 import com.onepagecrm.net.Response;
 import com.onepagecrm.net.request.DeleteRequest;
+import com.onepagecrm.net.request.GetRequest;
 import com.onepagecrm.net.request.Request;
 import org.threeten.bp.Instant;
 
@@ -17,6 +19,7 @@ import java.util.List;
  * Created by Cillian Myles on 12/10/2018.
  * Copyright (c) 2018 OnePageCRM. All rights reserved.
  */
+@SuppressWarnings("unused")
 public class EmailMessage extends ApiResource implements Serializable {
 
     /*
@@ -120,7 +123,17 @@ public class EmailMessage extends ApiResource implements Serializable {
      * API methods.
      */
 
-    // TODO: get single by id API method
+    public static List<EmailMessage> list(String contactId) throws OnePageException {
+        Request request = new GetRequest(CONTACT_EMAILS_ENDPOINT.replace("{id}", contactId));
+        Response response = request.send();
+        return EmailMessageSerializer.listFromString(response.getResponseBody());
+    }
+
+    public static EmailMessage byId(String contactId, String emailId) throws OnePageException {
+        Request request = new GetRequest(withId(CONTACT_EMAILS_ENDPOINT.replace("{id}", contactId), emailId));
+        Response response = request.send();
+        return EmailMessageSerializer.singleFromString(response.getResponseBody());
+    }
 
     public DeleteResult delete(String contactId) throws OnePageException {
         Request request = new DeleteRequest(withId(CONTACT_EMAILS_ENDPOINT.replace("{id}", contactId)));
@@ -142,7 +155,7 @@ public class EmailMessage extends ApiResource implements Serializable {
 
     @Override
     public boolean isValid() {
-        return plainContent != null && !plainContent.isEmpty(); // TODO: correct !?
+        return super.isValid() && !TextHelper.isEmpty(plainContent);
     }
 
     @Override

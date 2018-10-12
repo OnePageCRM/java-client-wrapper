@@ -10,11 +10,31 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
 
+/**
+ * Created by Cillian Myles on 12/10/2018.
+ * Copyright (c) 2018 OnePageCRM. All rights reserved.
+ */
 public class EmailMessageSerializer extends BaseSerializer {
 
     private static final Logger LOG = Logger.getLogger(EmailMessageSerializer.class.getName());
 
-    public static List<EmailMessage> fromString(String responseBody) throws OnePageException {
+    public static EmailMessage singleFromString(String responseBody) throws OnePageException {
+        EmailMessage result = new EmailMessage();
+        try {
+            String parsedResponse = (String) BaseSerializer.fromString(responseBody);
+            JSONObject dataObject = new JSONObject(parsedResponse);
+            JSONObject emailObject = dataObject.getJSONObject(EMAIL_MESSAGE_TAG);
+            return fromJsonObject(emailObject);
+        } catch (ClassCastException e) {
+            throw (OnePageException) BaseSerializer.fromString(responseBody);
+        } catch (Exception e) {
+            LOG.severe("Error parsing EmailMessage object from response body");
+            LOG.severe(e.toString());
+        }
+        return result;
+    }
+
+    public static List<EmailMessage> listFromString(String responseBody) throws OnePageException {
         List<EmailMessage> result = new ArrayList<>();
         try {
             String parsedResponse = (String) BaseSerializer.fromString(responseBody);
@@ -75,7 +95,7 @@ public class EmailMessageSerializer extends BaseSerializer {
     public static JSONObject toJsonObject(EmailMessage email) {
         JSONObject emailObject = new JSONObject();
         if (email == null) return emailObject;
-        // TODO: when needed!!
+        // only do when/if needed!?
         return emailObject;
     }
 

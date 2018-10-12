@@ -16,7 +16,8 @@ import java.util.Map;
 import java.util.logging.Logger;
 
 /**
- * @author Cillian Myles <cillian@onepagecrm.com> on 01/08/2017.
+ * Created by Cillian Myles on 01/08/2017.
+ * Copyright (c) 2017 OnePageCRM. All rights reserved.
  */
 @SuppressWarnings({"WeakerAccess", "unused"})
 public class BaseSerializer {
@@ -413,10 +414,6 @@ public class BaseSerializer {
 
     /**
      * Method used to parse the base/start of response.
-     *
-     * @param responseBody
-     * @return
-     * @throws OnePageException
      */
     public static Object fromString(String responseBody) throws OnePageException {
         String dataString = "";
@@ -451,9 +448,6 @@ public class BaseSerializer {
 
     /**
      * Encode request parameters.
-     *
-     * @param params
-     * @return
      */
     public static String encodeParams(Map<String, Object> params) {
         if (params != null && !params.isEmpty()) {
@@ -607,10 +601,6 @@ public class BaseSerializer {
 
     /**
      * Adds a value to a JSONObject with the specified key.
-     *
-     * @param value
-     * @param object
-     * @param key
      */
     public static void addJsonValue(Object value, JSONObject object, String key) {
         if (value != null) {
@@ -625,10 +615,6 @@ public class BaseSerializer {
 
     /**
      * Adds a value to a JSONObject with the specified key.
-     *
-     * @param value
-     * @param object
-     * @param key
      */
     public static void addJsonStringValue(String value, JSONObject object, String key) {
         if ((value != null) && (!value.equals(""))) {
@@ -643,10 +629,6 @@ public class BaseSerializer {
 
     /**
      * Adds an int value to a JSONObject with the specified key.
-     *
-     * @param value
-     * @param object
-     * @param key
      */
     public static void addJsonIntValue(int value, JSONObject object, String key) {
         try {
@@ -659,10 +641,6 @@ public class BaseSerializer {
 
     /**
      * Adds an Integer value to a JSONObject with the specified key.
-     *
-     * @param value
-     * @param object
-     * @param key
      */
     public static void addJsonIntegerValue(Integer value, JSONObject object, String key) {
         if (value != null) {
@@ -677,10 +655,6 @@ public class BaseSerializer {
 
     /**
      * Adds a Long value to a JSONObject with the specified key.
-     *
-     * @param value
-     * @param object
-     * @param key
      */
     public static void addJsonLongValue(Long value, JSONObject object, String key) {
         if (value != null) {
@@ -695,10 +669,6 @@ public class BaseSerializer {
 
     /**
      * Adds a boolean value to a JSONObject with the specified key.
-     *
-     * @param value
-     * @param object
-     * @param key
      */
     public static void addJsonBooleanValue(boolean value, JSONObject object, String key) {
         try {
@@ -711,10 +681,6 @@ public class BaseSerializer {
 
     /**
      * Adds a Boolean value to a JSONObject with the specified key.
-     *
-     * @param value
-     * @param object
-     * @param key
      */
     public static void addJsonBooleanValue(Boolean value, JSONObject object, String key) {
         if (value != null) {
@@ -729,10 +695,6 @@ public class BaseSerializer {
 
     /**
      * Adds a Float value to a JSONObject with the specified key.
-     *
-     * @param value
-     * @param object
-     * @param key
      */
     public static void addJsonFloatValue(Float value, JSONObject object, String key) {
         if (value != null) {
@@ -747,10 +709,6 @@ public class BaseSerializer {
 
     /**
      * Adds a Double value to a JSONObject with the specified key.
-     *
-     * @param value
-     * @param object
-     * @param key
      */
     public static void addJsonDoubleValue(Double value, JSONObject object, String key) {
         if (value != null) {
@@ -765,10 +723,6 @@ public class BaseSerializer {
 
     /**
      * Adds a BigDecimal value to a JSONObject with the specified key.
-     *
-     * @param value
-     * @param object
-     * @param key
      */
     public static void addJsonBigDecimalValue(BigDecimal value, JSONObject object, String key) {
         if (value != null) {
@@ -783,10 +737,6 @@ public class BaseSerializer {
 
     /**
      * Adds an Object value to a JSONObject with the specified key.
-     *
-     * @param value
-     * @param object
-     * @param key
      */
     public static void addJsonObjectValue(Object value, JSONObject object, String key) {
         if (value != null) {
@@ -801,10 +751,6 @@ public class BaseSerializer {
 
     /**
      * Adds a nested JSONObject with the specified key if the object has some info (keys > 0).
-     *
-     * @param input
-     * @param object
-     * @param key
      */
     public static void addJsonObject(JSONObject input, JSONObject object, String key) {
         try {
@@ -818,9 +764,6 @@ public class BaseSerializer {
 
     /**
      * Adds a nested JSONObject with the specified key if the object has some info (keys > 0).
-     *
-     * @param input
-     * @param object
      */
     public static void addJsonObject(JSONObject input, JSONArray object) {
         if (input.length() > 0)
@@ -829,10 +772,6 @@ public class BaseSerializer {
 
     /**
      * Adds a nested JSONArray with the specified key if the array has some info (keys > 0).
-     *
-     * @param input
-     * @param object
-     * @param key
      */
     public static void addJsonArray(JSONArray input, JSONObject object, String key) {
         try {
