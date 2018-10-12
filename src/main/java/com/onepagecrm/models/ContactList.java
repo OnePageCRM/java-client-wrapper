@@ -26,9 +26,9 @@ public class ContactList extends ResourceList<Contact> implements Serializable {
     public static final int AS_LISTING = 1219;
     public static final int AZ_LISTING = 8662;
     public static final int AS_TEAM_LISTING = 2986;
-    public static final int AS_MULTIPLE_LISTING = 6252;
-    public static final int AZ_MULTIPLE_LISTING = 6253;
-    public static final int MULTIPLE_CONTACTS_BY_IDS_LISTING = 6254;
+    public static final int AS_MULTIPLE_LISTING = 6253;
+    public static final int AZ_MULTIPLE_LISTING = 6254;
+    public static final int MULTIPLE_CONTACTS_BY_IDS_LISTING = 6252;
 
     private int type;
 
