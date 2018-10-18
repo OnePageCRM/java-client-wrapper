@@ -146,7 +146,19 @@ public class EmailMessage extends ApiResource implements Serializable {
      */
 
     public boolean isIncoming() {
-        return this.incoming != null && this.incoming;
+        return incoming != null && incoming;
+    }
+
+    public boolean hasRecipients() {
+        return recipients != null;
+    }
+
+    public boolean hasCC() {
+        return hasRecipients() && recipients.getCc() != null && !recipients.getCc().isEmpty();
+    }
+
+    public boolean hasBCC() {
+        return hasRecipients() && recipients.getCc() != null && !recipients.getBcc().isEmpty();
     }
 
     /*
