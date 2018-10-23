@@ -1,7 +1,6 @@
 package com.onepagecrm.models;
 
 import com.onepagecrm.exceptions.OnePageException;
-import com.onepagecrm.models.helpers.TextHelper;
 import com.onepagecrm.models.internal.DeleteResult;
 import com.onepagecrm.models.serializers.DeleteResultSerializer;
 import com.onepagecrm.models.serializers.EmailMessageSerializer;
@@ -19,7 +18,7 @@ import java.util.List;
  * Created by Cillian Myles on 12/10/2018.
  * Copyright (c) 2018 OnePageCRM. All rights reserved.
  */
-@SuppressWarnings("unused")
+@SuppressWarnings({"unused", "WeakerAccess"})
 public class EmailMessage extends ApiResource implements Serializable {
 
     /*
@@ -149,10 +148,6 @@ public class EmailMessage extends ApiResource implements Serializable {
         return incoming != null && incoming;
     }
 
-    public boolean hasRecipients() {
-        return recipients != null;
-    }
-
     public boolean hasCC() {
         return hasRecipients() && recipients.getCc() != null && !recipients.getCc().isEmpty();
     }
@@ -161,14 +156,29 @@ public class EmailMessage extends ApiResource implements Serializable {
         return hasRecipients() && recipients.getCc() != null && !recipients.getBcc().isEmpty();
     }
 
+    public boolean needsHtmlContent() {
+        return !hasHtmlContent();
+    }
+
+    public boolean hasRecipients() {
+        return recipients != null;
+    }
+
+    public boolean hasContent() {
+        return hasPlainContent() || hasHtmlContent();
+    }
+
+    public boolean hasPlainContent() {
+        return plainContent != null && !plainContent.isEmpty();
+    }
+
+    public boolean hasHtmlContent() {
+        return htmlContent != null && !htmlContent.isEmpty();
+    }
+
     /*
      * Object methods.
      */
-
-    @Override
-    public boolean isValid() {
-        return super.isValid() && !TextHelper.isEmpty(plainContent);
-    }
 
     @Override
     public String toString() {

@@ -95,7 +95,26 @@ public class EmailMessageSerializer extends BaseSerializer {
     public static JSONObject toJsonObject(EmailMessage email) {
         JSONObject emailObject = new JSONObject();
         if (email == null) return emailObject;
-        // only do when/if needed!?
+        addJsonStringValue(email.getId(), emailObject, ID_TAG);
+        addJsonStringValue(email.getType().toString(), emailObject, TYPE_TAG);
+        addJsonArray(BaseSerializer.toJsonStringArray(email.getContactIds()), emailObject, CONTACT_IDS_TAG);
+        addJsonStringValue(InstantSerializer.getInstance().format(email.getSendTime()), emailObject, SEND_TIME_TAG);
+        addJsonStringValue(email.getMessageId(), emailObject, MESSAGE_ID_TAG);
+        addJsonStringValue(email.getSender(), emailObject, SENDER_TAG);
+        if (email.hasRecipients()) {
+            JSONObject recipientsObject = new JSONObject();
+            addJsonArray(BaseSerializer.toJsonStringArray(email.getRecipients().getTo()), recipientsObject, TO_TAG);
+            addJsonArray(BaseSerializer.toJsonStringArray(email.getRecipients().getCc()), recipientsObject, CC_TAG);
+            addJsonArray(BaseSerializer.toJsonStringArray(email.getRecipients().getBcc()), recipientsObject, BCC_TAG);
+            addJsonObject(recipientsObject, emailObject, RECIPIENTS_TAG);
+        }
+        addJsonStringValue(email.getUrl(), emailObject, URL_TAG);
+        addJsonStringValue(email.getSubject(), emailObject, SUBJECT_TAG);
+        addJsonStringValue(email.getPlainContent(), emailObject, PLAIN_CONTENT_TAG);
+        addJsonStringValue(email.getHtmlContent(), emailObject, HTML_CONTENT_TAG);
+        addJsonStringValue(email.getStatus().toString(), emailObject, STATUS_TAG);
+        addJsonBooleanValue(email.isIncoming(), emailObject, INCOMING_EMAIL_ATG);
+        addJsonArray(AttachmentSerializer.toJsonArray(email.getAttachments()), emailObject, ATTACHMENTS_TAG);
         return emailObject;
     }
 
