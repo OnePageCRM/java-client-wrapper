@@ -156,8 +156,16 @@ public class EmailMessage extends ApiResource implements Serializable {
         return hasRecipients() && recipients.getCc() != null && !recipients.getBcc().isEmpty();
     }
 
+    public boolean shouldGetHtmlContent() {
+        return needsHtmlContent() && canGetHtmlContent();
+    }
+
     public boolean needsHtmlContent() {
         return !hasHtmlContent();
+    }
+
+    public boolean canGetHtmlContent() {
+        return url != null && !url.isEmpty();
     }
 
     public boolean hasRecipients() {
