@@ -573,22 +573,22 @@ public class BaseSerializer {
     public static String toCommaSeparatedString(List<String> strings) {
         if (strings == null) return "";
         // Convert from list of strings to array of strings.
-        String[] array = strings.toArray(new String[strings.size()]);
+        String[] array = strings.toArray(new String[0]);
         // Call the version of the function which takes array.
         return toCommaSeparatedString(array);
     }
 
     public static String toCommaSeparatedString(String[] strings) {
-        String result = "";
-        if (strings == null) return result;
+        StringBuilder result = new StringBuilder();
+        if (strings == null) return result.toString();
         for (int i = 0; i < strings.length; i++) {
-            result += strings[i];
+            result.append(strings[i]);
             // Do not append comma at the end of last element
             if (i < strings.length - 1) {
-                result += STRING_SEPARATOR;
+                result.append(STRING_SEPARATOR);
             }
         }
-        return result;
+        return result.toString();
     }
 
     public static List<String> toListOfStrings(String string) {
