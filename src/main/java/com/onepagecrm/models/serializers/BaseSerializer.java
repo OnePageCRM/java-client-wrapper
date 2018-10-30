@@ -567,7 +567,8 @@ public class BaseSerializer {
         return choices;
     }
 
-    public static String stringSeparator = "__,__";
+    public static final String STRING_SEPARATOR = "__,__";
+    public static final String[] EMPTY_STRING_ARRAY = {};
 
     public static String toCommaSeparatedString(List<String> strings) {
         if (strings == null) return "";
@@ -584,7 +585,7 @@ public class BaseSerializer {
             result += strings[i];
             // Do not append comma at the end of last element
             if (i < strings.length - 1) {
-                result += stringSeparator;
+                result += STRING_SEPARATOR;
             }
         }
         return result;
@@ -596,11 +597,8 @@ public class BaseSerializer {
         return Arrays.asList(array);
     }
 
-    public static final String[] EMPTY_STRING_ARRAY = {};
-
     public static String[] toArrayOfStrings(String string) {
-        if (string == null) return EMPTY_STRING_ARRAY;
-        return string.split(stringSeparator);
+        return (string == null || string.isEmpty()) ? EMPTY_STRING_ARRAY : string.split(STRING_SEPARATOR);
     }
 
     /**
