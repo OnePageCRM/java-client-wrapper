@@ -19,6 +19,7 @@ import java.util.logging.Logger;
  * Created by Cillian Myles on 01/08/2017.
  * Copyright (c) 2017 OnePageCRM. All rights reserved.
  */
+
 @SuppressWarnings({"WeakerAccess", "unused"})
 public class BaseSerializer {
 
