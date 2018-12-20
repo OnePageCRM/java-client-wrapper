@@ -10,7 +10,6 @@ import com.onepagecrm.models.serializers.ContactPhotoSerializer;
 import com.onepagecrm.models.serializers.ContactSerializer;
 import com.onepagecrm.models.serializers.ContactSplitSerializer;
 import com.onepagecrm.models.serializers.DeleteResultSerializer;
-import com.onepagecrm.models.serializers.EmailMessageSerializer;
 import com.onepagecrm.models.serializers.LoginSerializer;
 import com.onepagecrm.net.API;
 import com.onepagecrm.net.ApiResource;
@@ -32,6 +31,10 @@ import java.util.logging.Logger;
 
 import static com.onepagecrm.models.internal.Utilities.notNullOrEmpty;
 
+/**
+ * Created by Cillian Myles on 12/10/2018.
+ * Copyright (c) 2018 OnePageCRM. All rights reserved.
+ */
 @SuppressWarnings({"unused", "WeakerAccess", "UnusedReturnValue"})
 public class Contact extends ApiResource implements Serializable {
 
@@ -151,10 +154,20 @@ public class Contact extends ApiResource implements Serializable {
         return ContactListSerializer.fromString(response.getResponseBody());
     }
 
-    public static List<EmailMessage> getEmailMessages(String contactId) throws OnePageException {
-        Request request = new GetRequest(CONTACT_EMAILS_ENDPOINT.replace("{id}", contactId));
-        Response response = request.send();
-        return EmailMessageSerializer.fromString(response.getResponseBody());
+    public static List<EmailMessage> emailMessages(String contactId) throws OnePageException {
+        return EmailMessage.list(contactId);
+    }
+
+    public static EmailMessage emailMessageById(String contactId, String emailId) throws OnePageException {
+        return EmailMessage.byId(contactId, emailId);
+    }
+
+    public List<EmailMessage> emailMessages() throws OnePageException {
+        return emailMessages(this.id);
+    }
+
+    public EmailMessage emailMessageById(String emailId) throws OnePageException {
+        return emailMessageById(this.id, emailId);
     }
 
     public Contact partial(Contact updateValues) throws OnePageException {

@@ -37,6 +37,7 @@ public class Attachment extends ApiResource implements Serializable {
     private static final String REFERENCE_TYPE_DEAL = "deal";
     private static final String REFERENCE_TYPE_CALL = "call";
     private static final String REFERENCE_TYPE_NOTE = "note";
+    private static final String REFERENCE_TYPE_EMAIL = "email";
     private static final String REFERENCE_TYPE_OTHER = "other"; // Catch all.
 
     /*
@@ -84,6 +85,7 @@ public class Attachment extends ApiResource implements Serializable {
         DEAL(REFERENCE_TYPE_DEAL),
         CALL(REFERENCE_TYPE_CALL),
         NOTE(REFERENCE_TYPE_NOTE),
+        EMAIL(REFERENCE_TYPE_EMAIL),
         OTHER(REFERENCE_TYPE_OTHER);
 
         private String resource;
@@ -101,6 +103,8 @@ public class Attachment extends ApiResource implements Serializable {
                     return CALL;
                 case REFERENCE_TYPE_NOTE:
                     return NOTE;
+                case REFERENCE_TYPE_EMAIL:
+                    return EMAIL;
                 case REFERENCE_TYPE_OTHER:
                     return OTHER;
                 default:
@@ -198,6 +202,12 @@ public class Attachment extends ApiResource implements Serializable {
         if (reference == null) return;
         referenceId = reference.getId();
         referenceType = ReferenceType.CALL;
+    }
+
+    public Attachment(EmailMessage reference) {
+        if (reference == null) return;
+        referenceId = reference.getId();
+        referenceType = ReferenceType.EMAIL;
     }
 
     @Override

@@ -10,11 +10,31 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
 
+/**
+ * Created by Cillian Myles on 12/10/2018.
+ * Copyright (c) 2018 OnePageCRM. All rights reserved.
+ */
 public class EmailMessageSerializer extends BaseSerializer {
 
     private static final Logger LOG = Logger.getLogger(EmailMessageSerializer.class.getName());
 
-    public static List<EmailMessage> fromString(String responseBody) throws OnePageException {
+    public static EmailMessage singleFromString(String responseBody) throws OnePageException {
+        EmailMessage result = new EmailMessage();
+        try {
+            String parsedResponse = (String) BaseSerializer.fromString(responseBody);
+            JSONObject dataObject = new JSONObject(parsedResponse);
+            JSONObject emailObject = dataObject.getJSONObject(EMAIL_MESSAGE_TAG);
+            return fromJsonObject(emailObject);
+        } catch (ClassCastException e) {
+            throw (OnePageException) BaseSerializer.fromString(responseBody);
+        } catch (Exception e) {
+            LOG.severe("Error parsing EmailMessage object from response body");
+            LOG.severe(e.toString());
+        }
+        return result;
+    }
+
+    public static List<EmailMessage> listFromString(String responseBody) throws OnePageException {
         List<EmailMessage> result = new ArrayList<>();
         try {
             String parsedResponse = (String) BaseSerializer.fromString(responseBody);
@@ -54,25 +74,47 @@ public class EmailMessageSerializer extends BaseSerializer {
 
         return new EmailMessage()
                 .setId(emailObject.optString(ID_TAG))
-                .setContactId(emailObject.optString(CONTACT_ID_TAG))
-                .setSendTime(emailObject.optString(SEND_TIME_TAG))
+                .setType(EmailMessage.Type.fromString(emailObject.optString(TYPE_TAG)))
+                .setContactIds(BaseSerializer.toListOfStrings(emailObject.optJSONArray(CONTACT_IDS_TAG)))
+                .setSendTime(InstantSerializer.getInstance().parse(emailObject.optString(SEND_TIME_TAG)))
                 .setMessageId(emailObject.optString(MESSAGE_ID_TAG))
                 .setSender(emailObject.optString(SENDER_TAG))
-                .setSubject(emailObject.optString(SUBJECT_TAG))
-                .setPlainContent(emailObject.optString(PLAIN_CONTENT_TAG))
-                .setHtmlContent(emailObject.optString(HTML_CONTENT_TAG))
-                .setStatus(emailObject.optString(STATUS_TAG))
                 .setRecipients(new EmailRecipients()
                         .setTo(BaseSerializer.toListOfStrings(recipientsObject.optJSONArray(TO_TAG)))
                         .setBcc(BaseSerializer.toListOfStrings(recipientsObject.optJSONArray(BCC_TAG)))
                         .setCc(BaseSerializer.toListOfStrings(recipientsObject.optJSONArray(CC_TAG))))
+                .setUrl(emailObject.optString(URL_TAG))
+                .setSubject(emailObject.optString(SUBJECT_TAG))
+                .setPlainContent(emailObject.optString(PLAIN_CONTENT_TAG))
+                .setHtmlContent(emailObject.optString(HTML_CONTENT_TAG))
+                .setStatus(EmailMessage.Status.fromString(emailObject.optString(STATUS_TAG)))
+                .setIncoming(emailObject.optBoolean(INCOMING_EMAIL_ATG, false))
                 .setAttachments(AttachmentSerializer.fromJsonArray(emailObject.optJSONArray(ATTACHMENTS_TAG)));
     }
 
     public static JSONObject toJsonObject(EmailMessage email) {
         JSONObject emailObject = new JSONObject();
         if (email == null) return emailObject;
-        // TODO: when needed!!
+        addJsonStringValue(email.getId(), emailObject, ID_TAG);
+        addJsonStringValue(email.getType().toString(), emailObject, TYPE_TAG);
+        addJsonArray(BaseSerializer.toJsonStringArray(email.getContactIds()), emailObject, CONTACT_IDS_TAG);
+        addJsonStringValue(InstantSerializer.getInstance().format(email.getSendTime()), emailObject, SEND_TIME_TAG);
+        addJsonStringValue(email.getMessageId(), emailObject, MESSAGE_ID_TAG);
+        addJsonStringValue(email.getSender(), emailObject, SENDER_TAG);
+        if (email.hasRecipients()) {
+            JSONObject recipientsObject = new JSONObject();
+            addJsonArray(BaseSerializer.toJsonStringArray(email.getRecipients().getTo()), recipientsObject, TO_TAG);
+            addJsonArray(BaseSerializer.toJsonStringArray(email.getRecipients().getCc()), recipientsObject, CC_TAG);
+            addJsonArray(BaseSerializer.toJsonStringArray(email.getRecipients().getBcc()), recipientsObject, BCC_TAG);
+            addJsonObject(recipientsObject, emailObject, RECIPIENTS_TAG);
+        }
+        addJsonStringValue(email.getUrl(), emailObject, URL_TAG);
+        addJsonStringValue(email.getSubject(), emailObject, SUBJECT_TAG);
+        addJsonStringValue(email.getPlainContent(), emailObject, PLAIN_CONTENT_TAG);
+        addJsonStringValue(email.getHtmlContent(), emailObject, HTML_CONTENT_TAG);
+        addJsonStringValue(email.getStatus().toString(), emailObject, STATUS_TAG);
+        addJsonBooleanValue(email.isIncoming(), emailObject, INCOMING_EMAIL_ATG);
+        addJsonArray(AttachmentSerializer.toJsonArray(email.getAttachments()), emailObject, ATTACHMENTS_TAG);
         return emailObject;
     }
 

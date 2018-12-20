@@ -82,6 +82,16 @@ public class BaseSerializerTest extends BaseTest {
                 expected, actual);
     }
 
+    public void testToCommaSeparatedString_FromArray_Empty() {
+        String[] array = new String[0];
+
+        String expected = "";
+        String actual = BaseSerializer.toCommaSeparatedString(array);
+
+        assertEquals("Array of strings not converted to string correctly",
+                expected, actual);
+    }
+
     public void testToCommaSeparatedString_FromArray_Correct() {
         String expected = expectedString;
         String actual = BaseSerializer.toCommaSeparatedString(stringArray);
@@ -92,6 +102,16 @@ public class BaseSerializerTest extends BaseTest {
 
     public void testToListOfStrings_Null() {
         String joinedString = null;
+
+        List<String> expected = new ArrayList<>();
+        List<String> actual = BaseSerializer.toListOfStrings(joinedString);
+
+        assertEquals("Strings not converted to list of strings correctly",
+                expected, actual);
+    }
+
+    public void testToListOfStrings_Empty() {
+        String joinedString = "";
 
         List<String> expected = new ArrayList<>();
         List<String> actual = BaseSerializer.toListOfStrings(joinedString);
