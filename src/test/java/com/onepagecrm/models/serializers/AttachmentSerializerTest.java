@@ -10,7 +10,8 @@ import java.util.logging.Logger;
 /**
  * @author Cillian Myles <cillian@onepagecrm.com> on 02/10/2017.
  */
-@SuppressWarnings("unused")
+
+@SuppressWarnings({"unused", "SpellCheckingInspection"})
 public class AttachmentSerializerTest extends BaseTest {
 
     private static Logger LOG = Logger.getLogger(AttachmentSerializerTest.class.getName());

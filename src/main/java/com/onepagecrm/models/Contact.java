@@ -31,6 +31,10 @@ import java.util.logging.Logger;
 
 import static com.onepagecrm.models.internal.Utilities.notNullOrEmpty;
 
+/**
+ * Created by Cillian Myles on 12/10/2018.
+ * Copyright (c) 2018 OnePageCRM. All rights reserved.
+ */
 @SuppressWarnings({"unused", "WeakerAccess", "UnusedReturnValue"})
 public class Contact extends ApiResource implements Serializable {
 
@@ -148,6 +152,22 @@ public class Contact extends ApiResource implements Serializable {
         );
         Response response = request.send();
         return ContactListSerializer.fromString(response.getResponseBody());
+    }
+
+    public static List<EmailMessage> emailMessages(String contactId) throws OnePageException {
+        return EmailMessage.list(contactId);
+    }
+
+    public static EmailMessage emailMessageById(String contactId, String emailId) throws OnePageException {
+        return EmailMessage.byId(contactId, emailId);
+    }
+
+    public List<EmailMessage> emailMessages() throws OnePageException {
+        return emailMessages(this.id);
+    }
+
+    public EmailMessage emailMessageById(String emailId) throws OnePageException {
+        return emailMessageById(this.id, emailId);
     }
 
     public Contact partial(Contact updateValues) throws OnePageException {

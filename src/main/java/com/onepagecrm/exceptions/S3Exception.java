@@ -9,17 +9,38 @@ import java.util.Map;
 import static com.onepagecrm.models.internal.Utilities.notNullOrEmpty;
 
 /**
- * @author Cillian Myles <cillian@onepagecrm.com> on 04/10/2017.
+ * Created by Cillian Myles on 04/10/2017.
+ * Copyright (c) 2017 OnePageCRM. All rights reserved.
  */
-@SuppressWarnings("WeakerAccess")
+
+@SuppressWarnings({"unused", "WeakerAccess"})
 public class S3Exception extends OnePageException {
+
+    private String hostId;
+    private String requestId;
 
     public S3Exception(String message) {
         super(message);
     }
 
-    public S3Exception() {
+    public S3Exception() {}
 
+    public String getHostId() {
+        return hostId;
+    }
+
+    public S3Exception setHostId(String hostId) {
+        this.hostId = hostId;
+        return this;
+    }
+
+    public String getRequestId() {
+        return requestId;
+    }
+
+    public S3Exception setRequestId(String requestId) {
+        this.requestId = requestId;
+        return this;
     }
 
     @Override

@@ -68,7 +68,7 @@ public class Action extends ApiResource implements Serializable {
             return status;
         }
 
-        public static Status fromString(String status) {
+        public static Status fromString(final String status) {
             if (status == null) return null;
             switch (status) {
                 case STATUS_ASAP:

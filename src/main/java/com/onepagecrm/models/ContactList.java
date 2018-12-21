@@ -26,7 +26,9 @@ public class ContactList extends ResourceList<Contact> implements Serializable {
     public static final int AS_LISTING = 1219;
     public static final int AZ_LISTING = 8662;
     public static final int AS_TEAM_LISTING = 2986;
-    public static final int MULTIPLE_CONTACTS_LISTING = 6252;
+    public static final int AS_MULTIPLE_LISTING = 6253;
+    public static final int AZ_MULTIPLE_LISTING = 6254;
+    public static final int MULTIPLE_CONTACTS_BY_IDS_LISTING = 6252;
 
     private int type;
 
@@ -34,15 +36,20 @@ public class ContactList extends ResourceList<Contact> implements Serializable {
     public ContactList nextPage(Map<String, Object> params) throws OnePageException {
         this.paginator.getNextPageNo();
         switch (type) {
-            case AS_LISTING:
+            case AS_LISTING: {
                 return Account.loggedInUser.actionStream(params, paginator);
+            }
             case AZ_LISTING:
+            case AZ_MULTIPLE_LISTING: {
                 return Account.loggedInUser.contacts(params, paginator);
+            }
             case AS_TEAM_LISTING:
+            case AS_MULTIPLE_LISTING: {
                 return Account.loggedInUser.teamStream(params, paginator);
-            default:
-                throw new InvalidListingTypeException("Not a supported contact listing type.")
-                        .setErrorMessage("Not a supported contact listing type.");
+            }
+            default: {
+                throw new InvalidListingTypeException("Not a supported contact listing type.");
+            }
         }
     }
 
@@ -50,18 +57,24 @@ public class ContactList extends ResourceList<Contact> implements Serializable {
     public ContactList refresh(Map<String, Object> params) throws OnePageException {
         ContactList list = new ContactList();
         switch (type) {
-            case AS_LISTING:
+            case AS_LISTING: {
                 list = Account.loggedInUser.actionStream(params, (paginator = new Paginator()));
                 break;
+            }
             case AZ_LISTING:
+            case AZ_MULTIPLE_LISTING: {
                 list = Account.loggedInUser.contacts(params, (paginator = new Paginator()));
                 break;
+            }
             case AS_TEAM_LISTING:
+            case AS_MULTIPLE_LISTING: {
                 list = Account.loggedInUser.teamStream(params, (paginator = new Paginator()));
                 break;
-            case MULTIPLE_CONTACTS_LISTING:
+            }
+            case MULTIPLE_CONTACTS_BY_IDS_LISTING: {
                 list = Contact.byIds(MultipleContactsHelper.toString(params));
                 break;
+            }
         }
         this.setList(list);
         return this;

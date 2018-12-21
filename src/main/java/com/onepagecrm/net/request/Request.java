@@ -1,6 +1,7 @@
 package com.onepagecrm.net.request;
 
 import com.onepagecrm.OnePageCRM;
+import com.onepagecrm.exceptions.ConnectivityException;
 import com.onepagecrm.exceptions.OnePageException;
 import com.onepagecrm.exceptions.TimeoutException;
 import com.onepagecrm.models.internal.Utilities;
@@ -15,6 +16,7 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.ProtocolException;
 import java.net.URL;
+import java.net.UnknownHostException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
@@ -121,27 +123,27 @@ public abstract class Request {
     protected static final String NETWORK_DEV_NAME = "NETWORK";
     protected static final String CUSTOM_NAME = "CUSTOM";
 
-    protected static final String AUTH_DEV_URL = "http://sso.dev.onepagecrm.com";
+    protected static final String AUTH_DEV_URL = "https://sso.dev.onepagecrm.com";
     protected static final String AUTH_PROD_URL = "https://secure.onepagecrm.com";
     protected static final String APP_US_URL = "https://app.onepagecrm.com";
     protected static final String APP_EU_URL = "https://eu.onepagecrm.com";
-    protected static final String DEV_URL = "http://dev.onepagecrm.com";
-    protected static final String STAGING_URL = "http://staging.onepagecrm.com";
-    protected static final String ATLAS_URL = "http://atlas.dev.onepagecrm.com";
-    protected static final String CALYPSO_URL = "http://calypso.dev.onepagecrm.com";
-    protected static final String DEIMOS_URL = "http://deimos.dev.onepagecrm.com";
-    protected static final String GANYMEDE_URL = "http://ganymede.dev.onepagecrm.com";
-    protected static final String DRACO_URL = "http://draco.dev.onepagecrm.com";
-    protected static final String GEMINI_URL = "http://gemini.dev.onepagecrm.com";
-    protected static final String ORION_URL = "http://orion.dev.onepagecrm.com";
-    protected static final String PEGASUS_URL = "http://pegasus.dev.onepagecrm.com";
-    protected static final String PHOBOS_URL = "http://phobos.dev.onepagecrm.com";
+    protected static final String DEV_URL = "https://dev.onepagecrm.com";
+    protected static final String STAGING_URL = "https://staging.onepagecrm.com";
+    protected static final String ATLAS_URL = "https://atlas.dev.onepagecrm.com";
+    protected static final String CALYPSO_URL = "https://calypso.dev.onepagecrm.com";
+    protected static final String DEIMOS_URL = "https://deimos.dev.onepagecrm.com";
+    protected static final String GANYMEDE_URL = "https://ganymede.dev.onepagecrm.com";
+    protected static final String DRACO_URL = "https://draco.dev.onepagecrm.com";
+    protected static final String GEMINI_URL = "https://gemini.dev.onepagecrm.com";
+    protected static final String ORION_URL = "https://orion.dev.onepagecrm.com";
+    protected static final String PEGASUS_URL = "https://pegasus.dev.onepagecrm.com";
+    protected static final String PHOBOS_URL = "https://phobos.dev.onepagecrm.com";
     protected static final String SECURE_URL = "https://secure.dev.onepagecrm.com";
-    protected static final String SIRIUS_URL = "http://sirius.dev.onepagecrm.com";
-    protected static final String TAURUS_URL = "http://taurus.dev.onepagecrm.com";
-    protected static final String TITAN_URL = "http://titan.dev.onepagecrm.com";
-    protected static final String VIRGO_URL = "http://virgo.dev.onepagecrm.com";
-    protected static final String VOYAGER_URL = "http://voyager.dev.onepagecrm.com";
+    protected static final String SIRIUS_URL = "https://sirius.dev.onepagecrm.com";
+    protected static final String TAURUS_URL = "https://taurus.dev.onepagecrm.com";
+    protected static final String TITAN_URL = "https://titan.dev.onepagecrm.com";
+    protected static final String VIRGO_URL = "https://virgo.dev.onepagecrm.com";
+    protected static final String VOYAGER_URL = "https://voyager.dev.onepagecrm.com";
     protected static String LOCAL_DEV_URL = "http://localhost:3000";
     protected static String NETWORK_DEV_URL = "http://10.100.0.15";
     protected static String CUSTOM_URL = "http://10.100.0.15";
@@ -602,7 +604,7 @@ public abstract class Request {
     /**
      * Acquire the HTTP response code, message and body.
      */
-    private void getResponse() {
+    private void getResponse() throws OnePageException {
         response = new Response();
 
         getResponseCode();
@@ -617,9 +619,11 @@ public abstract class Request {
         LOG.info(Utilities.repeatedString("*", 40));
     }
 
-    private void getResponseCode() {
+    private void getResponseCode() throws OnePageException {
         try {
             response.setResponseCode(connection.getResponseCode());
+        } catch (UnknownHostException e) {
+            throw new ConnectivityException();
         } catch (IOException e) {
             LOG.severe("Could not get response code");
             LOG.severe(e.toString());

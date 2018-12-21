@@ -15,9 +15,11 @@ import java.io.StringReader;
 import java.util.logging.Logger;
 
 /**
- * @author Cillian Myles <cillian@onepagecrm.com> on 04/10/2017.
+ * Created by Cillian Myles on 04/10/2017.
+ * Copyright (c) 2017 OnePageCRM. All rights reserved.
  */
-@SuppressWarnings({"WeakerAccess", "unused"})
+
+@SuppressWarnings({"WeakerAccess", "SpellCheckingInspection"})
 public class XMLSerializer extends BaseSerializer {
 
     private static final Logger LOG = Logger.getLogger(XMLSerializer.class.getSimpleName());
@@ -53,8 +55,15 @@ public class XMLSerializer extends BaseSerializer {
         document.getDocumentElement().normalize();
         Element rootElement = document.getDocumentElement();
         if (ERROR_TAG.equals(rootElement.getTagName())) {
+            final String code = XMLSerializer.stringFromElement(rootElement, CODE_TAG);
             final String message = XMLSerializer.stringFromElement(rootElement, MESSAGE_TAG);
-            throw new S3Exception(message).setErrorMessage(message);
+            final String hostId = XMLSerializer.stringFromElement(rootElement, HOST_ID_TAG);
+            final String requestId = XMLSerializer.stringFromElement(rootElement, REQUEST_ID_TAG);
+            throw new S3Exception(message)
+                    .setErrorName(code)
+                    .setErrorMessage(message)
+                    .setHostId(hostId)
+                    .setRequestId(requestId);
         }
         return rootElement;
     }

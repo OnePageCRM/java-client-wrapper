@@ -16,8 +16,10 @@ import java.util.Map;
 import java.util.logging.Logger;
 
 /**
- * @author Cillian Myles <cillian@onepagecrm.com> on 01/08/2017.
+ * Created by Cillian Myles on 01/08/2017.
+ * Copyright (c) 2017 OnePageCRM. All rights reserved.
  */
+
 @SuppressWarnings({"WeakerAccess", "unused"})
 public class BaseSerializer {
 
@@ -249,6 +251,21 @@ public class BaseSerializer {
     public static final String LINKED_DEAL_ID_TAG = "linked_deal_id";
     public static final String USER_IDS_TO_NOTIFY_TAG = "user_ids_to_notify";
 
+    // EMAILS
+    public static final String EMAIL_MESSAGES_TAG = "email_messages";
+    public static final String EMAIL_MESSAGE_TAG = "email_message";
+    public static final String SEND_TIME_TAG = "send_time";
+    public static final String MESSAGE_ID_TAG = "message_id";
+    public static final String SENDER_TAG = "sender";
+    public static final String RECIPIENTS_TAG = "recipients";
+    public static final String TO_TAG = "to";
+    public static final String CC_TAG = "cc";
+    public static final String BCC_TAG = "bcc";
+    public static final String SUBJECT_TAG = "subject";
+    public static final String PLAIN_CONTENT_TAG = "plain_content";
+    public static final String HTML_CONTENT_TAG = "html_content";
+    public static final String INCOMING_EMAIL_ATG = "incoming_email";
+
     // FILTERS TAGS
     public static final String FILTER_TAG = "filter";
     public static final String FILTERS_TAG = "filters";
@@ -375,10 +392,14 @@ public class BaseSerializer {
     public static final String LINK_TYPE_TAG = "link_type";
 
     // NOTIFICATIONS
-    public static final String CONTACT_IDS_TAG = "contact_ids";
+    public static final String NOTIFICATION_TYPE_TAG = "notification_type";
+    public static final String ASSIGNED_ACTION_TAG = "assigned_action";
     public static final String ACTION_TYPE_TAG = "action_type";
-    public static final String OPEN_NOTE_TAG = "open_note";
     public static final String OPEN_CONTACT_TAG = "open_contact";
+    public static final String OPEN_NOTE_TAG = "open_note";
+    public static final String OPEN_CALL_TAG = "open_call";
+    public static final String CONTACT_IDS_TAG = "contact_ids";
+    public static final String FAKE_FILTER_ID_TAG = "fake_filter_id";
 
     // VIDEO LINKS
     public static final String VIDEO_TUTORIALS_TAG = "video_tutorials";
@@ -398,10 +419,6 @@ public class BaseSerializer {
 
     /**
      * Method used to parse the base/start of response.
-     *
-     * @param responseBody
-     * @return
-     * @throws OnePageException
      */
     public static Object fromString(String responseBody) throws OnePageException {
         String dataString = "";
@@ -436,9 +453,6 @@ public class BaseSerializer {
 
     /**
      * Encode request parameters.
-     *
-     * @param params
-     * @return
      */
     public static String encodeParams(Map<String, Object> params) {
         if (params != null && !params.isEmpty()) {
@@ -554,27 +568,28 @@ public class BaseSerializer {
         return choices;
     }
 
-    public static String stringSeparator = "__,__";
+    public static final String STRING_SEPARATOR = "__,__";
+    public static final String[] EMPTY_STRING_ARRAY = {};
 
     public static String toCommaSeparatedString(List<String> strings) {
         if (strings == null) return "";
         // Convert from list of strings to array of strings.
-        String[] array = strings.toArray(new String[strings.size()]);
+        String[] array = strings.toArray(new String[0]);
         // Call the version of the function which takes array.
         return toCommaSeparatedString(array);
     }
 
     public static String toCommaSeparatedString(String[] strings) {
-        String result = "";
-        if (strings == null) return result;
+        StringBuilder result = new StringBuilder();
+        if (strings == null) return result.toString();
         for (int i = 0; i < strings.length; i++) {
-            result += strings[i];
+            result.append(strings[i]);
             // Do not append comma at the end of last element
             if (i < strings.length - 1) {
-                result += stringSeparator;
+                result.append(STRING_SEPARATOR);
             }
         }
-        return result;
+        return result.toString();
     }
 
     public static List<String> toListOfStrings(String string) {
@@ -583,19 +598,12 @@ public class BaseSerializer {
         return Arrays.asList(array);
     }
 
-    public static final String[] EMPTY_STRING_ARRAY = {};
-
     public static String[] toArrayOfStrings(String string) {
-        if (string == null) return EMPTY_STRING_ARRAY;
-        return string.split(stringSeparator);
+        return (string == null || string.isEmpty()) ? EMPTY_STRING_ARRAY : string.split(STRING_SEPARATOR);
     }
 
     /**
      * Adds a value to a JSONObject with the specified key.
-     *
-     * @param value
-     * @param object
-     * @param key
      */
     public static void addJsonValue(Object value, JSONObject object, String key) {
         if (value != null) {
@@ -610,10 +618,6 @@ public class BaseSerializer {
 
     /**
      * Adds a value to a JSONObject with the specified key.
-     *
-     * @param value
-     * @param object
-     * @param key
      */
     public static void addJsonStringValue(String value, JSONObject object, String key) {
         if ((value != null) && (!value.equals(""))) {
@@ -628,10 +632,6 @@ public class BaseSerializer {
 
     /**
      * Adds an int value to a JSONObject with the specified key.
-     *
-     * @param value
-     * @param object
-     * @param key
      */
     public static void addJsonIntValue(int value, JSONObject object, String key) {
         try {
@@ -644,10 +644,6 @@ public class BaseSerializer {
 
     /**
      * Adds an Integer value to a JSONObject with the specified key.
-     *
-     * @param value
-     * @param object
-     * @param key
      */
     public static void addJsonIntegerValue(Integer value, JSONObject object, String key) {
         if (value != null) {
@@ -662,10 +658,6 @@ public class BaseSerializer {
 
     /**
      * Adds a Long value to a JSONObject with the specified key.
-     *
-     * @param value
-     * @param object
-     * @param key
      */
     public static void addJsonLongValue(Long value, JSONObject object, String key) {
         if (value != null) {
@@ -680,10 +672,6 @@ public class BaseSerializer {
 
     /**
      * Adds a boolean value to a JSONObject with the specified key.
-     *
-     * @param value
-     * @param object
-     * @param key
      */
     public static void addJsonBooleanValue(boolean value, JSONObject object, String key) {
         try {
@@ -696,10 +684,6 @@ public class BaseSerializer {
 
     /**
      * Adds a Boolean value to a JSONObject with the specified key.
-     *
-     * @param value
-     * @param object
-     * @param key
      */
     public static void addJsonBooleanValue(Boolean value, JSONObject object, String key) {
         if (value != null) {
@@ -714,10 +698,6 @@ public class BaseSerializer {
 
     /**
      * Adds a Float value to a JSONObject with the specified key.
-     *
-     * @param value
-     * @param object
-     * @param key
      */
     public static void addJsonFloatValue(Float value, JSONObject object, String key) {
         if (value != null) {
@@ -732,10 +712,6 @@ public class BaseSerializer {
 
     /**
      * Adds a Double value to a JSONObject with the specified key.
-     *
-     * @param value
-     * @param object
-     * @param key
      */
     public static void addJsonDoubleValue(Double value, JSONObject object, String key) {
         if (value != null) {
@@ -750,10 +726,6 @@ public class BaseSerializer {
 
     /**
      * Adds a BigDecimal value to a JSONObject with the specified key.
-     *
-     * @param value
-     * @param object
-     * @param key
      */
     public static void addJsonBigDecimalValue(BigDecimal value, JSONObject object, String key) {
         if (value != null) {
@@ -768,10 +740,6 @@ public class BaseSerializer {
 
     /**
      * Adds an Object value to a JSONObject with the specified key.
-     *
-     * @param value
-     * @param object
-     * @param key
      */
     public static void addJsonObjectValue(Object value, JSONObject object, String key) {
         if (value != null) {
@@ -786,10 +754,6 @@ public class BaseSerializer {
 
     /**
      * Adds a nested JSONObject with the specified key if the object has some info (keys > 0).
-     *
-     * @param input
-     * @param object
-     * @param key
      */
     public static void addJsonObject(JSONObject input, JSONObject object, String key) {
         try {
@@ -803,9 +767,6 @@ public class BaseSerializer {
 
     /**
      * Adds a nested JSONObject with the specified key if the object has some info (keys > 0).
-     *
-     * @param input
-     * @param object
      */
     public static void addJsonObject(JSONObject input, JSONArray object) {
         if (input.length() > 0)
@@ -814,10 +775,6 @@ public class BaseSerializer {
 
     /**
      * Adds a nested JSONArray with the specified key if the array has some info (keys > 0).
-     *
-     * @param input
-     * @param object
-     * @param key
      */
     public static void addJsonArray(JSONArray input, JSONObject object, String key) {
         try {
