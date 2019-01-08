@@ -561,12 +561,11 @@ public abstract class Request {
      * SignedRequest to include auth headers.
      */
     public void setRequestHeaders() {
-        final String userAgent = getUserAgent();
-        final String appVersion = OnePageCRM.APP_VERSION;
+        final String userAgent = getUserAgent(); // Works on separate line only!
         connection.setRequestProperty(ACCEPTS_TAG, ACCEPTS);
         connection.setRequestProperty(CONTENT_TYPE_TAG, CONTENT_TYPE);
         connection.setRequestProperty(X_SOURCE, OnePageCRM.SOURCE);
-        connection.setRequestProperty(X_APP_VERSION, appVersion);
+        connection.setRequestProperty(X_APP_VERSION, OnePageCRM.APP_VERSION);
         connection.setRequestProperty(USER_AGENT_TAG, userAgent);
 
         LOG.info(Utilities.repeatedString("*", 40));
