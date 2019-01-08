@@ -14,6 +14,7 @@ import java.util.List;
  * Created by Cillian Myles on 02/02/2018.
  * Copyright (c) 2018 OnePageCRM. All rights reserved.
  */
+
 @SuppressWarnings({"WeakerAccess", "unused", "UnusedReturnValue"})
 public final class OnePageCRM {
 

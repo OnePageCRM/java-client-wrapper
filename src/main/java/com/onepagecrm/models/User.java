@@ -19,6 +19,11 @@ import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Created by Cillian Myles on 08/01/2019.
+ * Copyright (c) 2019 OnePageCRM. All rights reserved.
+ */
+
 @SuppressWarnings({"WeakerAccess", "UnusedReturnValue", "unused"})
 public class User extends ApiResource implements Serializable {
 

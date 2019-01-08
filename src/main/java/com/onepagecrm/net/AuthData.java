@@ -2,7 +2,12 @@ package com.onepagecrm.net;
 
 import java.util.logging.Logger;
 
-@SuppressWarnings("WeakerAccess")
+/**
+ * Created by Cillian Myles on 08/01/2019.
+ * Copyright (c) 2019 OnePageCRM. All rights reserved.
+ */
+
+@SuppressWarnings({"unused", "WeakerAccess"})
 public abstract class AuthData {
 
     private static final Logger LOG = Logger.getLogger(AuthData.class.getName());

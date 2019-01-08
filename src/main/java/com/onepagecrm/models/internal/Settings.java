@@ -3,6 +3,12 @@ package com.onepagecrm.models.internal;
 import java.io.Serializable;
 import java.util.List;
 
+/**
+ * Created by Cillian Myles on 08/01/2019.
+ * Copyright (c) 2019 OnePageCRM. All rights reserved.
+ */
+
+@SuppressWarnings({"unused", "UnusedReturnValue"})
 public class Settings implements Serializable {
 
     private Reminder reminder;
