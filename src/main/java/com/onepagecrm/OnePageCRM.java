@@ -29,6 +29,7 @@ public final class OnePageCRM {
     public static String SOURCE = "java-wrapper";
     public static boolean COMPLEX_AUTH = false;
     public static boolean MOBILE = false;
+    public static String APP_VERSION = null;
 
     public static OnePageCRM getInstance() {
         if (instance == null) {
@@ -78,6 +79,11 @@ public final class OnePageCRM {
 
     public static OnePageCRM setMobile(boolean mobile) {
         MOBILE = mobile;
+        return getInstance();
+    }
+
+    public static OnePageCRM setAppVersion(String appVersion) {
+        APP_VERSION = appVersion;
         return getInstance();
     }
 

@@ -10,6 +10,7 @@ import javax.crypto.Mac;
 import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
 import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.security.InvalidKeyException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -28,10 +29,6 @@ public class OnePageAuthData extends AuthData {
     /**
      * Constructor which will only be used for login (no user details known
      * yet).
-     *
-     * @param type
-     * @param url
-     * @param body
      */
     public OnePageAuthData(String type, String url, String body) {
         super(null, null);
@@ -43,11 +40,6 @@ public class OnePageAuthData extends AuthData {
 
     /**
      * Constructor which will be used for every API other than logging in.
-     *
-     * @param user
-     * @param type
-     * @param url
-     * @param body
      */
     public OnePageAuthData(User user, String type, String url, String body) {
         super(user.getId(), user.getAuthKey());
@@ -60,11 +52,6 @@ public class OnePageAuthData extends AuthData {
 
     /**
      * Constructor used for testing to manually enter/fabricate timestamp.
-     *
-     * @param user
-     * @param type
-     * @param url
-     * @param body
      */
     public OnePageAuthData(User user, int timestamp, String type, String url, String body) {
         super(user.getId(), user.getAuthKey());
@@ -78,8 +65,6 @@ public class OnePageAuthData extends AuthData {
     /**
      * Method which handles the process of calculating auth data i.e.
      * X-OnePageCRM-Auth.
-     *
-     * @return
      */
     public String calculateSignature() {
         if (OnePageCRM.DEBUG) {
@@ -96,7 +81,7 @@ public class OnePageAuthData extends AuthData {
         byte[] decodedApiKey = new byte[0];
         try {
             if (Utilities.notNullOrEmpty(thisApiKey)) {
-                decodedApiKey = Base64.decodeBase64(thisApiKey.getBytes("UTF-8"));
+                decodedApiKey = Base64.decodeBase64(thisApiKey.getBytes(StandardCharsets.UTF_8));
             }
         } catch (Exception e) {
             LOG.severe("Error decoding the ApiKey");
@@ -126,9 +111,6 @@ public class OnePageAuthData extends AuthData {
 
     /**
      * Acquires the SHA-1 hash of a given String.
-     *
-     * @param toBeHashed
-     * @return
      */
     @SuppressWarnings("ConstantConditions")
     private String convertStringToSha1Hash(String toBeHashed) {
@@ -150,17 +132,13 @@ public class OnePageAuthData extends AuthData {
 
     /**
      * Delivers the final signature i.e. X-OnePageCRM-Auth.
-     *
-     * @param apiKey
-     * @param signature
-     * @return
      */
     @SuppressWarnings("ConstantConditions")
     private String makeHMACSHA256Signature(byte[] apiKey, String signature) {
         if (apiKey == null || apiKey.length == 0 || !Utilities.notNullOrEmpty(signature)) {
             return "";
         }
-        byte[] signatureBuffer = signature.getBytes(Charset.forName("UTF-8"));
+        byte[] signatureBuffer = signature.getBytes(StandardCharsets.UTF_8);
         SecretKey secretKey = new SecretKeySpec(apiKey, "HMACSHA256");
         Mac mac = null;
         try {

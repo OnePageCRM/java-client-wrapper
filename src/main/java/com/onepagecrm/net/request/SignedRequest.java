@@ -30,7 +30,7 @@ public abstract class SignedRequest extends Request {
             connection.setRequestProperty(X_UID, authData.getUserId());
             LOG.info("X-OnePageCRM-UID: " + authData.getUserId());
             connection.setRequestProperty(X_TS, Integer.toString(authData.getTimestamp()));
-            LOG.info("X-OnePageCRM-TS: " + Integer.toString(authData.getTimestamp()));
+            LOG.info("X-OnePageCRM-TS: " + authData.getTimestamp());
             connection.setRequestProperty(X_AUTH, authData.getSignature());
             LOG.info("X-OnePageCRM-AUTH: " + authData.getSignature());
             connection.setRequestProperty(X_SOURCE, OnePageCRM.SOURCE);

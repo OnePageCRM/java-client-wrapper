@@ -4,6 +4,7 @@ import com.onepagecrm.OnePageCRM;
 import com.onepagecrm.exceptions.ConnectivityException;
 import com.onepagecrm.exceptions.OnePageException;
 import com.onepagecrm.exceptions.TimeoutException;
+import com.onepagecrm.models.helpers.TextHelper;
 import com.onepagecrm.models.internal.Utilities;
 import com.onepagecrm.models.serializers.BaseSerializer;
 import com.onepagecrm.net.Response;
@@ -404,6 +405,7 @@ public abstract class Request {
     protected static final String X_TS = "X-OnePageCRM-TS";
     protected static final String X_AUTH = "X-OnePageCRM-AUTH";
     protected static final String X_SOURCE = "X-OnePageCRM-SOURCE";
+    protected static final String X_APP_VERSION = "X-OnePageCRM-APP-VERSION";
 
     protected static final String AUTHORIZATION = "Authorization";
 
@@ -559,16 +561,28 @@ public abstract class Request {
      * SignedRequest to include auth headers.
      */
     public void setRequestHeaders() {
-        String userAgent = System.getProperty("http.agent");
+        final String userAgent = getUserAgent();
+        final String appVersion = OnePageCRM.APP_VERSION;
         connection.setRequestProperty(ACCEPTS_TAG, ACCEPTS);
-        connection.setRequestProperty(USER_AGENT_TAG, userAgent);
         connection.setRequestProperty(CONTENT_TYPE_TAG, CONTENT_TYPE);
+        connection.setRequestProperty(USER_AGENT_TAG, userAgent);
+        connection.setRequestProperty(X_APP_VERSION, appVersion);
 
         LOG.info(Utilities.repeatedString("*", 40));
         LOG.info("--- REQUEST ---");
         LOG.info("Type: " + connection.getRequestMethod());
         LOG.info("Url: " + connection.getURL());
         LOG.info("Body: " + requestBody);
+        LOG.info("--- HEADERS ---");
+        LOG.info(ACCEPTS_TAG + ": " + ACCEPTS);
+        LOG.info(CONTENT_TYPE_TAG + ": " + CONTENT_TYPE);
+        LOG.info(USER_AGENT_TAG + ": " + userAgent);
+        LOG.info(X_APP_VERSION + ": " + appVersion);
+    }
+
+    private String getUserAgent() {
+        final String prop = System.getProperty("http.agent");
+        return !TextHelper.isEmpty(prop) ? prop : "Java/1.8";
     }
 
     protected void setRequestBody() {
@@ -616,7 +630,6 @@ public abstract class Request {
         getResponseMessage();
         getResponseBody();
 
-        LOG.info("User-Agent: " + connection.getRequestProperty(USER_AGENT_TAG));
         LOG.info("--- RESPONSE ---");
         LOG.info("Code: " + response.getResponseCode());
         LOG.info("Message: " + response.getResponseMessage());
