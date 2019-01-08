@@ -565,19 +565,15 @@ public abstract class Request {
         final String appVersion = OnePageCRM.APP_VERSION;
         connection.setRequestProperty(ACCEPTS_TAG, ACCEPTS);
         connection.setRequestProperty(CONTENT_TYPE_TAG, CONTENT_TYPE);
-        connection.setRequestProperty(USER_AGENT_TAG, userAgent);
+        connection.setRequestProperty(X_SOURCE, OnePageCRM.SOURCE);
         connection.setRequestProperty(X_APP_VERSION, appVersion);
+        connection.setRequestProperty(USER_AGENT_TAG, userAgent);
 
         LOG.info(Utilities.repeatedString("*", 40));
         LOG.info("--- REQUEST ---");
         LOG.info("Type: " + connection.getRequestMethod());
         LOG.info("Url: " + connection.getURL());
         LOG.info("Body: " + requestBody);
-        LOG.info("--- HEADERS ---");
-        LOG.info(ACCEPTS_TAG + ": " + ACCEPTS);
-        LOG.info(CONTENT_TYPE_TAG + ": " + CONTENT_TYPE);
-        LOG.info(USER_AGENT_TAG + ": " + userAgent);
-        LOG.info(X_APP_VERSION + ": " + appVersion);
     }
 
     private String getUserAgent() {
@@ -630,11 +626,30 @@ public abstract class Request {
         getResponseMessage();
         getResponseBody();
 
+        LOG.info("--- HEADERS ---");
+        printHeaders();
+
         LOG.info("--- RESPONSE ---");
         LOG.info("Code: " + response.getResponseCode());
         LOG.info("Message: " + response.getResponseMessage());
         LOG.info("Body: " + response.getResponseBody());
         LOG.info(Utilities.repeatedString("*", 40));
+    }
+
+    protected void printHeaders() {
+        printHeader(ACCEPTS_TAG);
+        printHeader(CONTENT_TYPE_TAG);
+        printHeader(X_SOURCE);
+        printHeader(X_APP_VERSION);
+        printHeader(USER_AGENT_TAG);
+    }
+
+    protected void printHeader(final String tag) {
+        printValue(tag, connection.getRequestProperty(tag));
+    }
+
+    protected void printValue(final String tag, final String value) {
+        LOG.info(tag + ": " + value);
     }
 
     private void getResponseCode() throws OnePageException {
