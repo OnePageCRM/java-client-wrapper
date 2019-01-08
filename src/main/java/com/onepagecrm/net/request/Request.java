@@ -636,8 +636,6 @@ public abstract class Request {
     }
 
     protected void printHeaders() {
-        printHeader(ACCEPTS_TAG);
-        printHeader(CONTENT_TYPE_TAG);
         printHeader(X_SOURCE);
         printHeader(X_APP_VERSION);
         printHeader(USER_AGENT_TAG);
