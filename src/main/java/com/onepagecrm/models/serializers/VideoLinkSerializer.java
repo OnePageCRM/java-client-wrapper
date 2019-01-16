@@ -31,11 +31,9 @@ public class VideoLinkSerializer extends BaseSerializer {
     public static VideoLink fromJsonObject(JSONObject videoLinkObject) {
         VideoLink videoLink = new VideoLink();
         try {
-            String link = videoLinkObject.getString(LINK_TAG);
-            String resolution = videoLinkObject.getString(RESOLUTION_TAG);
             return videoLink
-                    .setLink(link)
-                    .setResolution(resolution);
+                    .setLink(videoLinkObject.getString(LINK_TAG))
+                    .setResolution(String.valueOf(videoLinkObject.getInt(RESOLUTION_TAG)));
         } catch (JSONException e) {
             LOG.severe("Error parsing videoLink object");
             LOG.severe(e.toString());

@@ -30,8 +30,7 @@ public class VideoTutorial extends ApiResource implements Serializable {
         return VideoTutorialSerializer.fromString(response.getResponseBody());
     }
 
-    public VideoTutorial() {
-    }
+    public VideoTutorial() {}
 
     @Override
     public String toString() {
@@ -40,9 +39,6 @@ public class VideoTutorial extends ApiResource implements Serializable {
 
     /**
      * Method to compare VideoLinks to one another based off of their name.
-     *
-     * @param object
-     * @return
      */
     @Override
     public boolean equals(Object object) {
