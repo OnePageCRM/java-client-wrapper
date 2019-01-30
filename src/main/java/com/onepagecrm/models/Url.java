@@ -4,12 +4,14 @@ import com.onepagecrm.models.serializers.UrlSerializer;
 
 import java.io.Serializable;
 
+@SuppressWarnings("SpellCheckingInspection")
 public class Url extends BaseResource implements Serializable {
 
     public static final String TYPE_WEBSITE = "website";
     public static final String TYPE_BLOG = "blog";
     public static final String TYPE_TWITTER = "twitter";
     public static final String TYPE_LINKEDIN = "linkedin";
+    public static final String TYPE_XING = "xing";
     public static final String TYPE_FACEBOOK = "facebook";
     public static final String TYPE_GOOGLE_PLUS = "google_plus";
     public static final String TYPE_OTHER = "other";
@@ -22,8 +24,7 @@ public class Url extends BaseResource implements Serializable {
         this.setValue(value);
     }
 
-    public Url() {
-    }
+    public Url() {}
 
     public String toString() {
         return UrlSerializer.toJsonObject(this);
@@ -31,9 +32,6 @@ public class Url extends BaseResource implements Serializable {
 
     /**
      * Method to compare Url obj's to one another based off of their value attr.
-     *
-     * @param object
-     * @return
      */
     @Override
     public boolean equals(Object object) {
