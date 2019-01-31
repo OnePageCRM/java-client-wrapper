@@ -77,6 +77,7 @@ public class BaseSerializer {
     public static final String STAR_TAG = "star";
     public static final String UNSTAR_TAG = "unstar";
     public static final String LINKED_WITH_TAG = "linked_with";
+    public static final String COMPANY_SIZE_TAG = "company_size";
 
     // GOOGLE CONTACT TAGS
     public static final String GOOGLE_CONTACTS_DATA_TAG = "google_contacts_data";
