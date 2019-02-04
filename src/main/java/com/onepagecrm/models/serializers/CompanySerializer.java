@@ -118,8 +118,8 @@ public class CompanySerializer extends BaseSerializer {
                 LOG.severe("Error creating Company Fields array while constructing Company object");
                 LOG.severe(e.toString());
             }
-            JSONObject addressArray = new JSONObject(AddressSerializer.toJsonObject(company.getAddress()));
-            addJsonObject(addressArray, companyObject, ADDRESS_TAG);
+            JSONObject addressObject = new JSONObject(AddressSerializer.toJsonObject(company.getAddress()));
+            addJsonObject(addressObject, companyObject, ADDRESS_TAG);
 
             addJsonIntegerValue(company.getWonDealsCount(), companyObject, WON_DEALS_COUNT_TAG);
             addJsonDoubleValue(company.getTotalWonAmount(), companyObject, TOTAL_WON_AMOUNT_TAG);
