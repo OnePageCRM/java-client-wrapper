@@ -47,6 +47,9 @@ public class AddressSerializer extends BaseSerializer {
             if (addressObject.has(COUNTRY_CODE_TAG)) {
                 address.setCountryCode(nullChecks(addressObject.optString(COUNTRY_CODE_TAG)));
             }
+            if (addressObject.has(TYPE_TAG)) {
+                address.setType(Address.Type.fromString(addressObject.getString(TYPE_TAG)));
+            }
         } catch (Exception e) {
             LOG.severe("Error parsing Address object");
             LOG.severe(e.toString());
@@ -62,6 +65,9 @@ public class AddressSerializer extends BaseSerializer {
             addJsonStringValue(address.getState(), addressObject, STATE_TAG);
             addJsonStringValue(address.getZipCode(), addressObject, ZIP_CODE_TAG);
             addJsonStringValue(address.getCountryCode(), addressObject, COUNTRY_CODE_TAG);
+            if (address.getType() != null) {
+                addJsonStringValue(address.getType().toString(), addressObject, TYPE_TAG);
+            }
         }
         return addressObject.toString();
     }

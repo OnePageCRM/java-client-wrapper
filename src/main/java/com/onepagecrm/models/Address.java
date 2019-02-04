@@ -8,14 +8,68 @@ import static com.onepagecrm.models.internal.Utilities.notNullOrEmpty;
 
 public class Address extends BaseResource implements Serializable {
 
+    /*
+     * Constants.
+     */
+
+    private static final String TYPE_WORK = "work";
+    private static final String TYPE_HOME = "home";
+    private static final String TYPE_BILLING = "billing";
+    private static final String TYPE_DELIVERY = "delivery";
+    private static final String TYPE_OTHER = "other"; // Catch all.
+
+    /*
+     * Member variables.
+     */
+
+    public enum Type {
+        WORK(TYPE_WORK),
+        HOME(TYPE_HOME),
+        BILLING(TYPE_BILLING),
+        DELIVERY(TYPE_DELIVERY),
+        OTHER(TYPE_OTHER);
+
+        private String type;
+
+        Type(final String type) {
+            this.type = type;
+        }
+
+        @Override
+        public String toString() {
+            return this.type;
+        }
+
+        public static Type fromString(final String type) {
+            if (type == null) return null;
+            switch (type) {
+                case TYPE_WORK:
+                    return WORK;
+                case TYPE_HOME:
+                    return HOME;
+                case TYPE_BILLING:
+                    return BILLING;
+                case TYPE_DELIVERY:
+                    return DELIVERY;
+                default:
+                    OTHER.type = type;
+                    return OTHER;
+            }
+        }
+    }
+
     private String address;
     private String city;
     private String state;
     private String zipCode;
     private String countryCode;
+    private Type type;
 
-    public Address() {
-    }
+    /*
+     * Object methods.
+     */
+
+    public Address() {}
 
     @Override
     public String toString() {
@@ -106,6 +160,15 @@ public class Address extends BaseResource implements Serializable {
 
     public Address setCountryCode(String countryCode) {
         this.countryCode = countryCode;
+        return this;
+    }
+
+    public Type getType() {
+        return type;
+    }
+
+    public Address setType(Type type) {
+        this.type = type;
         return this;
     }
 }
