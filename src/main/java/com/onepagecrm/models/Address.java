@@ -73,7 +73,7 @@ public class Address extends BaseResource implements Serializable {
 
     @Override
     public String toString() {
-        return AddressSerializer.toJsonArray(this);
+        return AddressSerializer.toJsonString(this);
     }
 
     public boolean isValid() {

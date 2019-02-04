@@ -2,10 +2,10 @@ package com.onepagecrm.models.serializers;
 
 import com.onepagecrm.models.Address;
 import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Logger;
 
 import static com.onepagecrm.models.internal.Utilities.nullChecks;
@@ -14,19 +14,12 @@ public class AddressSerializer extends BaseSerializer {
 
     private static final Logger LOG = Logger.getLogger(AddressSerializer.class.getName());
 
-    public static Address fromJsonArray(JSONArray addressArray) {
-        ArrayList<Address> addresses = new ArrayList<>();
+    public static List<Address> fromJsonArray(JSONArray addressArray) {
+        final List<Address> addresses = new ArrayList<>();
         for (int j = 0; j < addressArray.length(); j++) {
-            JSONObject addressObject;
-            try {
-                addressObject = addressArray.getJSONObject(j);
-                addresses.add(fromJsonObject(addressObject));
-            } catch (JSONException e) {
-                LOG.severe("Error parsing Address array");
-                LOG.severe(e.toString());
-            }
+            addresses.add(fromJsonObject(addressArray.optJSONObject(j)));
         }
-        return addresses.get(0);
+        return addresses;
     }
 
     public static Address fromJsonObject(JSONObject addressObject) {
@@ -57,7 +50,7 @@ public class AddressSerializer extends BaseSerializer {
         return address;
     }
 
-    public static String toJsonObject(Address address) {
+    public static JSONObject toJsonObject(Address address) {
         JSONObject addressObject = new JSONObject();
         if (address != null) {
             addJsonStringValue(address.getAddress(), addressObject, ADDRESS_TAG);
@@ -69,22 +62,25 @@ public class AddressSerializer extends BaseSerializer {
                 addJsonStringValue(address.getType().toString(), addressObject, TYPE_TAG);
             }
         }
-        return addressObject.toString();
+        return addressObject;
     }
 
-    public static String toJsonArray(Address address) {
-        JSONArray addressArray = new JSONArray();
-        if (address != null) {
-            try {
-                String addressString = toJsonObject(address);
-                if (addressString != null) {
-                    addressArray.put(new JSONObject(addressString));
-                }
-            } catch (JSONException e) {
-                LOG.severe("Error creating JSONObject out of Address");
-                LOG.severe(e.toString());
-            }
+    public static String toJsonString(Address address) {
+        return toJsonObject(address).toString();
+    }
+
+    public static JSONArray toJsonArray(List<Address> addresses) {
+        final JSONArray addressArray = new JSONArray();
+        if (addresses == null || addresses.isEmpty()) {
+            return addressArray;
         }
-        return addressArray.toString();
+        for (Address address : addresses) {
+            addressArray.put(toJsonObject(address));
+        }
+        return addressArray;
+    }
+
+    public static String toJsonString(List<Address> addresses) {
+        return toJsonArray(addresses).toString();
     }
 }

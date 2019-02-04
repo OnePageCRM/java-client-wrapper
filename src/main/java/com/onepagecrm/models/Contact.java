@@ -52,6 +52,9 @@ public class Contact extends ApiResource implements Serializable {
     public static final String EXTRA_FIELDS = "fields=all,deals(all),notes(all),calls(all)";
     public static final String UNDO = "undo=1";
 
+    private static final int ADDRESS_FIRST = 0;
+    private static final Address ADDRESS_PLACEHOLDER = null;
+
     /*
      * Member variables.
      */
@@ -86,7 +89,7 @@ public class Contact extends ApiResource implements Serializable {
     private List<CustomField> customFields;
     private Instant createdAt;
     private Instant modifiedAt;
-    private Address address;
+    private List<Address> addresses;
     private List<Action> actions;
     private Action nextAction;
     private List<Deal> deals;
@@ -583,12 +586,37 @@ public class Contact extends ApiResource implements Serializable {
         return this;
     }
 
-    public Address getAddress() {
-        return address;
+    public List<Address> getAddresses() {
+        return addresses;
     }
 
-    public Contact setAddress(Address address) {
-        this.address = address;
+    public Contact setAddresses(List<Address> addresses) {
+        this.addresses = addresses;
+        return this;
+    }
+
+    public Address getAddress() {
+        return getAddress(ADDRESS_FIRST);
+    }
+
+    public Contact setAddress(final Address address) {
+        return setAddress(ADDRESS_FIRST, address);
+    }
+
+    public Address getAddress(final int position) {
+        return addresses != null && position < addresses.size()
+                ? addresses.get(position)
+                : null;
+    }
+
+    public Contact setAddress(final int position, final Address address) {
+        if (addresses == null) {
+            addresses = new ArrayList<>();
+            for (int i = 0; i <= position; i++) {
+                addresses.add(i, ADDRESS_PLACEHOLDER);
+            }
+        }
+        addresses.set(position, address);
         return this;
     }
 
