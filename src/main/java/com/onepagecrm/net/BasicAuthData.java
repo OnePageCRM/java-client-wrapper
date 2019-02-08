@@ -5,7 +5,6 @@ import com.onepagecrm.models.User;
 import com.onepagecrm.models.internal.Utilities;
 import org.apache.commons.codec.binary.Base64;
 
-import java.nio.charset.StandardCharsets;
 import java.util.Locale;
 import java.util.logging.Logger;
 
@@ -14,7 +13,7 @@ import java.util.logging.Logger;
  * Copyright (c) 2019 OnePageCRM. All rights reserved.
  */
 
-@SuppressWarnings("WeakerAccess")
+@SuppressWarnings({"WeakerAccess", "CharsetObjectCanBeUsed"})
 public class BasicAuthData extends AuthData {
 
     private static final Logger LOG = Logger.getLogger(BasicAuthData.class.getName());
@@ -56,7 +55,7 @@ public class BasicAuthData extends AuthData {
         byte[] encodeAuthBytes = new byte[0];
         try {
             if (Utilities.notNullOrEmpty(login) && Utilities.notNullOrEmpty(password)) {
-                encodeAuthBytes = Base64.encodeBase64(toBeEncoded.getBytes(StandardCharsets.UTF_8));
+                encodeAuthBytes = Base64.encodeBase64(toBeEncoded.getBytes(OnePageCRM.CHARSET_UTF_8));
             }
         } catch (Exception e) {
             LOG.severe("Error encoding the auth data.");

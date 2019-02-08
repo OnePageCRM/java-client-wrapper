@@ -9,14 +9,14 @@ import org.apache.commons.codec.binary.Hex;
 import javax.crypto.Mac;
 import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
+import java.io.UnsupportedEncodingException;
 import java.nio.charset.Charset;
-import java.nio.charset.StandardCharsets;
 import java.security.InvalidKeyException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.logging.Logger;
 
-@SuppressWarnings({"WeakerAccess", "unused"})
+@SuppressWarnings({"WeakerAccess", "unused", "CharsetObjectCanBeUsed"})
 public class OnePageAuthData extends AuthData {
 
     private static final Logger LOG = Logger.getLogger(OnePageAuthData.class.getName());
@@ -81,7 +81,7 @@ public class OnePageAuthData extends AuthData {
         byte[] decodedApiKey = new byte[0];
         try {
             if (Utilities.notNullOrEmpty(thisApiKey)) {
-                decodedApiKey = Base64.decodeBase64(thisApiKey.getBytes(StandardCharsets.UTF_8));
+                decodedApiKey = Base64.decodeBase64(thisApiKey.getBytes(OnePageCRM.CHARSET_UTF_8));
             }
         } catch (Exception e) {
             LOG.severe("Error decoding the ApiKey");
@@ -138,7 +138,13 @@ public class OnePageAuthData extends AuthData {
         if (apiKey == null || apiKey.length == 0 || !Utilities.notNullOrEmpty(signature)) {
             return "";
         }
-        byte[] signatureBuffer = signature.getBytes(StandardCharsets.UTF_8);
+        byte[] signatureBuffer = new byte[0];
+        try {
+            signatureBuffer = signature.getBytes(OnePageCRM.CHARSET_UTF_8);
+        } catch (UnsupportedEncodingException e) {
+            LOG.severe("Could not use specified charset");
+            LOG.severe(e.toString());
+        }
         SecretKey secretKey = new SecretKeySpec(apiKey, "HMACSHA256");
         Mac mac = null;
         try {

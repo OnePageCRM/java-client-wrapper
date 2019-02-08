@@ -21,6 +21,8 @@ public final class OnePageCRM {
     public static Account account;
     private static OnePageCRM instance;
 
+    public static final String CHARSET_UTF_8 = "UTF-8";
+
     public static final String WRAPPER_JSON_PATH = "./src/test/res/responses/perfect/";
     public static String ASSET_PATH = WRAPPER_JSON_PATH;
 
