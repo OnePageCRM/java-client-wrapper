@@ -9,16 +9,20 @@ import org.apache.commons.codec.binary.Hex;
 import javax.crypto.Mac;
 import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
-import java.nio.charset.Charset;
+import java.io.UnsupportedEncodingException;
 import java.security.InvalidKeyException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.logging.Logger;
 
-@SuppressWarnings({"WeakerAccess", "unused"})
+@SuppressWarnings({"WeakerAccess", "unused", "CharsetObjectCanBeUsed"})
 public class OnePageAuthData extends AuthData {
 
     private static final Logger LOG = Logger.getLogger(OnePageAuthData.class.getName());
+
+    private static final String CHARSET_UTF_8 = OnePageCRM.CHARSET_UTF_8;
+    private static final String ALGORITHM_SHA_1 = "SHA-1";
+    private static final String ALGORITHM_SHA_256 = "HMACSHA256";
 
     private int timestamp;
     private String type;
@@ -28,10 +32,6 @@ public class OnePageAuthData extends AuthData {
     /**
      * Constructor which will only be used for login (no user details known
      * yet).
-     *
-     * @param type
-     * @param url
-     * @param body
      */
     public OnePageAuthData(String type, String url, String body) {
         super(null, null);
@@ -43,11 +43,6 @@ public class OnePageAuthData extends AuthData {
 
     /**
      * Constructor which will be used for every API other than logging in.
-     *
-     * @param user
-     * @param type
-     * @param url
-     * @param body
      */
     public OnePageAuthData(User user, String type, String url, String body) {
         super(user.getId(), user.getAuthKey());
@@ -60,11 +55,6 @@ public class OnePageAuthData extends AuthData {
 
     /**
      * Constructor used for testing to manually enter/fabricate timestamp.
-     *
-     * @param user
-     * @param type
-     * @param url
-     * @param body
      */
     public OnePageAuthData(User user, int timestamp, String type, String url, String body) {
         super(user.getId(), user.getAuthKey());
@@ -78,8 +68,6 @@ public class OnePageAuthData extends AuthData {
     /**
      * Method which handles the process of calculating auth data i.e.
      * X-OnePageCRM-Auth.
-     *
-     * @return
      */
     public String calculateSignature() {
         if (OnePageCRM.DEBUG) {
@@ -96,10 +84,10 @@ public class OnePageAuthData extends AuthData {
         byte[] decodedApiKey = new byte[0];
         try {
             if (Utilities.notNullOrEmpty(thisApiKey)) {
-                decodedApiKey = Base64.decodeBase64(thisApiKey.getBytes("UTF-8"));
+                decodedApiKey = Base64.decodeBase64(thisApiKey.getBytes(CHARSET_UTF_8));
             }
         } catch (Exception e) {
-            LOG.severe("Error decoding the ApiKey");
+            LOG.severe("Error decoding the API key");
             LOG.severe(e.toString());
         }
         String urlHash = convertStringToSha1Hash(thisUrl);
@@ -126,9 +114,6 @@ public class OnePageAuthData extends AuthData {
 
     /**
      * Acquires the SHA-1 hash of a given String.
-     *
-     * @param toBeHashed
-     * @return
      */
     @SuppressWarnings("ConstantConditions")
     private String convertStringToSha1Hash(String toBeHashed) {
@@ -137,12 +122,18 @@ public class OnePageAuthData extends AuthData {
         }
         MessageDigest encoder = null;
         try {
-            encoder = MessageDigest.getInstance("SHA-1");
+            encoder = MessageDigest.getInstance(ALGORITHM_SHA_1);
         } catch (NoSuchAlgorithmException e) {
-            LOG.severe("Could not use SHA1 hashing algorithm");
+            LOG.severe("Could not use " + ALGORITHM_SHA_1 + " hashing algorithm");
             LOG.severe(e.toString());
         }
-        byte[] urlBuffer = toBeHashed.getBytes(Charset.forName("UTF-8"));
+        byte[] urlBuffer = new byte[0];
+        try {
+            urlBuffer = toBeHashed.getBytes(CHARSET_UTF_8);
+        } catch (UnsupportedEncodingException e) {
+            LOG.severe("Could not use " + CHARSET_UTF_8 + " charset");
+            LOG.severe(e.toString());
+        }
         encoder.reset();
         encoder.update(urlBuffer);
         return new String(Hex.encodeHex(encoder.digest()));
@@ -150,29 +141,31 @@ public class OnePageAuthData extends AuthData {
 
     /**
      * Delivers the final signature i.e. X-OnePageCRM-Auth.
-     *
-     * @param apiKey
-     * @param signature
-     * @return
      */
     @SuppressWarnings("ConstantConditions")
     private String makeHMACSHA256Signature(byte[] apiKey, String signature) {
         if (apiKey == null || apiKey.length == 0 || !Utilities.notNullOrEmpty(signature)) {
             return "";
         }
-        byte[] signatureBuffer = signature.getBytes(Charset.forName("UTF-8"));
-        SecretKey secretKey = new SecretKeySpec(apiKey, "HMACSHA256");
+        byte[] signatureBuffer = new byte[0];
+        try {
+            signatureBuffer = signature.getBytes(CHARSET_UTF_8);
+        } catch (UnsupportedEncodingException e) {
+            LOG.severe("Could not use " + CHARSET_UTF_8 + " charset");
+            LOG.severe(e.toString());
+        }
+        SecretKey secretKey = new SecretKeySpec(apiKey, ALGORITHM_SHA_256);
         Mac mac = null;
         try {
-            mac = Mac.getInstance("HMACSHA256");
+            mac = Mac.getInstance(ALGORITHM_SHA_256);
         } catch (NoSuchAlgorithmException e) {
-            LOG.severe("Could not use SHA256 hashing algorithm");
+            LOG.severe("Could not use " + ALGORITHM_SHA_256 + " hashing algorithm");
             LOG.severe(e.toString());
         }
         try {
             mac.init(secretKey);
         } catch (InvalidKeyException e) {
-            LOG.severe("Error decoding the ApiKey");
+            LOG.severe("Error decoding the API key");
             LOG.severe(e.toString());
         }
         String sha256Hash = new String(Hex.encodeHex(mac.doFinal(signatureBuffer)));

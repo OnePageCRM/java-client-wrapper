@@ -168,8 +168,8 @@ public class ContactSerializer extends BaseSerializer {
             // Address.
             if (contactObject.has(ADDRESS_LIST_TAG)) {
                 JSONArray addressArray = contactObject.getJSONArray(ADDRESS_LIST_TAG);
-                Address address = AddressSerializer.fromJsonArray(addressArray);
-                contact.setAddress(address);
+                List<Address> addresses = AddressSerializer.fromJsonArray(addressArray);
+                contact.setAddresses(addresses);
             }
             // Next Actions.
             if (contactsElementObject.has(NEXT_ACTIONS_TAG)) {
@@ -304,13 +304,8 @@ public class ContactSerializer extends BaseSerializer {
         }
 
         // Serialize Address.
-        try {
-            JSONArray addressArray = new JSONArray(AddressSerializer.toJsonArray(contact.getAddress()));
-            addJsonArray(addressArray, contactObject, ADDRESS_LIST_TAG);
-        } catch (JSONException e) {
-            LOG.severe("Error creating Address array while constructing Contact object");
-            LOG.severe(e.toString());
-        }
+        JSONArray addressArray = AddressSerializer.toJsonArray(contact.getAddresses());
+        addJsonArray(addressArray, contactObject, ADDRESS_LIST_TAG);
 
         // Serialize Phones.
         try {

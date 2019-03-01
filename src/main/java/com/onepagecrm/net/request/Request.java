@@ -4,6 +4,7 @@ import com.onepagecrm.OnePageCRM;
 import com.onepagecrm.exceptions.ConnectivityException;
 import com.onepagecrm.exceptions.OnePageException;
 import com.onepagecrm.exceptions.TimeoutException;
+import com.onepagecrm.models.helpers.TextHelper;
 import com.onepagecrm.models.internal.Utilities;
 import com.onepagecrm.models.serializers.BaseSerializer;
 import com.onepagecrm.net.Response;
@@ -24,7 +25,12 @@ import java.util.logging.Logger;
 
 import static com.onepagecrm.models.internal.Utilities.notNullOrEmpty;
 
-@SuppressWarnings({"WeakerAccess", "MismatchedQueryAndUpdateOfCollection", "unused", "UnusedAssignment", "BooleanMethodIsAlwaysInverted"})
+/**
+ * Created by Cillian Myles on 08/01/2019.
+ * Copyright (c) 2019 OnePageCRM. All rights reserved.
+ */
+
+@SuppressWarnings({"WeakerAccess", "MismatchedQueryAndUpdateOfCollection", "unused", "UnusedAssignment"})
 public abstract class Request {
 
     protected static final Logger LOG = Logger.getLogger(Request.class.getName());
@@ -399,6 +405,7 @@ public abstract class Request {
     protected static final String X_TS = "X-OnePageCRM-TS";
     protected static final String X_AUTH = "X-OnePageCRM-AUTH";
     protected static final String X_SOURCE = "X-OnePageCRM-SOURCE";
+    protected static final String X_APP_VERSION = "X-OnePageCRM-APP-VERSION";
 
     protected static final String AUTHORIZATION = "Authorization";
 
@@ -554,16 +561,23 @@ public abstract class Request {
      * SignedRequest to include auth headers.
      */
     public void setRequestHeaders() {
-        String userAgent = System.getProperty("http.agent");
+        final String userAgent = getUserAgent(); // Works on separate line only!
         connection.setRequestProperty(ACCEPTS_TAG, ACCEPTS);
-        connection.setRequestProperty(USER_AGENT_TAG, userAgent);
         connection.setRequestProperty(CONTENT_TYPE_TAG, CONTENT_TYPE);
+        connection.setRequestProperty(X_SOURCE, OnePageCRM.SOURCE);
+        connection.setRequestProperty(X_APP_VERSION, OnePageCRM.APP_VERSION);
+        connection.setRequestProperty(USER_AGENT_TAG, userAgent);
 
         LOG.info(Utilities.repeatedString("*", 40));
         LOG.info("--- REQUEST ---");
         LOG.info("Type: " + connection.getRequestMethod());
         LOG.info("Url: " + connection.getURL());
         LOG.info("Body: " + requestBody);
+    }
+
+    private String getUserAgent() {
+        final String prop = System.getProperty("http.agent");
+        return !TextHelper.isEmpty(prop) ? prop : "Java/1.8";
     }
 
     protected void setRequestBody() {
@@ -611,12 +625,28 @@ public abstract class Request {
         getResponseMessage();
         getResponseBody();
 
-        LOG.info("User-Agent: " + connection.getRequestProperty(USER_AGENT_TAG));
+        LOG.info("--- HEADERS ---");
+        printHeaders();
+
         LOG.info("--- RESPONSE ---");
         LOG.info("Code: " + response.getResponseCode());
         LOG.info("Message: " + response.getResponseMessage());
         LOG.info("Body: " + response.getResponseBody());
         LOG.info(Utilities.repeatedString("*", 40));
+    }
+
+    protected void printHeaders() {
+        printHeader(X_SOURCE);
+        printHeader(X_APP_VERSION);
+        printHeader(USER_AGENT_TAG);
+    }
+
+    protected void printHeader(final String tag) {
+        printValue(tag, connection.getRequestProperty(tag));
+    }
+
+    protected void printValue(final String tag, final String value) {
+        LOG.info(tag + ": " + value);
     }
 
     private void getResponseCode() throws OnePageException {

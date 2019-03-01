@@ -40,6 +40,11 @@ public class UrlFabricator extends BaseFabricator {
         linkedIn.setValue("www.linkedin.com");
         urls.add(linkedIn);
 
+        Url xing = new Url();
+        xing.setType(Url.TYPE_XING);
+        xing.setValue("www.xing.com");
+        urls.add(xing);
+
         Url facebook = new Url();
         facebook.setType(Url.TYPE_FACEBOOK);
         facebook.setValue("www.facebook.com");

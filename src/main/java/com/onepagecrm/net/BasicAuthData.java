@@ -8,6 +8,12 @@ import org.apache.commons.codec.binary.Base64;
 import java.util.Locale;
 import java.util.logging.Logger;
 
+/**
+ * Created by Cillian Myles on 08/01/2019.
+ * Copyright (c) 2019 OnePageCRM. All rights reserved.
+ */
+
+@SuppressWarnings({"WeakerAccess", "CharsetObjectCanBeUsed"})
 public class BasicAuthData extends AuthData {
 
     private static final Logger LOG = Logger.getLogger(BasicAuthData.class.getName());
@@ -32,8 +38,6 @@ public class BasicAuthData extends AuthData {
     /**
      * Method which handles the process of calculating auth data i.e.
      * "Authorization" - "Basic #{Base64.encode("userId:apiKey")}".
-     *
-     * @return
      */
     public String calculateSignature() {
         if (OnePageCRM.DEBUG) {
@@ -51,7 +55,7 @@ public class BasicAuthData extends AuthData {
         byte[] encodeAuthBytes = new byte[0];
         try {
             if (Utilities.notNullOrEmpty(login) && Utilities.notNullOrEmpty(password)) {
-                encodeAuthBytes = Base64.encodeBase64(toBeEncoded.getBytes("UTF-8"));
+                encodeAuthBytes = Base64.encodeBase64(toBeEncoded.getBytes(OnePageCRM.CHARSET_UTF_8));
             }
         } catch (Exception e) {
             LOG.severe("Error encoding the auth data.");

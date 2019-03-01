@@ -14,11 +14,14 @@ import java.util.List;
  * Created by Cillian Myles on 02/02/2018.
  * Copyright (c) 2018 OnePageCRM. All rights reserved.
  */
+
 @SuppressWarnings({"WeakerAccess", "unused", "UnusedReturnValue"})
 public final class OnePageCRM {
 
     public static Account account;
     private static OnePageCRM instance;
+
+    public static final String CHARSET_UTF_8 = "UTF-8";
 
     public static final String WRAPPER_JSON_PATH = "./src/test/res/responses/perfect/";
     public static String ASSET_PATH = WRAPPER_JSON_PATH;
@@ -28,6 +31,7 @@ public final class OnePageCRM {
     public static String SOURCE = "java-wrapper";
     public static boolean COMPLEX_AUTH = false;
     public static boolean MOBILE = false;
+    public static String APP_VERSION = null;
 
     public static OnePageCRM getInstance() {
         if (instance == null) {
@@ -77,6 +81,11 @@ public final class OnePageCRM {
 
     public static OnePageCRM setMobile(boolean mobile) {
         MOBILE = mobile;
+        return getInstance();
+    }
+
+    public static OnePageCRM setAppVersion(String appVersion) {
+        APP_VERSION = appVersion;
         return getInstance();
     }
 
