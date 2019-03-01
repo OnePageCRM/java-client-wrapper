@@ -10,7 +10,6 @@ import javax.crypto.Mac;
 import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
 import java.io.UnsupportedEncodingException;
-import java.nio.charset.Charset;
 import java.security.InvalidKeyException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -20,6 +19,10 @@ import java.util.logging.Logger;
 public class OnePageAuthData extends AuthData {
 
     private static final Logger LOG = Logger.getLogger(OnePageAuthData.class.getName());
+
+    private static final String CHARSET_UTF_8 = OnePageCRM.CHARSET_UTF_8;
+    private static final String ALGORITHM_SHA_1 = "SHA-1";
+    private static final String ALGORITHM_SHA_256 = "HMACSHA256";
 
     private int timestamp;
     private String type;
@@ -81,10 +84,10 @@ public class OnePageAuthData extends AuthData {
         byte[] decodedApiKey = new byte[0];
         try {
             if (Utilities.notNullOrEmpty(thisApiKey)) {
-                decodedApiKey = Base64.decodeBase64(thisApiKey.getBytes(OnePageCRM.CHARSET_UTF_8));
+                decodedApiKey = Base64.decodeBase64(thisApiKey.getBytes(CHARSET_UTF_8));
             }
         } catch (Exception e) {
-            LOG.severe("Error decoding the ApiKey");
+            LOG.severe("Error decoding the API key");
             LOG.severe(e.toString());
         }
         String urlHash = convertStringToSha1Hash(thisUrl);
@@ -119,12 +122,18 @@ public class OnePageAuthData extends AuthData {
         }
         MessageDigest encoder = null;
         try {
-            encoder = MessageDigest.getInstance("SHA-1");
+            encoder = MessageDigest.getInstance(ALGORITHM_SHA_1);
         } catch (NoSuchAlgorithmException e) {
-            LOG.severe("Could not use SHA1 hashing algorithm");
+            LOG.severe("Could not use " + ALGORITHM_SHA_1 + " hashing algorithm");
             LOG.severe(e.toString());
         }
-        byte[] urlBuffer = toBeHashed.getBytes(Charset.forName("UTF-8"));
+        byte[] urlBuffer = new byte[0];
+        try {
+            urlBuffer = toBeHashed.getBytes(CHARSET_UTF_8);
+        } catch (UnsupportedEncodingException e) {
+            LOG.severe("Could not use " + CHARSET_UTF_8 + " charset");
+            LOG.severe(e.toString());
+        }
         encoder.reset();
         encoder.update(urlBuffer);
         return new String(Hex.encodeHex(encoder.digest()));
@@ -140,23 +149,23 @@ public class OnePageAuthData extends AuthData {
         }
         byte[] signatureBuffer = new byte[0];
         try {
-            signatureBuffer = signature.getBytes(OnePageCRM.CHARSET_UTF_8);
+            signatureBuffer = signature.getBytes(CHARSET_UTF_8);
         } catch (UnsupportedEncodingException e) {
-            LOG.severe("Could not use specified charset");
+            LOG.severe("Could not use " + CHARSET_UTF_8 + " charset");
             LOG.severe(e.toString());
         }
-        SecretKey secretKey = new SecretKeySpec(apiKey, "HMACSHA256");
+        SecretKey secretKey = new SecretKeySpec(apiKey, ALGORITHM_SHA_256);
         Mac mac = null;
         try {
-            mac = Mac.getInstance("HMACSHA256");
+            mac = Mac.getInstance(ALGORITHM_SHA_256);
         } catch (NoSuchAlgorithmException e) {
-            LOG.severe("Could not use SHA256 hashing algorithm");
+            LOG.severe("Could not use " + ALGORITHM_SHA_256 + " hashing algorithm");
             LOG.severe(e.toString());
         }
         try {
             mac.init(secretKey);
         } catch (InvalidKeyException e) {
-            LOG.severe("Error decoding the ApiKey");
+            LOG.severe("Error decoding the API key");
             LOG.severe(e.toString());
         }
         String sha256Hash = new String(Hex.encodeHex(mac.doFinal(signatureBuffer)));
