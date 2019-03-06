@@ -52,6 +52,7 @@ public class Contact extends ApiResource implements Serializable {
     public static final String EXTRA_FIELDS = "fields=all,deals(all),notes(all),calls(all)";
     public static final String UNDO = "undo=1";
 
+    public static final int MAX_NUM_ADDRESSES = 2;
     private static final int ADDRESS_FIRST = 0;
     private static final Address ADDRESS_PLACEHOLDER = null;
 

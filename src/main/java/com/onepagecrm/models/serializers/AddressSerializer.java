@@ -1,6 +1,7 @@
 package com.onepagecrm.models.serializers;
 
 import com.onepagecrm.models.Address;
+import com.onepagecrm.models.Contact;
 import com.onepagecrm.models.internal.Utilities;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -116,11 +117,14 @@ public class AddressSerializer extends BaseSerializer {
 
     public static JSONArray contactAddressesToJsonArray(final List<Address> addresses) {
         final JSONArray addressArray = new JSONArray();
-        if (addresses == null || addresses.isEmpty()) {
-            return addressArray;
+        final List<Address> input = (addresses == null || addresses.isEmpty()) ? new ArrayList<>() : addresses;
+        if (input.size() < Contact.MAX_NUM_ADDRESSES) {
+            for (int i = input.size(); i < Contact.MAX_NUM_ADDRESSES; i++) {
+                input.add(i, new Address());
+            }
         }
-        for (Address address : addresses) {
-            addressArray.put(contactAddressToJsonObject(address));
+        for (int i = 0; i < input.size() && i < Contact.MAX_NUM_ADDRESSES; i++) {
+            addressArray.put(contactAddressToJsonObject(input.get(i)));
         }
         return addressArray;
     }
