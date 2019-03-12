@@ -5,6 +5,8 @@ import com.onepagecrm.models.serializers.CustomFieldValueSerializer;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.Arrays;
+import java.util.Objects;
 
 public class CustomFieldValue implements Serializable {
 
@@ -60,6 +62,24 @@ public class CustomFieldValue implements Serializable {
     @Override
     public String toString() {
         return CustomFieldValueSerializer.toJsonObject(this);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof CustomFieldValue)) return false;
+        CustomFieldValue that = (CustomFieldValue) o;
+        return Objects.equals(stringValue, that.stringValue) &&
+                Objects.equals(longValue, that.longValue) &&
+                Objects.equals(floatingValue, that.floatingValue) &&
+                Arrays.equals(stringArrayValue, that.stringArrayValue);
+    }
+
+    @Override
+    public int hashCode() {
+        int result = Objects.hash(stringValue, longValue, floatingValue);
+        result = 31 * result + Arrays.hashCode(stringArrayValue);
+        return result;
     }
 
     public Serializable setValue(String stringValue) {
