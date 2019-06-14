@@ -270,6 +270,8 @@ public class BaseSerializer {
     // FILTERS TAGS
     public static final String FILTER_TAG = "filter";
     public static final String FILTERS_TAG = "filters";
+    public static final String FAKE_FILTER_TAG = "fake_filter";
+    public static final String FAKE_FILTERS_TAG = "fake_filters";
 
     // METADATA TAGS
     public static final String PAGE_TAG = "page";

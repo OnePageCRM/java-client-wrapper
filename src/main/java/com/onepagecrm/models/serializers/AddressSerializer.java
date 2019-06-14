@@ -1,7 +1,10 @@
 package com.onepagecrm.models.serializers;
 
 import com.onepagecrm.models.Address;
+import com.onepagecrm.models.Contact;
+import com.onepagecrm.models.internal.Utilities;
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
@@ -10,11 +13,12 @@ import java.util.logging.Logger;
 
 import static com.onepagecrm.models.internal.Utilities.nullChecks;
 
+@SuppressWarnings({"WeakerAccess", "unused"})
 public class AddressSerializer extends BaseSerializer {
 
     private static final Logger LOG = Logger.getLogger(AddressSerializer.class.getName());
 
-    public static List<Address> fromJsonArray(JSONArray addressArray) {
+    public static List<Address> fromJsonArray(final JSONArray addressArray) {
         final List<Address> addresses = new ArrayList<>();
         for (int j = 0; j < addressArray.length(); j++) {
             addresses.add(fromJsonObject(addressArray.optJSONObject(j)));
@@ -22,7 +26,7 @@ public class AddressSerializer extends BaseSerializer {
         return addresses;
     }
 
-    public static Address fromJsonObject(JSONObject addressObject) {
+    public static Address fromJsonObject(final JSONObject addressObject) {
         Address address = new Address();
         try {
             if (addressObject.has(ADDRESS_TAG)) {
@@ -50,7 +54,7 @@ public class AddressSerializer extends BaseSerializer {
         return address;
     }
 
-    public static JSONObject toJsonObject(Address address) {
+    public static JSONObject toJsonObject(final Address address) {
         JSONObject addressObject = new JSONObject();
         if (address != null) {
             addJsonStringValue(address.getAddress(), addressObject, ADDRESS_TAG);
@@ -65,11 +69,11 @@ public class AddressSerializer extends BaseSerializer {
         return addressObject;
     }
 
-    public static String toJsonString(Address address) {
+    public static String toJsonString(final Address address) {
         return toJsonObject(address).toString();
     }
 
-    public static JSONArray toJsonArray(List<Address> addresses) {
+    public static JSONArray toJsonArray(final List<Address> addresses) {
         final JSONArray addressArray = new JSONArray();
         if (addresses == null || addresses.isEmpty()) {
             return addressArray;
@@ -80,7 +84,52 @@ public class AddressSerializer extends BaseSerializer {
         return addressArray;
     }
 
-    public static String toJsonString(List<Address> addresses) {
+    public static String toJsonString(final List<Address> addresses) {
         return toJsonArray(addresses).toString();
+    }
+
+    /*
+     * For contacts (since they have strange serialization requirements).
+     */
+
+    public static JSONObject contactAddressToJsonObject(final Address address) {
+        JSONObject addressObject = new JSONObject();
+        final Address input = address != null ? address : new Address();
+        try {
+            addressObject.put(ADDRESS_TAG, Utilities.nullToEmpty(input.getAddress()));
+            addressObject.put(CITY_TAG, Utilities.nullToEmpty(input.getCity()));
+            addressObject.put(STATE_TAG, Utilities.nullToEmpty(input.getState()));
+            addressObject.put(ZIP_CODE_TAG, Utilities.nullToEmpty(input.getZipCode()));
+            addressObject.put(COUNTRY_CODE_TAG, Utilities.nullToEmpty(input.getCountryCode()));
+            if (input.getType() != null) {
+                addressObject.put(TYPE_TAG, Utilities.nullToEmpty(input.getType().toString()));
+            }
+        } catch (JSONException e) {
+            LOG.severe("Error serializing Address object");
+            LOG.severe(e.toString());
+        }
+        return addressObject;
+    }
+
+    public static String contactAddressToJsonString(final Address address) {
+        return contactAddressToJsonObject(address).toString();
+    }
+
+    public static JSONArray contactAddressesToJsonArray(final List<Address> addresses) {
+        final JSONArray addressArray = new JSONArray();
+        final List<Address> input = (addresses == null || addresses.isEmpty()) ? new ArrayList<>() : addresses;
+        if (input.size() < Contact.MAX_NUM_ADDRESSES) {
+            for (int i = input.size(); i < Contact.MAX_NUM_ADDRESSES; i++) {
+                input.add(i, new Address());
+            }
+        }
+        for (int i = 0; i < input.size() && i < Contact.MAX_NUM_ADDRESSES; i++) {
+            addressArray.put(contactAddressToJsonObject(input.get(i)));
+        }
+        return addressArray;
+    }
+
+    public static String contactAddressesToJsonString(final List<Address> addresses) {
+        return contactAddressesToJsonArray(addresses).toString();
     }
 }

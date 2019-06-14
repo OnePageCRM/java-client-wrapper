@@ -304,7 +304,7 @@ public class ContactSerializer extends BaseSerializer {
         }
 
         // Serialize Address.
-        JSONArray addressArray = AddressSerializer.toJsonArray(contact.getAddresses());
+        JSONArray addressArray = AddressSerializer.contactAddressesToJsonArray(contact.getAddresses());
         addJsonArray(addressArray, contactObject, ADDRESS_LIST_TAG);
 
         // Serialize Phones.
