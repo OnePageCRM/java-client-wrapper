@@ -4,6 +4,7 @@ import com.onepagecrm.exceptions.OnePageException;
 import com.onepagecrm.models.Account;
 import com.onepagecrm.models.AppServer;
 import com.onepagecrm.models.serializers.AppServerSerializer;
+import com.onepagecrm.net.API;
 import com.onepagecrm.net.Response;
 import com.onepagecrm.net.request.AppServersRequest;
 import com.onepagecrm.net.request.Request;
@@ -32,12 +33,23 @@ public final class OnePageCRM {
     public static boolean COMPLEX_AUTH = false;
     public static boolean MOBILE = false;
     public static String APP_VERSION = null;
+    public static String USER_ID = null;
+    public static String API_KEY = null;
+
 
     public static OnePageCRM getInstance() {
         if (instance == null) {
             instance = new OnePageCRM();
         }
         return instance;
+    }
+
+    public static OnePageCRM init(int server, String user_id, String api_key)  throws OnePageException {
+        SERVER = server;
+        USER_ID = user_id;
+        API_KEY = api_key;
+        API.Auth.bootstrap();
+        return getInstance();
     }
 
     public static String getEndpointUrl() {
@@ -89,8 +101,26 @@ public final class OnePageCRM {
         return getInstance();
     }
 
+    public static OnePageCRM setUserId(String user_id) {
+        USER_ID = user_id;
+        return getInstance();
+    }
+
+    public static String getUserId() {
+        return USER_ID;
+    }
+
+    public static OnePageCRM setApiKey(String api_key) {
+        API_KEY = api_key;
+        return getInstance();
+    }
+
+    public static String getApiKey() {
+        return API_KEY;
+    }
+
     /**
-     * List available servers for sign up / log in - in the multi-server environment.
+     * List available servers for authentication - in the multi-server environment.
      *
      * @return list of available {@link AppServer servers}.
      * @throws OnePageException if an error occurs.
@@ -100,7 +130,7 @@ public final class OnePageCRM {
     }
 
     /**
-     * List available servers for sign up / log in - in the multi-server environment.
+     * List available servers for authentication - in the multi-server environment.
      *
      * @return list of available {@link AppServer servers}.
      * @throws OnePageException if an error occurs.

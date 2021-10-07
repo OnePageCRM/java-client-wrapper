@@ -31,8 +31,8 @@ public class PatchRequest extends SignedRequest {
         setType();
         setEndpointUrl(endpoint);
         setAuthData((!OnePageCRM.COMPLEX_AUTH) ?
-                new BasicAuthData(Account.loggedInUser) :
-                new OnePageAuthData(Account.loggedInUser, Request.PATCH, endpointUrl, ""));
+                new BasicAuthData(Account.currentUser) :
+                new OnePageAuthData(Account.currentUser, Request.PATCH, endpointUrl, ""));
     }
 
     @Override
@@ -48,7 +48,7 @@ public class PatchRequest extends SignedRequest {
     public void authenticate() {
         setRequestBody();
         setAuthData((!OnePageCRM.COMPLEX_AUTH) ?
-                new BasicAuthData(Account.loggedInUser) :
-                new OnePageAuthData(Account.loggedInUser, Request.PATCH, endpointUrl, requestBody));
+                new BasicAuthData(Account.currentUser) :
+                new OnePageAuthData(Account.currentUser, Request.PATCH, endpointUrl, requestBody));
     }
 }

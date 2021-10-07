@@ -30,7 +30,7 @@ public class OnePageAuthData extends AuthData {
     private String body;
 
     /**
-     * Constructor which will only be used for login (no user details known
+     * Constructor which will only be used for authentication (no user details known
      * yet).
      */
     public OnePageAuthData(String type, String url, String body) {
@@ -38,7 +38,19 @@ public class OnePageAuthData extends AuthData {
         this.type = type;
         this.url = url;
         this.body = body;
-        // No need to calculate signature here (login)!
+        // No need to calculate signature here (authentication)!
+    }
+
+    /**
+     * Constructor which will be used for every API other than logging in.
+     */
+    public OnePageAuthData(String userId, String apiKey, String type, String url, String body) {
+        super(userId, apiKey);
+        this.timestamp = Utilities.getUnixTime();
+        this.type = type;
+        this.url = url;
+        this.body = body;
+        updateSignature();
     }
 
     /**

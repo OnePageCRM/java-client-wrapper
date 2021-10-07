@@ -41,13 +41,7 @@ public class NotesCallsDriver {
             }
         }
 
-        OnePageCRM.setServer(Request.APP_US_SERVER);
-
-        User loggedInUser = User.login(
-                prop.getProperty("username"),
-                prop.getProperty("password"));
-
-        LOG.info("Logged in User : " + loggedInUser);
+        OnePageCRM.init(Request.APP_US_SERVER, prop.getProperty("user_id"), prop.getProperty("api_key"));
 
         Note.list();
         Call.list();

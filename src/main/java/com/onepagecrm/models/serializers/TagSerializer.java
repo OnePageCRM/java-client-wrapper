@@ -93,7 +93,7 @@ public class TagSerializer extends BaseSerializer {
             JSONObject responseObject = new JSONObject(responseBody);
             JSONObject tagsObject = responseObject.getJSONObject(TAGS_TAG);
             JSONArray tagsArray = tagsObject.getJSONArray(TAGS_TAG);
-            Account.loggedInUser.getAccount().setTags(TagSerializer.fromJsonArray(tagsArray));
+            Account.currentUser.getAccount().setTags(TagSerializer.fromJsonArray(tagsArray));
         } catch (JSONException e) {
             LOG.severe("Could not find the Tags tag in response");
             LOG.severe(e.toString());

@@ -11,14 +11,6 @@ import com.onepagecrm.models.serializers.LoginDataSerializer;
 @SuppressWarnings("unused")
 public class LoginRequest extends Request {
 
-    public LoginRequest(String username, String password, boolean fullResponse) {
-        init(new LoginData(username, password, fullResponse));
-    }
-
-    public LoginRequest(String username, String password) {
-        init(new LoginData(username, password, false));
-    }
-
     public LoginRequest(LoginData loginData) {
         init(loginData);
     }

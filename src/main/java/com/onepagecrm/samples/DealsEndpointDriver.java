@@ -47,15 +47,10 @@ public class DealsEndpointDriver {
             }
         }
 
-        OnePageCRM.setServer(Request.DEV_SERVER);
+        OnePageCRM.init(Request.DEV_SERVER, prop.getProperty("user_id"), prop.getProperty("api_key"));
 
-        User loggedInUser = User.login(
-                prop.getProperty("username"),
-                prop.getProperty("password"));
-
-        LOG.info("Logged in User : " + loggedInUser);
         List<User> team = Account.team;
-        ContactList stream = loggedInUser.actionStream();
+        ContactList stream = Account.getCurrentUser().actionStream();
 
         Deal regDeal = new Deal()
                 .setOwnerId(team.get(0).getId())        // = Me.

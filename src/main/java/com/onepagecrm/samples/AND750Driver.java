@@ -40,11 +40,7 @@ public class AND750Driver {
             }
         }
 
-        OnePageCRM.setServer(Request.DEV_SERVER);
-
-        User loggedInUser = User.login(
-                prop.getProperty("username"),
-                prop.getProperty("password"));
+        OnePageCRM.init(Request.DEV_SERVER, prop.getProperty("user_id"), prop.getProperty("api_key"));
 
         String endpoint = "deals/59d362df9007ba15df5bfe11";
         String body = "{\"id\":\"59d362df9007ba15df5bfe11\",\"amount\":9.99,\"contact_id\":\"59ccce7d9007ba0db5077565\",\"name\":\"AND-724\",\"status\":\"won\",\"close_date\":\"2017-10-09\",\"cost\":0,\"commission_base\":\"margin\",\"commission_type\":\"none\",\"deal_fields\":[{\"deal_field\":{\"id\":\"5947a6279007ba40b8ecbb0a\",\"choices\":[\"\"],\"name\":\"DealSingleLine\",\"position\":0,\"type\":\"single_line_text\"}},{\"deal_field\":{\"id\":\"5947a6479007ba40b8ecbb0b\",\"choices\":[\"\"],\"name\":\"DealMultiLine\",\"position\":1,\"type\":\"multi_line_text\"}},{\"deal_field\":{\"id\":\"5947a6569007ba40b8ecbb0c\",\"choices\":[\"\"],\"name\":\"DealNumber\",\"position\":2,\"type\":\"number\"}},{\"deal_field\":{\"id\":\"5947a6749007ba40b8ecbb0d\",\"choices\":[\"First\",\"Second\",\"Third\"],\"name\":\"DealDropdown\",\"position\":3,\"type\":\"select_box\"}},{\"deal_field\":{\"id\":\"5947a6849007ba40b8ecbb11\",\"choices\":[\"\"],\"name\":\"DealDate\",\"position\":4,\"type\":\"date\"}},{\"deal_field\":{\"id\":\"5947a6aa9007ba40b8ecbb12\",\"choices\":[\"First\",\"Second\",\"Third\"],\"name\":\"DealMultipleChoice\",\"position\":5,\"type\":\"multiple_choice\"}}]}";

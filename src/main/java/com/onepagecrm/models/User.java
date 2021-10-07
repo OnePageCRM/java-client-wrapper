@@ -1,7 +1,6 @@
 package com.onepagecrm.models;
 
 import com.onepagecrm.exceptions.OnePageException;
-import com.onepagecrm.models.internal.LoginData;
 import com.onepagecrm.models.internal.Paginator;
 import com.onepagecrm.models.internal.PredefinedActionList;
 import com.onepagecrm.models.serializers.BaseSerializer;
@@ -51,14 +50,6 @@ public class User extends ApiResource implements Serializable {
     private List<String> accountRights;
 
     /* Auth-related API methods */
-
-    public static User login(String username, String password) throws OnePageException {
-        return API.Auth.login(username, password);
-    }
-
-    public static StartupData startup(String username, String password, boolean fullResponse) throws OnePageException {
-        return API.Auth.startup(new LoginData(username, password, fullResponse));
-    }
 
     public StartupData startup() throws OnePageException {
         return API.Auth.startup();

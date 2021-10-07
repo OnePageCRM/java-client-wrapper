@@ -42,11 +42,7 @@ public class API440ContactCompany {
             }
         }
 
-        OnePageCRM.setServer(Request.STAGING_SERVER);
-
-        User loggedInUser = User.login(
-                prop.getProperty("username"),
-                prop.getProperty("password"));
+        OnePageCRM.init(Request.STAGING_SERVER, prop.getProperty("user_id"), prop.getProperty("api_key"));
 
         final String endpoint = "contacts/59b2a7f59007ba09298e0048";
         final String query = "?fields=all,deals(all),notes(all),calls(all)";

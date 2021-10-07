@@ -2,10 +2,7 @@ package com.onepagecrm.samples;
 
 import com.onepagecrm.OnePageCRM;
 import com.onepagecrm.exceptions.OnePageException;
-import com.onepagecrm.models.Company;
-import com.onepagecrm.models.Contact;
-import com.onepagecrm.models.ContactList;
-import com.onepagecrm.models.User;
+import com.onepagecrm.models.*;
 import com.onepagecrm.net.request.Request;
 
 import java.io.FileInputStream;
@@ -45,13 +42,9 @@ public class SplitContactDriver {
             }
         }
 
-        OnePageCRM.setServer(Request.DEV_SERVER);
+        OnePageCRM.init(Request.DEV_SERVER, prop.getProperty("user_id"), prop.getProperty("api_key"));
 
-        User loggedInUser = User.login(
-                prop.getProperty("username"),
-                prop.getProperty("password"));
-
-        ContactList searchResults = loggedInUser.searchActionStream("Java");
+        ContactList searchResults = Account.getCurrentUser().searchActionStream("Java");
         Contact contact = searchResults.get(0);
         Company company = Company.byId(contact.getCompanyId());
 

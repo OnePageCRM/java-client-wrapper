@@ -10,7 +10,7 @@ import com.onepagecrm.models.serializers.ContactPhotoSerializer;
 import com.onepagecrm.models.serializers.ContactSerializer;
 import com.onepagecrm.models.serializers.ContactSplitSerializer;
 import com.onepagecrm.models.serializers.DeleteResultSerializer;
-import com.onepagecrm.models.serializers.LoginSerializer;
+import com.onepagecrm.models.serializers.BootstrapSerializer;
 import com.onepagecrm.net.API;
 import com.onepagecrm.net.ApiResource;
 import com.onepagecrm.net.Response;
@@ -119,7 +119,7 @@ public class Contact extends ApiResource implements Serializable {
         Response response = request.send();
         String responseBody = response.getResponseBody();
         Contact contact = ContactSerializer.fromString(responseBody);
-        LoginSerializer.updateDynamicResources(responseBody);
+        BootstrapSerializer.updateDynamicResources(responseBody);
         return contact;
     }
 
@@ -132,7 +132,7 @@ public class Contact extends ApiResource implements Serializable {
         Response response = request.send();
         String responseBody = response.getResponseBody();
         Contact contact = ContactSerializer.fromString(responseBody);
-        LoginSerializer.updateDynamicResources(responseBody);
+        BootstrapSerializer.updateDynamicResources(responseBody);
         return contact;
     }
 
@@ -183,7 +183,7 @@ public class Contact extends ApiResource implements Serializable {
         Response response = request.send();
         String responseBody = response.getResponseBody();
         Contact contact = ContactSerializer.fromString(responseBody);
-        LoginSerializer.updateDynamicResources(responseBody);
+        BootstrapSerializer.updateDynamicResources(responseBody);
         return contact;
     }
 
@@ -216,7 +216,7 @@ public class Contact extends ApiResource implements Serializable {
         Response response = request.send();
         String responseBody = response.getResponseBody();
         DeleteResult deleteResult = DeleteResultSerializer.fromString(this.id, responseBody);
-        LoginSerializer.updateDynamicResources(responseBody);
+        BootstrapSerializer.updateDynamicResources(responseBody);
         return deleteResult;
     }
 
@@ -225,7 +225,7 @@ public class Contact extends ApiResource implements Serializable {
         Response response = request.send();
         String responseBody = response.getResponseBody();
         Contact contact = ContactSerializer.fromString(responseBody);
-        LoginSerializer.updateDynamicResources(responseBody);
+        BootstrapSerializer.updateDynamicResources(responseBody);
         return contact;
     }
 
@@ -250,7 +250,7 @@ public class Contact extends ApiResource implements Serializable {
         Response response = request.send();
         String responseBody = response.getResponseBody();
         Contact contact = ContactSerializer.fromString(responseBody);
-        LoginSerializer.updateDynamicResources(responseBody);
+        BootstrapSerializer.updateDynamicResources(responseBody);
         return contact;
     }
 

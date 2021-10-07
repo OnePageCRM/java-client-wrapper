@@ -2,6 +2,7 @@ package com.onepagecrm.samples;
 
 import com.onepagecrm.OnePageCRM;
 import com.onepagecrm.exceptions.OnePageException;
+import com.onepagecrm.models.Account;
 import com.onepagecrm.models.ContactList;
 import com.onepagecrm.models.User;
 import com.onepagecrm.net.request.Request;
@@ -43,16 +44,10 @@ public class SearchDriver {
             }
         }
 
-        OnePageCRM.setServer(Request.DEV_SERVER);
+        OnePageCRM.init(Request.DEV_SERVER, prop.getProperty("user_id"), prop.getProperty("api_key"));
 
-        User loggedInUser = User.login(
-                prop.getProperty("username"),
-                prop.getProperty("password"));
-
-        LOG.info("Logged in User : " + loggedInUser);
-
-        ContactList stream = loggedInUser.searchActionStream(null);
-        ContactList contacts = loggedInUser.searchContacts(" W");
+        ContactList stream = Account.getCurrentUser().searchActionStream(null);
+        ContactList contacts = Account.getCurrentUser().searchContacts(" W");
 
         LOG.info("Stream search results : " + stream);
         LOG.info("Contacts search results : " + contacts);

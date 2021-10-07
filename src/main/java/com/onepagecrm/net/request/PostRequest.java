@@ -1,7 +1,6 @@
 package com.onepagecrm.net.request;
 
 import com.onepagecrm.OnePageCRM;
-import com.onepagecrm.models.Account;
 import com.onepagecrm.net.BasicAuthData;
 import com.onepagecrm.net.OnePageAuthData;
 
@@ -78,7 +77,8 @@ public class PostRequest extends SignedRequest {
     public void authenticate() {
         setRequestBody();
         setAuthData((!OnePageCRM.COMPLEX_AUTH) ?
-                new BasicAuthData(Account.loggedInUser) :
-                new OnePageAuthData(Account.loggedInUser, Request.POST, endpointUrl, requestBody));
+                new BasicAuthData(OnePageCRM.getInstance().getUserId(), OnePageCRM.getInstance().getApiKey()) :
+                new OnePageAuthData(OnePageCRM.getInstance().getUserId(), OnePageCRM.getInstance().getApiKey(),
+                                    Request.POST, endpointUrl, requestBody));
     }
 }

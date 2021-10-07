@@ -31,9 +31,9 @@ public class PutRequest extends SignedRequest {
         setType();
         setEndpointUrl(endpoint);
         setAuthData((!OnePageCRM.COMPLEX_AUTH) ?
-                new BasicAuthData(Account.loggedInUser) :
-                new OnePageAuthData(Account.loggedInUser, Request.PUT, endpointUrl, ""));
-        setAuthData(new BasicAuthData(Account.loggedInUser));
+                new BasicAuthData(Account.currentUser) :
+                new OnePageAuthData(Account.currentUser, Request.PUT, endpointUrl, ""));
+        setAuthData(new BasicAuthData(Account.currentUser));
     }
 
     @Override
@@ -49,7 +49,7 @@ public class PutRequest extends SignedRequest {
     public void authenticate() {
         setRequestBody();
         setAuthData((!OnePageCRM.COMPLEX_AUTH) ?
-                new BasicAuthData(Account.loggedInUser) :
-                new OnePageAuthData(Account.loggedInUser, Request.PUT, endpointUrl, requestBody));
+                new BasicAuthData(Account.currentUser) :
+                new OnePageAuthData(Account.currentUser, Request.PUT, endpointUrl, requestBody));
     }
 }

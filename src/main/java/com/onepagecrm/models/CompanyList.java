@@ -19,12 +19,12 @@ public class CompanyList extends ResourceList<Company> implements Serializable {
     @Override
     public CompanyList nextPage(Map<String, Object> params) throws OnePageException {
         this.paginator.getNextPageNo();
-        return Account.loggedInUser.companies(params, paginator);
+        return Account.currentUser.companies(params, paginator);
     }
 
     @Override
     public CompanyList refresh(Map<String, Object> params) throws OnePageException {
-        CompanyList list = Account.loggedInUser.companies(params, (paginator = new Paginator()));
+        CompanyList list = Account.currentUser.companies(params, (paginator = new Paginator()));
         this.setList(list);
         return this;
     }

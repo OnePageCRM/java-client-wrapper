@@ -2,10 +2,7 @@ package com.onepagecrm.samples;
 
 import com.onepagecrm.OnePageCRM;
 import com.onepagecrm.exceptions.OnePageException;
-import com.onepagecrm.models.Company;
-import com.onepagecrm.models.CompanyList;
-import com.onepagecrm.models.CustomField;
-import com.onepagecrm.models.User;
+import com.onepagecrm.models.*;
 import com.onepagecrm.net.request.Request;
 
 import java.io.FileInputStream;
@@ -43,13 +40,9 @@ public class AND328DebugFieldsDriver {
             }
         }
 
-        OnePageCRM.setServer(Request.DEV_SERVER);
+        OnePageCRM.init(Request.DEV_SERVER, prop.getProperty("user_id"), prop.getProperty("api_key"));
 
-        User loggedInUser = User.login(
-                prop.getProperty("username"),
-                prop.getProperty("password"));
-
-        CompanyList companies = loggedInUser.companies();
+        CompanyList companies = Account.getCurrentUser().companies();
         Company company = Company.byId(companies.get(0).getId());
 
         List<CustomField> customFieldList = CustomField.listContacts();

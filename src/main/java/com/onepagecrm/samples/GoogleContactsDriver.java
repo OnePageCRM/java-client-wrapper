@@ -43,11 +43,7 @@ public class GoogleContactsDriver {
             }
         }
 
-        OnePageCRM.setServer(Request.STAGING_SERVER);
-
-        User.login(
-                prop.getProperty("username"),
-                prop.getProperty("password"));
+        OnePageCRM.init(Request.STAGING_SERVER, prop.getProperty("user_id"), prop.getProperty("api_key"));
 
         final String oauth2Code = "";
         API.GoogleContacts.authorize(oauth2Code);

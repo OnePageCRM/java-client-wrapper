@@ -2,6 +2,7 @@ package com.onepagecrm.samples;
 
 import com.onepagecrm.OnePageCRM;
 import com.onepagecrm.exceptions.OnePageException;
+import com.onepagecrm.models.Account;
 import com.onepagecrm.models.Contact;
 import com.onepagecrm.models.ContactList;
 import com.onepagecrm.models.User;
@@ -44,23 +45,19 @@ public class EqualsMethodDriver {
             }
         }
 
-        OnePageCRM.setServer(Request.DEV_SERVER);
+        OnePageCRM.init(Request.DEV_SERVER, prop.getProperty("user_id"), prop.getProperty("api_key"));
 
-        User loggedInUser = User.login(
-                prop.getProperty("username"),
-                prop.getProperty("password"));
+        User currentUser = Account.getCurrentUser();
 
-        LOG.info("Logged in User : " + loggedInUser);
-
-        ContactList stream = loggedInUser.actionStream();
+        ContactList stream = currentUser.actionStream();
 
         User newUser = new User()
-                .setId(loggedInUser.getId())
-                .setAuthKey(loggedInUser.getAuthKey());
+                .setId(currentUser.getId())
+                .setAuthKey(currentUser.getAuthKey());
 
-        LOG.info(loggedInUser.toString());
+        LOG.info(currentUser.toString());
         LOG.info(newUser.toString());
-        LOG.info("Users equal : " + loggedInUser.equals(newUser));
+        LOG.info("Users equal : " + currentUser.equals(newUser));
 
         Contact contact = stream.get(0);
         Contact newContact = new Contact()

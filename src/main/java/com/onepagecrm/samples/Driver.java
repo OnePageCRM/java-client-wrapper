@@ -41,32 +41,27 @@ public class Driver {
             }
         }
 
-        OnePageCRM.setServer(Request.STAGING_SERVER);
+        OnePageCRM.init(Request.STAGING_SERVER, prop.getProperty("user_id"), prop.getProperty("api_key"));
 
-        User loggedInUser = User.login(
-                prop.getProperty("username"),
-                prop.getProperty("password"));
-
-        LOG.info("Logged in User : " + loggedInUser);
-
+        User currentUser = Account.getCurrentUser();
         LOG.info("User's Team : " + Account.team);
         LOG.info("User's Settings : " + Account.settings);
-        LOG.info("User's Statuses : " + loggedInUser.getAccount().statuses);
-        LOG.info("User's Lead Sources : " + loggedInUser.getAccount().leadSources);
-        LOG.info("User's Custom Fields : " + loggedInUser.getAccount().customFields);
-        LOG.info("User's Company Fields : " + loggedInUser.getAccount().companyFields);
-        LOG.info("User's Call Results : " + loggedInUser.getAccount().callResults);
-        LOG.info("User's Filters : " + loggedInUser.getAccount().filters);
-        LOG.info("User's ContactsCounts : " + loggedInUser.getAccount().contactsCount);
-        LOG.info("User's StreamCount : " + loggedInUser.getAccount().streamCount);
-        LOG.info("User's Predefined Actions : " + loggedInUser.getAccount().predefinedActions);
-        LOG.info("User's Contact Titles : " + loggedInUser.getAccount().contactTitles);
-        LOG.info("User's Account Rights : " + loggedInUser.getAccountRights());
+        LOG.info("User's Statuses : " + currentUser.getAccount().statuses);
+        LOG.info("User's Lead Sources : " + currentUser.getAccount().leadSources);
+        LOG.info("User's Custom Fields : " + currentUser.getAccount().customFields);
+        LOG.info("User's Company Fields : " + currentUser.getAccount().companyFields);
+        LOG.info("User's Call Results : " + currentUser.getAccount().callResults);
+        LOG.info("User's Filters : " + currentUser.getAccount().filters);
+        LOG.info("User's ContactsCounts : " + currentUser.getAccount().contactsCount);
+        LOG.info("User's StreamCount : " + currentUser.getAccount().streamCount);
+        LOG.info("User's Predefined Actions : " + currentUser.getAccount().predefinedActions);
+        LOG.info("User's Contact Titles : " + currentUser.getAccount().contactTitles);
+        LOG.info("User's Account Rights : " + currentUser.getAccountRights());
 
-        final ContactList stream = loggedInUser.actionStream();
+        final ContactList stream = currentUser.actionStream();
 
-        //final ContactList contacts = loggedInUser.contacts();
+        //final ContactList contacts = currentUser.contacts();
 
-        //final DealList pipeline = loggedInUser.pipeline();
+        //final DealList pipeline = currentUser.pipeline();
     }
 }

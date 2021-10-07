@@ -4,7 +4,7 @@ This project is a comprehensive java API wrapper aimed to abstract some of the d
 The project uses Gradle, an advanced, general purpose build management system.  This allows for streamlined functionality, such as automatically including jars in the build path or running unit tests much more efficiently.
 
 ### What can it do?
-This project communicates using the OnePageCRM API.  It can, for example, log in users, obtain details about their account, and perform a range of actions such as adding calls and creating contacts.
+This project communicates using the OnePageCRM API.  It can, for example, authenticate users, obtain details about their account, and perform a range of actions such as adding calls and creating contacts.
 
 
 List available gradle commands:
@@ -27,11 +27,11 @@ Create jar file for use in projects:
 
 - Import the project into your IDE.
 
-- Create a config.properties file containing your OnePageCRM username and password.
+- Create a config.properties file containing your OnePageCRM user_id and auth_key.
 
 ## Example
 The following is an example of a method which will:
-- Log in a user.
+- Authenticate a user.
 - Display details about the user and their account.
 - Get their Action Stream.
 - Get their a-to-z list of Contacts.
@@ -44,33 +44,34 @@ The following is an example of a method which will:
 
   public static void main(String[] args) {
 
-    // Login 
-    User loggedInUser = User.login("username", "password");
+    // init 
+    OnePageCRM.init(Request.APP_US_SERVER, "user_id", "api_key");
 
     // Display all the details about the user / account.
-    LOG.info("Logged in User : " + loggedInUser);
-    LOG.info("User's Team : " + loggedInUser.getAccount().team);
+    User currentUser = Account.getCurrentUser();
+    LOG.info("Current User : " + currentUser);
+    LOG.info("User's Team : " + currentUser.getAccount().team);
     LOG.info("User's Settings : " + Account.settings);
-    LOG.info("User's Statuses : " + loggedInUser.getAccount().statuses);
-    LOG.info("User's Lead Sources : " + loggedInUser.getAccount().leadSources);
-    LOG.info("User's Custom Fields : " + loggedInUser.getAccount().customFields);
-    LOG.info("User's Company Fields : " + loggedInUser.getAccount().companyFields);
-    LOG.info("User's Call Results : " + loggedInUser.getAccount().callResults);
-    LOG.info("User's Filters : " + loggedInUser.getAccount().filters);
-    LOG.info("User's ContactsCounts : " + loggedInUser.getAccount().contactsCount);
-    LOG.info("User's StreamCount : " + loggedInUser.getAccount().streamCount);
-    LOG.info("User's Predefined Actions : " + loggedInUser.getAccount().predefinedActions);
-    LOG.info("User's Contact Titles : " + loggedInUser.getAccount().contactTitles);
-    LOG.info("User's Account Rights : " + loggedInUser.getAccountRights());
+    LOG.info("User's Statuses : " + currentUser.getAccount().statuses);
+    LOG.info("User's Lead Sources : " + currentUser.getAccount().leadSources);
+    LOG.info("User's Custom Fields : " + currentUser.getAccount().customFields);
+    LOG.info("User's Company Fields : " + currentUser.getAccount().companyFields);
+    LOG.info("User's Call Results : " + currentUser.getAccount().callResults);
+    LOG.info("User's Filters : " + currentUser.getAccount().filters);
+    LOG.info("User's ContactsCounts : " + currentUser.getAccount().contactsCount);
+    LOG.info("User's StreamCount : " + currentUser.getAccount().streamCount);
+    LOG.info("User's Predefined Actions : " + currentUser.getAccount().predefinedActions);
+    LOG.info("User's Contact Titles : " + currentUser.getAccount().contactTitles);
+    LOG.info("User's Account Rights : " + currentUser.getAccountRights());
 
     // Get user's Action Stream
-    ContactList stream = loggedInUser.actionStream();
+    ContactList stream = currentUser.actionStream();
 
     // Get user's list of contacts in alphabetical order
-    ContactList contacts = loggedInUser.contacts();
+    ContactList contacts = currentUser.contacts();
 
     // Get user's list of deals (pipeline)
-    DealList pipeline = loggedInUser.pipeline();
+    DealList pipeline = currentUser.pipeline();
 
     // Pick the first contact from the Action Stream
     Contact contact = stream.get(0);
@@ -101,18 +102,19 @@ The following is an example of a method which will:
 
 ## Example
 The following is an example of a method which will:
-- Log in a user.
+- Authenticate a user.
 - Pick their first contact.
 - Add a new deal for that contact.
 
 ```java
     public static void main(String[] args) throws OnePageException {
 
-        //Login
-        User loggedInUser = User.login("username", "password");
+        //init
+        OnePageCRM.init(Request.APP_US_SERVER, "user_id", "api_key");
+        User currentUser = Account.getCurrentUser();
 
         //Pick the first contact from the Action Stream
-        Contact first = loggedInUser.actionStream().get(0);
+        Contact first = currentUser.actionStream().get(0);
 
         //Create a new deal
         new Deal()

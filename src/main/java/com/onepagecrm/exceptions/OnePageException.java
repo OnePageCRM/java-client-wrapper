@@ -12,7 +12,7 @@ package com.onepagecrm.exceptions;
  * <p/>
  * 402 	Payment Required. Trial expired, subscription cancelled or payment declined etc.
  * <p/>
- * 403 	Forbidden. Issued when user is logged in, but does not have permission for requested operation.
+ * 403 	Forbidden. Issued when user is authenticated, but does not have permission for requested operation.
  * <p/>
  * 404 	Resource Not Found. When an id was provided for a request but no resource exists for that object.
  * <p/>

@@ -13,7 +13,7 @@ public class Account implements Serializable {
     public static final String USER_ID = "account_id";
 
     public static List<User> team;
-    public static User loggedInUser;
+    public static User currentUser;
     public static Settings settings;
     public Countries countries;
 
@@ -46,12 +46,12 @@ public class Account implements Serializable {
         return this;
     }
 
-    public static User getLoggedInUser() {
-        return loggedInUser;
+    public static User getCurrentUser() {
+        return currentUser;
     }
 
-    public Account setLoggedInUser(User loggedInUser) {
-        Account.loggedInUser = loggedInUser;
+    public Account setCurrentUser(User currentUser) {
+        Account.currentUser = currentUser;
         return this;
     }
 

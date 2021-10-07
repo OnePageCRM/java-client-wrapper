@@ -44,13 +44,7 @@ public class ContactPartialDriver {
             }
         }
 
-        OnePageCRM.setServer(Request.APP_US_SERVER);
-
-        User loggedInUser = User.login(
-                prop.getProperty("username"),
-                prop.getProperty("password"));
-
-        LOG.info("Logged in User : " + loggedInUser);
+        OnePageCRM.init(Request.APP_US_SERVER, prop.getProperty("user_id"), prop.getProperty("api_key"));
 
         String firstName = "First";
         String lastName = "Last";

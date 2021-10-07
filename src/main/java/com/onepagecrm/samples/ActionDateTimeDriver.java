@@ -44,13 +44,7 @@ public class ActionDateTimeDriver {
             }
         }
 
-        OnePageCRM.setServer(Request.APP_US_SERVER);
-
-        User loggedInUser = User.login(
-                prop.getProperty("username"),
-                prop.getProperty("password"));
-
-        LOG.info("Logged in User : " + loggedInUser);
+        OnePageCRM.init(Request.APP_US_SERVER, prop.getProperty("user_id"), prop.getProperty("api_key"));
 
         // Fri, 01 Jul 2016 08:00:00 GMT = 1467360000 = Fri, 01 Jul 2016 9:00:00 AM (IST)
         Instant firstJulyAt9Am = InstantSerializer.getInstance().ofSeconds(1467360000L);
@@ -61,8 +55,8 @@ public class ActionDateTimeDriver {
                 .setStatus(Action.Status.DATE_TIME)
                 .setDate(firstJuly)
                 .setExactTime(firstJulyAt9Am)
-                .setContactId("5774e13c00d4afe3fb314f58")
-                .setAssigneeId(loggedInUser.getId())
+                .setContactId("60d907e12b95af0ff8dc61fa")
+                .setAssigneeId(prop.getProperty("user_id"))
                 .save();
     }
 }

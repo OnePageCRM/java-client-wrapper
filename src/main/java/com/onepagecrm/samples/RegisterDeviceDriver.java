@@ -41,11 +41,7 @@ public class RegisterDeviceDriver {
             }
         }
 
-        OnePageCRM.setServer(Request.DEV_SERVER);
-
-        User.login(
-                prop.getProperty("username"),
-                prop.getProperty("password"));
+        OnePageCRM.init(Request.DEV_SERVER, prop.getProperty("user_id"), prop.getProperty("api_key"));
 
         // Register the device.
         final String firebaseToken = "d7sIgbT9wsg:APA91bFQvHUxKdLWzEKfwZpWzwQ0qQFoDElh-wThQDFVojYXD69WBhvsLoqKOb2KNQj47ZCzQ0qLB5Al34HUmASzYxBkQGtmTBQGHw7tv2lO2hwlUSzRF8HEfZVSGHsXircLhCtSIrq4";

@@ -44,17 +44,17 @@ public class BasicAuthData extends AuthData {
             LOG.info(Utilities.repeatedString("*", 40));
             LOG.info("--- AUTHENTICATION ---");
         }
-        final String login = getUserId();
-        final String password = getApiKey();
-        final String toBeEncoded = String.format(Locale.ENGLISH, "%s:%s", login, password);
+        final String userId = getUserId();
+        final String apiKey = getApiKey();
+        final String toBeEncoded = String.format(Locale.ENGLISH, "%s:%s", userId, apiKey);
         if (OnePageCRM.DEBUG) {
-            LOG.info("login: " + login);
-            LOG.info("password: " + password);
+            LOG.info("userId: " + userId);
+            LOG.info("apiKey: " + apiKey);
             LOG.info("toBeEncoded: " + toBeEncoded);
         }
         byte[] encodeAuthBytes = new byte[0];
         try {
-            if (Utilities.notNullOrEmpty(login) && Utilities.notNullOrEmpty(password)) {
+            if (Utilities.notNullOrEmpty(userId) && Utilities.notNullOrEmpty(apiKey)) {
                 encodeAuthBytes = Base64.encodeBase64(toBeEncoded.getBytes(OnePageCRM.CHARSET_UTF_8));
             }
         } catch (Exception e) {

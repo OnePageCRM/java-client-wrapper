@@ -2,10 +2,7 @@ package com.onepagecrm.samples;
 
 import com.onepagecrm.OnePageCRM;
 import com.onepagecrm.exceptions.OnePageException;
-import com.onepagecrm.models.Contact;
-import com.onepagecrm.models.LeadSource;
-import com.onepagecrm.models.Status;
-import com.onepagecrm.models.User;
+import com.onepagecrm.models.*;
 import com.onepagecrm.net.request.Request;
 
 import java.io.FileInputStream;
@@ -45,16 +42,10 @@ public class CreateContactDriver {
             }
         }
 
-        OnePageCRM.setServer(Request.DEV_SERVER);
+        OnePageCRM.init(Request.DEV_SERVER, prop.getProperty("user_id"), prop.getProperty("api_key"));
 
-        User loggedInUser = User.login(
-                prop.getProperty("username"),
-                prop.getProperty("password"));
-
-        LOG.info("Logged in User : " + loggedInUser);
-
-        List<LeadSource> leadSources = loggedInUser.getAccount().getLeadSources();
-        List<Status> statuses = loggedInUser.getAccount().getStatuses();
+        List<LeadSource> leadSources = Account.getCurrentUser().getAccount().getLeadSources();
+        List<Status> statuses = Account.getCurrentUser().getAccount().getStatuses();
 
         String desiredLeadSource = leadSources.get(1).getText();
         String desiredLeadSourceId = leadSources.get(1).getId();
