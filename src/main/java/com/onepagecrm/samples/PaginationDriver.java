@@ -2,6 +2,7 @@ package com.onepagecrm.samples;
 
 import com.onepagecrm.OnePageCRM;
 import com.onepagecrm.exceptions.OnePageException;
+import com.onepagecrm.models.Account;
 import com.onepagecrm.models.ContactList;
 import com.onepagecrm.models.User;
 import com.onepagecrm.models.serializers.RequestMetadataSerializer;
@@ -45,15 +46,9 @@ public class PaginationDriver {
             }
         }
 
-        OnePageCRM.setServer(Request.DEV_SERVER);
+        OnePageCRM.init(Request.DEV_SERVER, prop.getProperty("user_id"), prop.getProperty("api_key"));
 
-        User loggedInUser = User.login(
-                prop.getProperty("username"),
-                prop.getProperty("password"));
-
-        LOG.info("Logged in User : " + loggedInUser);
-
-        ContactList stream = loggedInUser.actionStream();
+        ContactList stream = Account.getCurrentUser().actionStream();
         LOG.info("page 1 : " + stream.size() + " : " + stream.toString());
 
         ContactList updatedStream = stream.nextPage(Collections.EMPTY_MAP);

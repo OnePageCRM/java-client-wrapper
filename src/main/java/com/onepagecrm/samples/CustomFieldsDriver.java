@@ -2,6 +2,7 @@ package com.onepagecrm.samples;
 
 import com.onepagecrm.OnePageCRM;
 import com.onepagecrm.exceptions.OnePageException;
+import com.onepagecrm.models.Account;
 import com.onepagecrm.models.CustomField;
 import com.onepagecrm.models.User;
 import com.onepagecrm.models.fabricators.CustomFieldFabricator;
@@ -41,16 +42,11 @@ public class CustomFieldsDriver {
             }
         }
 
-        OnePageCRM.setServer(Request.STAGING_SERVER);
+        OnePageCRM.init(Request.STAGING_SERVER, prop.getProperty("user_id"), prop.getProperty("api_key"));
 
-        User loggedInUser = User.login(
-                prop.getProperty("username"),
-                prop.getProperty("password"));
-
-        LOG.info("Logged in User: " + loggedInUser);
-        LOG.info("User's Custom Fields: " + loggedInUser.account.customFields);
-        LOG.info("User's Company Fields: " + loggedInUser.account.companyFields);
-        LOG.info("User's Deal Fields: " + loggedInUser.account.dealFields);
+        LOG.info("User's Custom Fields: " + Account.getCurrentUser().account.customFields);
+        LOG.info("User's Company Fields: " + Account.getCurrentUser().account.companyFields);
+        LOG.info("User's Deal Fields: " + Account.getCurrentUser().account.dealFields);
 
         // Single line text.
         CustomField singleLineText = new CustomField()

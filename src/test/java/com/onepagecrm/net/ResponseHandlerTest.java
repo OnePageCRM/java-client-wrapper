@@ -14,7 +14,7 @@ import com.onepagecrm.models.serializers.CallSerializer;
 import com.onepagecrm.models.serializers.ContactListSerializer;
 import com.onepagecrm.models.serializers.ContactSerializer;
 import com.onepagecrm.models.serializers.InstantSerializer;
-import com.onepagecrm.models.serializers.LoginSerializer;
+import com.onepagecrm.models.serializers.BootstrapSerializer;
 
 import java.util.logging.Logger;
 
@@ -23,17 +23,17 @@ public class ResponseHandlerTest extends BaseTest {
     private static Logger LOG = Logger.getLogger(ResponseHandlerTest.class.getName());
 
     /**
-     * Normal operation of parseLoginResponse() method.
+     * Normal operation of parseBootstrapResponse() method.
      * <p/>
      * Will normally receive a success message (user enters details correctly).
      * Method will construct User object from JSON.
      * <p/>
-     * successResponse and loggedInUser directly map to each other.
+     * successResponse and currentUser directly map to each other.
      */
-    public void testParseLoginResponse_Successful() {
+    public void testParseBootstrapResponse_Successful() {
 
         // Set up fabricated User.
-        User loggedInUser = new User()
+        User currentUser = new User()
                 .setId("556cb8b61787fa02e000047e")
                 .setAuthKey("WqLLs1n/Y3SvOpGg5CNOpdKy74GkGI6lnhwSfYmgNl4=")
                 .setFirstName("Cillian")
@@ -68,20 +68,20 @@ public class ResponseHandlerTest extends BaseTest {
                 "\"account_owner\",\"admin\"]}}}}";
 
         try {
-            User parsedUser = LoginSerializer.fromString(successResponse);
+            User parsedUser = BootstrapSerializer.fromString(successResponse);
 
             assertNotNull("User object being set is null", parsedUser);
-            assertEquals("User ID not set correctly", loggedInUser.getId(), parsedUser.getId());
-            assertEquals("AuthKey not set correctly", loggedInUser.getAuthKey(), parsedUser.getAuthKey());
-            assertEquals("AccountType not set correctly", loggedInUser.getAccountType(), parsedUser.getAccountType());
-            assertEquals("FirstName not set correctly", loggedInUser.getFirstName(), parsedUser.getFirstName());
-            assertEquals("LastName not set correctly", loggedInUser.getLastName(), parsedUser.getLastName());
-            assertEquals("Email not set correctly", loggedInUser.getEmail(), parsedUser.getEmail());
-            assertEquals("Company not set correctly", loggedInUser.getCompanyName(), parsedUser.getCompanyName());
-            assertEquals("BCC Email not set correctly", loggedInUser.getBccEmail(), parsedUser.getBccEmail());
+            assertEquals("User ID not set correctly", currentUser.getId(), parsedUser.getId());
+            assertEquals("AuthKey not set correctly", currentUser.getAuthKey(), parsedUser.getAuthKey());
+            assertEquals("AccountType not set correctly", currentUser.getAccountType(), parsedUser.getAccountType());
+            assertEquals("FirstName not set correctly", currentUser.getFirstName(), parsedUser.getFirstName());
+            assertEquals("LastName not set correctly", currentUser.getLastName(), parsedUser.getLastName());
+            assertEquals("Email not set correctly", currentUser.getEmail(), parsedUser.getEmail());
+            assertEquals("Company not set correctly", currentUser.getCompanyName(), parsedUser.getCompanyName());
+            assertEquals("BCC Email not set correctly", currentUser.getBccEmail(), parsedUser.getBccEmail());
 
         } catch (OnePageException e) {
-            LOG.severe("Problems parsing login response.");
+            LOG.severe("Problems parsing bootstrap response.");
             LOG.severe(e.toString());
         }
     }
@@ -92,13 +92,13 @@ public class ResponseHandlerTest extends BaseTest {
      * <p/>
      * This means no fields will be set for this object, check for ID.
      */
-    public void testParseLoginResponse_Expired() {
+    public void testParseBootstrapResponse_Expired() {
         String expiredResponse = "{\"error_name\":\"expired\",\"status\":400,\"message\":" +
                 "\"Expired\",\"error_message\":\"Could not find more helpful message, sorry.\"," +
                 "\"errors\":{}}";
 
         try {
-            LoginSerializer.fromString(expiredResponse);
+            BootstrapSerializer.fromString(expiredResponse);
         } catch (OnePageException exception) {
             // We are expecting this Exception to be thrown.
             assertTrue("Expired token response misinterpreted",
@@ -112,14 +112,14 @@ public class ResponseHandlerTest extends BaseTest {
      * <p/>
      * This means no fields will be set for this object, check for ID.
      */
-    public void testParseLoginResponse_NoAuth() {
+    public void testParseBootstrapResponse_NoAuth() {
         String noAuthResponse = "{\"error_name\":\"authorization_data_not_found\"," +
                 "\"status\":401,\"message\":\"Authorization data not found\"," +
                 "\"error_message\":\"Could not find more helpful message, sorry.\"," +
                 "\"errors\":{}}";
 
         try {
-            LoginSerializer.fromString(noAuthResponse);
+            BootstrapSerializer.fromString(noAuthResponse);
         } catch (OnePageException exception) {
             // We are expecting this Exception to be thrown.
             assertTrue("No auth token response misinterpreted",

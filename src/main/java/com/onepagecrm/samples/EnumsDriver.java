@@ -42,13 +42,7 @@ public class EnumsDriver {
             }
         }
 
-        OnePageCRM.setServer(Request.DEV_SERVER);
-
-        User loggedInUser = User.login(
-                prop.getProperty("username"),
-                prop.getProperty("password"));
-
-        LOG.info("Logged in User : " + loggedInUser);
+        OnePageCRM.init(Request.DEV_SERVER, prop.getProperty("user_id"), prop.getProperty("api_key"));
 
         Action.Status status = Action.Status.fromString("test");
         Attachment.Provider provider = Attachment.Provider.fromString("test");

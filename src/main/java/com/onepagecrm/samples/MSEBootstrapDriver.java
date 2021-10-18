@@ -17,9 +17,9 @@ import java.util.logging.Logger;
  * Created by Cillian Myles on 02/01/2018.
  * Copyright (c) 2018 OnePageCRM. All rights reserved.
  */
-public class MSELoginDriver {
+public class MSEBootstrapDriver {
 
-    private static final Logger LOG = Logger.getLogger(MSELoginDriver.class.getName());
+    private static final Logger LOG = Logger.getLogger(MSEBootstrapDriver.class.getName());
 
     public static void main(String[] args) throws OnePageException {
         Properties prop = new Properties();
@@ -49,19 +49,12 @@ public class MSELoginDriver {
 
         OnePageCRM.setDebug(true);
 
-        StartupData startupData = API.App.startup(
-                Request.AUTH_DEV_SERVER,
-                prop.getProperty("username"),
-                prop.getProperty("password")
-        );
+        OnePageCRM.init(Request.AUTH_DEV_SERVER, prop.getProperty("user_id"), prop.getProperty("api_key"));
 
-
-        StartupData startupDataCmp = API.App.startup();
+        StartupData startupData = API.App.startup();
 
         LOG.info(Utilities.repeatedString("*", 40));
-        LOG.info("STARTUP *1*: " + startupData);
-        LOG.info("STARTUP *2*: " + startupDataCmp);
-        LOG.info("STARTUP equal: " + startupData.equals(startupDataCmp));
+        LOG.info("STARTUP: " + startupData);
         LOG.info(Utilities.repeatedString("*", 40));
     }
 }

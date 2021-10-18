@@ -2,6 +2,7 @@ package com.onepagecrm.samples;
 
 import com.onepagecrm.OnePageCRM;
 import com.onepagecrm.exceptions.OnePageException;
+import com.onepagecrm.models.Account;
 import com.onepagecrm.models.CustomField;
 import com.onepagecrm.models.User;
 import com.onepagecrm.net.request.Request;
@@ -41,19 +42,15 @@ public class CustomFieldsForDealsDriver {
             }
         }
 
-        OnePageCRM.setServer(Request.DEV_SERVER);
-
-        User loggedInUser = User.login(
-                prop.getProperty("username"),
-                prop.getProperty("password"));
+        OnePageCRM.init(Request.DEV_SERVER, prop.getProperty("user_id"), prop.getProperty("api_key"));
 
         List<CustomField> customFieldList = CustomField.listContacts();
         List<CustomField> companyFieldList = CustomField.listCompanies();
         List<CustomField> dealFieldList = CustomField.listDeals();
 
-        LOG.info("Custom fields (1) : " + loggedInUser.getAccount().getCustomFields());
-        LOG.info("Company fields (1) : " + loggedInUser.getAccount().getCompanyFields());
-        LOG.info("Deal fields (1) : " + loggedInUser.getAccount().getDealFields());
+        LOG.info("Custom fields (1) : " + Account.getCurrentUser().getAccount().getCustomFields());
+        LOG.info("Company fields (1) : " + Account.getCurrentUser().getAccount().getCompanyFields());
+        LOG.info("Deal fields (1) : " + Account.getCurrentUser().getAccount().getDealFields());
 
         LOG.info("Custom fields (2) : " + customFieldList);
         LOG.info("Company fields (2) : " + companyFieldList);

@@ -25,16 +25,15 @@ public class BaseSerializer {
 
     private static final Logger LOG = Logger.getLogger(BaseSerializer.class.getName());
 
-    // LOGIN TAGS
+    // AUTHENTICATION TAGS
     public static final String LOGIN_TAG = "login";
-    public static final String PASSWORD_TAG = "password";
     public static final String FULL_RESPONSE_TAG = "full_response";
     public static final String DATA_TAG = "data";
     public static final String USER_ID_TAG = "user_id";
     public static final String AUTH_KEY_TAG = "auth_key";
     public static final String ACCOUNT_TYPE_TAG = "account_type";
 
-    // LOGIN RESPONSE / USER TAGS
+    // BOOTSTRAP RESPONSE / USER TAGS
     public static final String BOOTSTRAP_TAG = "bootstrap";
     public static final String ACTION_STREAM_DATA_TAG = "action_stream_data";
     public static final String CONTACT_DATA_TAG = "contact_data";

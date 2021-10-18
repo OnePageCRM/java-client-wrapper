@@ -48,15 +48,10 @@ public class SwitchDealOwnerDriver {
             }
         }
 
-        OnePageCRM.setServer(Request.DEV_SERVER);
+        OnePageCRM.init(Request.DEV_SERVER, prop.getProperty("user_id"), prop.getProperty("api_key"));
 
-        User loggedInUser = User.login(
-                prop.getProperty("username"),
-                prop.getProperty("password"));
-
-        LOG.info("Logged in User : " + loggedInUser);
         List<User> team = Account.team;
-        ContactList stream = loggedInUser.actionStream();
+        ContactList stream = Account.getCurrentUser().actionStream();
 
         // Create a deal with me as Owner.
         Deal newDeal = new Deal()
@@ -70,7 +65,7 @@ public class SwitchDealOwnerDriver {
 
         // Update a deal to have different owner than me.
         DealList deals;
-        LOG.info("Deals : " + (deals = loggedInUser.pipeline()));
+        LOG.info("Deals : " + (deals = Account.getCurrentUser().pipeline()));
 
         Deal updated = deals.get(0)
                 .setText("Should be seen!!!")

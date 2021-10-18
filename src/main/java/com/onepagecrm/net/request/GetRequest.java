@@ -1,7 +1,6 @@
 package com.onepagecrm.net.request;
 
 import com.onepagecrm.OnePageCRM;
-import com.onepagecrm.models.Account;
 import com.onepagecrm.net.BasicAuthData;
 import com.onepagecrm.net.OnePageAuthData;
 
@@ -12,8 +11,9 @@ public class GetRequest extends SignedRequest {
         setType();
         setEndpointUrl(endpoint);
         setAuthData((!OnePageCRM.COMPLEX_AUTH) ?
-                new BasicAuthData(Account.loggedInUser) :
-                new OnePageAuthData(Account.loggedInUser, Request.GET, endpointUrl, requestBody));
+                new BasicAuthData(OnePageCRM.getInstance().getUserId(), OnePageCRM.getInstance().getApiKey()) :
+                new OnePageAuthData(OnePageCRM.getInstance().getUserId(), OnePageCRM.getInstance().getApiKey(),
+                                    Request.GET, endpointUrl, requestBody));
     }
 
     public GetRequest(String endpoint, String query, boolean externalEndpoint) {
@@ -48,7 +48,8 @@ public class GetRequest extends SignedRequest {
     public void authenticate() {
         setRequestBody();
         setAuthData((!OnePageCRM.COMPLEX_AUTH) ?
-                new BasicAuthData(Account.loggedInUser) :
-                new OnePageAuthData(Account.loggedInUser, Request.GET, endpointUrl, requestBody));
+                new BasicAuthData(OnePageCRM.getInstance().getUserId(), OnePageCRM.getInstance().getApiKey()) :
+                new OnePageAuthData(OnePageCRM.getInstance().getUserId(), OnePageCRM.getInstance().getApiKey(),
+                                    Request.GET, endpointUrl, requestBody));
     }
 }

@@ -35,7 +35,7 @@ public class StartupDataSerializer extends BaseSerializer {
 //            return fromJsonObject(responseObject);
 //
 //        } catch (JSONException e) {
-//            LOG.severe("Error parsing login data JSON.");
+//            LOG.severe("Error parsing bootstrap data JSON.");
 //            LOG.severe(e.toString());
 //            e.printStackTrace();
 //            return DEFAULT;
@@ -61,7 +61,7 @@ public class StartupDataSerializer extends BaseSerializer {
             return DEFAULT;
         }
 
-        User user = LoginSerializer.getLoggedInUser(responseObject.toString());
+        User user = BootstrapSerializer.getCurrentUser(responseObject.toString());
         ContactList stream = null;
         ContactList contacts = null;
         DealList deals = null;

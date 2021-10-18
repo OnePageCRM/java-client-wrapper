@@ -5,7 +5,7 @@ import com.onepagecrm.exceptions.OnePageException;
 import com.onepagecrm.models.Account;
 import com.onepagecrm.models.User;
 import com.onepagecrm.models.internal.FileUtilities;
-import com.onepagecrm.models.serializers.LoginSerializer;
+import com.onepagecrm.models.serializers.BootstrapSerializer;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,7 +20,7 @@ public class UserFabricator extends BaseFabricator {
     private static final Logger LOG = Logger.getLogger(UserFabricator.class.getName());
 
     public static User single() {
-        return loggedUser();
+        return currentUser();
     }
 
     public static User basicUser() {
@@ -34,26 +34,26 @@ public class UserFabricator extends BaseFabricator {
 
     public static List<User> list() {
         List<User> users = new ArrayList<>();
-        User loggedUser = loggedUser();
-        users.add(loggedUser);
+        User currentUser = currentUser();
+        users.add(currentUser);
         for (User member : Account.team) {
             if (!users.contains(member)) users.add(member);
         }
         return users;
     }
 
-    private static User loggedUser() {
-        User loggedUser = new User();
-        String path = OnePageCRM.ASSET_PATH + "login.json";
+    private static User currentUser() {
+        User currentUser = new User();
+        String path = OnePageCRM.ASSET_PATH + "bootstrap.json";
         String response = FileUtilities.getResourceContents(path);
         if (response != null) {
             try {
-                loggedUser = LoginSerializer.fromString(response);
+                currentUser = BootstrapSerializer.fromString(response);
             } catch (OnePageException e) {
                 LOG.severe("Problem creating user object from JSON file.");
                 LOG.severe(e.toString());
             }
         }
-        return loggedUser;
+        return currentUser;
     }
 }

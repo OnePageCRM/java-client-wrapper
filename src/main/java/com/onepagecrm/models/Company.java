@@ -8,7 +8,7 @@ import com.onepagecrm.models.serializers.CompanySerializer;
 import com.onepagecrm.models.serializers.DeleteResultSerializer;
 import com.onepagecrm.models.serializers.LinkedContactSerializer;
 import com.onepagecrm.models.serializers.LinkedContactsSerializer;
-import com.onepagecrm.models.serializers.LoginSerializer;
+import com.onepagecrm.models.serializers.BootstrapSerializer;
 import com.onepagecrm.net.ApiResource;
 import com.onepagecrm.net.Response;
 import com.onepagecrm.net.request.DeleteRequest;
@@ -74,7 +74,7 @@ public class Company extends ApiResource implements Serializable {
         Response response = request.send();
         String responseBody = response.getResponseBody();
         Company company = CompanySerializer.fromString(responseBody);
-        LoginSerializer.updateDynamicResources(responseBody);
+        BootstrapSerializer.updateDynamicResources(responseBody);
         return company;
     }
 
@@ -87,7 +87,7 @@ public class Company extends ApiResource implements Serializable {
         Response response = request.send();
         String responseBody = response.getResponseBody();
         Company company = CompanySerializer.fromString(responseBody);
-        LoginSerializer.updateDynamicResources(responseBody);
+        BootstrapSerializer.updateDynamicResources(responseBody);
         return company;
     }
 
@@ -110,7 +110,7 @@ public class Company extends ApiResource implements Serializable {
         Response response = request.send();
         String responseBody = response.getResponseBody();
         Company company = CompanySerializer.fromString(responseBody);
-        LoginSerializer.updateDynamicResources(responseBody);
+        BootstrapSerializer.updateDynamicResources(responseBody);
         return company;
     }
 
@@ -159,7 +159,7 @@ public class Company extends ApiResource implements Serializable {
         Response response = request.send();
         String responseBody = response.getResponseBody();
         LinkedContact linkedContact = LinkedContactSerializer.fromString(responseBody);
-        LoginSerializer.updateDynamicResources(responseBody);
+        BootstrapSerializer.updateDynamicResources(responseBody);
         return linkedContact;
     }
 
@@ -169,7 +169,7 @@ public class Company extends ApiResource implements Serializable {
         Response response = request.send();
         String responseBody = response.getResponseBody();
         DeleteResult deleteResult = DeleteResultSerializer.fromString(contactId, responseBody);
-        LoginSerializer.updateDynamicResources(responseBody);
+        BootstrapSerializer.updateDynamicResources(responseBody);
         return deleteResult;
     }
 

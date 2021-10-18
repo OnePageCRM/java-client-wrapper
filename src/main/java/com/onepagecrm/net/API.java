@@ -8,7 +8,7 @@ import com.onepagecrm.models.helpers.TextHelper;
 import com.onepagecrm.models.internal.LoginData;
 import com.onepagecrm.models.serializers.ContactSerializer;
 import com.onepagecrm.models.serializers.LoginDataSerializer;
-import com.onepagecrm.models.serializers.LoginSerializer;
+import com.onepagecrm.models.serializers.BootstrapSerializer;
 import com.onepagecrm.models.serializers.StartupDataSerializer;
 import com.onepagecrm.net.request.GetRequest;
 import com.onepagecrm.net.request.GoogleAuthRequest;
@@ -33,17 +33,6 @@ import static com.onepagecrm.net.request.Request.UNRESOLVED_SERVER;
 public interface API {
 
     abstract class Auth {
-
-        public static LoginData authenticate(String username, String password) throws OnePageException {
-            Request request = new LoginRequest(username, password);
-            Response response = request.send();
-            final String responseBody = response.getResponseBody();
-            return LoginDataSerializer.fromString(responseBody);
-        }
-
-        public static com.onepagecrm.models.User login(String username, String password) throws OnePageException {
-            return API.User.login(username, password);
-        }
 
         public static com.onepagecrm.models.User bootstrap() throws OnePageException {
             return API.User.bootstrap();
@@ -84,7 +73,7 @@ public interface API {
             Response response = request.send();
             final int code = response != null ? response.getResponseCode() : -1;
             final String body = response != null ? response.getResponseBody() : "{malformed-json-body[]}";
-            LoginSerializer.fromString(body); // only to throw exception
+            BootstrapSerializer.fromString(body); // only to throw exception
             return code == 200 || code == 201;
         }
 
@@ -112,7 +101,7 @@ public interface API {
             Response response = request.send();
             String responseBody = response.getResponseBody();
             Contact contact = ContactSerializer.fromString(responseBody);
-            LoginSerializer.updateDynamicResources(responseBody);
+            BootstrapSerializer.updateDynamicResources(responseBody);
             return contact;
         }
     }
@@ -124,45 +113,26 @@ public interface API {
         public static com.onepagecrm.models.User login(String oauth2Code) throws OnePageException {
             Request request = new GoogleLoginRequest(oauth2Code, true);
             Response response = request.send();
-            return LoginSerializer.fromString(response.getResponseBody());
+            return BootstrapSerializer.fromString(response.getResponseBody());
         }
 
         @Deprecated
         public static com.onepagecrm.models.User signup(String oauth2Code) throws OnePageException {
             Request request = new GoogleLoginRequest(oauth2Code, false);
             Response response = request.send();
-            return LoginSerializer.fromString(response.getResponseBody());
+            return BootstrapSerializer.fromString(response.getResponseBody());
         }
     }
 
     abstract class User {
-
-        public static com.onepagecrm.models.User login(String username, String password) throws OnePageException {
-            Request request = new LoginRequest(username, password);
-            Response response = request.send();
-            return LoginSerializer.fromString(response.getResponseBody());
-        }
-
         public static com.onepagecrm.models.User bootstrap() throws OnePageException {
             Request request = new GetRequest(BOOTSTRAP_ENDPOINT);
             Response response = request.send();
-            return LoginSerializer.fromString(response.getResponseBody());
+            return BootstrapSerializer.fromString(response.getResponseBody());
         }
     }
 
     abstract class App {
-
-        public static StartupData startup(String username, String password) throws OnePageException {
-            return API.App.startup(DEFAULT_AUTH_SERVER, username, password);
-        }
-
-        public static StartupData startup(int authServerId, String username, String password) throws OnePageException {
-            OnePageCRM.setServer(authServerId);
-            LoginData loginData = API.Auth.authenticate(username, password);
-            processLoginData(loginData);
-            return API.Auth.startup(loginData.setFullResponse(true));
-        }
-
         public static StartupData startup() throws OnePageException {
             return API.Auth.startup();
         }

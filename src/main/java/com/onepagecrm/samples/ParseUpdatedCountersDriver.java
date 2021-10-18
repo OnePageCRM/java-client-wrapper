@@ -41,23 +41,17 @@ public class ParseUpdatedCountersDriver {
             }
         }
 
-        OnePageCRM.setServer(Request.DEIMOS_SERVER);
+        OnePageCRM.init(Request.DEIMOS_SERVER, prop.getProperty("user_id"), prop.getProperty("api_key"));
 
-        User loggedInUser = User.login(
-                prop.getProperty("username"),
-                prop.getProperty("password"));
-
-        LOG.info("Logged in User : " + loggedInUser);
-
-        LOG.info("User's ContactsCounts : " + loggedInUser.getAccount().contactsCount);
-        LOG.info("User's StreamCount : " + loggedInUser.getAccount().streamCount);
+        LOG.info("User's ContactsCounts : " + Account.getCurrentUser().getAccount().contactsCount);
+        LOG.info("User's StreamCount : " + Account.getCurrentUser().getAccount().streamCount);
 
         new Contact()
                 .setFirstName("Cool First")
                 .setLastName("Cool Last")
                 .save();
 
-        LOG.info("Updated ContactsCounts : " + loggedInUser.getAccount().contactsCount);
-        LOG.info("Updated StreamCount : " + loggedInUser.getAccount().streamCount);
+        LOG.info("Updated ContactsCounts : " + Account.getCurrentUser().getAccount().contactsCount);
+        LOG.info("Updated StreamCount : " + Account.getCurrentUser().getAccount().streamCount);
     }
 }

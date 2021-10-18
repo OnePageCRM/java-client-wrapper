@@ -2,11 +2,7 @@ package com.onepagecrm.samples;
 
 import com.onepagecrm.OnePageCRM;
 import com.onepagecrm.exceptions.OnePageException;
-import com.onepagecrm.models.Company;
-import com.onepagecrm.models.Contact;
-import com.onepagecrm.models.ContactList;
-import com.onepagecrm.models.LinkedContactList;
-import com.onepagecrm.models.User;
+import com.onepagecrm.models.*;
 import com.onepagecrm.net.request.Request;
 
 import java.io.FileInputStream;
@@ -46,13 +42,9 @@ public class LinkedContactsDriver {
             }
         }
 
-        OnePageCRM.setServer(Request.DEV_SERVER);
+        OnePageCRM.init(Request.DEV_SERVER, prop.getProperty("user_id"), prop.getProperty("api_key"));
 
-        User loggedInUser = User.login(
-                prop.getProperty("username"),
-                prop.getProperty("password"));
-
-        ContactList contacts = loggedInUser.searchContacts("OnePageCRM");
+        ContactList contacts = Account.getCurrentUser().searchContacts("OnePageCRM");
         Contact first = contacts.get(0);
         Company company = Company.byId(first.getCompanyId());
         LinkedContactList linkedContacts = company.getLinkedContacts();

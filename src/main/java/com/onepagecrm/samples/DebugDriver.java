@@ -2,6 +2,7 @@ package com.onepagecrm.samples;
 
 import com.onepagecrm.OnePageCRM;
 import com.onepagecrm.exceptions.OnePageException;
+import com.onepagecrm.models.Account;
 import com.onepagecrm.models.User;
 import com.onepagecrm.net.request.Request;
 
@@ -40,16 +41,12 @@ public class DebugDriver {
         }
 
         OnePageCRM.setDebug(true);
-        OnePageCRM.setServer(Request.APP_US_SERVER);
+        OnePageCRM.init(Request.APP_US_SERVER, prop.getProperty("user_id"), prop.getProperty("api_key"));
 
-        User loggedInUser = User.login(
-                prop.getProperty("username"),
-                prop.getProperty("password"));
+        Account.getCurrentUser().actionStream();
 
-        loggedInUser.actionStream();
+        Account.getCurrentUser().contacts();
 
-        loggedInUser.contacts();
-
-        loggedInUser.pipeline();
+        Account.getCurrentUser().pipeline();
     }
 }

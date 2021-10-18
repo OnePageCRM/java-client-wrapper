@@ -51,13 +51,7 @@ public class API462CompaniesSort {
             }
         }
 
-        OnePageCRM.setServer(Request.STAGING_SERVER);
-
-        User loggedInUser = User.login(
-                prop.getProperty("username"),
-                prop.getProperty("password"));
-
-        LOG.info("Logged in User : " + loggedInUser);
+        OnePageCRM.init(Request.STAGING_SERVER, prop.getProperty("user_id"), prop.getProperty("api_key"));
 
         Map<String, Object> params = new HashMap<>();
         params.put("order", "asc");

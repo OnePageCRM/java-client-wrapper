@@ -2,10 +2,12 @@ package com.onepagecrm.samples;
 
 import com.onepagecrm.OnePageCRM;
 import com.onepagecrm.exceptions.OnePageException;
+import com.onepagecrm.models.Account;
 import com.onepagecrm.models.Contact;
 import com.onepagecrm.models.ContactList;
 import com.onepagecrm.models.User;
 import com.onepagecrm.net.request.Request;
+import javafx.scene.control.Accordion;
 import org.json.JSONException;
 
 import java.io.FileInputStream;
@@ -45,17 +47,11 @@ public class ContactsWithDealsNotesCallsDriver {
             }
         }
 
-        OnePageCRM.setServer(Request.DEV_SERVER);
-
-        User loggedInUser = User.login(
-                prop.getProperty("username"),
-                prop.getProperty("password"));
-
-        LOG.info("Logged in User : " + loggedInUser);
+        OnePageCRM.init(Request.DEV_SERVER, prop.getProperty("user_id"), prop.getProperty("api_key"));
 
 //        Map<String, Object> params = new HashMap<>();
 //        params.put("fields", "all,deals(all),notes(all),calls(all)");
-//        ContactList stream = loggedInUser.actionStream(params);
+//        ContactList stream = Account.getCurrentUser().actionStream(params);
 
         // The above did not work since params are URL encoded, changing the , ( ) characters.
 
@@ -63,7 +59,7 @@ public class ContactsWithDealsNotesCallsDriver {
 //        Response response = request.send();
 //        ContactList stream = ContactListSerializer.fromString(response.getResponseBody());
 
-        ContactList stream = loggedInUser.actionStream();
+        ContactList stream = Account.getCurrentUser().actionStream();
 
         for (Contact contact : stream) {
             LOG.info("*** " + contact.getSimpleName() + " *** " +

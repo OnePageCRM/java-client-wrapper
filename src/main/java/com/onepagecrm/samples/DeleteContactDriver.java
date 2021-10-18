@@ -2,6 +2,7 @@ package com.onepagecrm.samples;
 
 import com.onepagecrm.OnePageCRM;
 import com.onepagecrm.exceptions.OnePageException;
+import com.onepagecrm.models.Account;
 import com.onepagecrm.models.Contact;
 import com.onepagecrm.models.ContactList;
 import com.onepagecrm.models.User;
@@ -41,15 +42,9 @@ public class DeleteContactDriver {
             }
         }
 
-        OnePageCRM.setServer(Request.DEIMOS_SERVER);
+        OnePageCRM.init(Request.DEV_SERVER, prop.getProperty("user_id"), prop.getProperty("api_key"));
 
-        User loggedInUser = User.login(
-                prop.getProperty("username"),
-                prop.getProperty("password"));
-
-        LOG.info("Logged in User : " + loggedInUser);
-
-        ContactList stream = loggedInUser.actionStream();
+        ContactList stream = Account.getCurrentUser().actionStream();
 
         Contact contact = stream.get(0);
 

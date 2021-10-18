@@ -47,13 +47,7 @@ public class AttachmentsPh2Driver {
             }
         }
 
-        OnePageCRM.setServer(Request.STAGING_SERVER);
-
-        User loggedInUser = User.login(
-                prop.getProperty("username"),
-                prop.getProperty("password"));
-
-        LOG.info("Logged in User : " + loggedInUser);
+        OnePageCRM.init(Request.STAGING_SERVER, prop.getProperty("user_id"), prop.getProperty("api_key"));
 
         final String contactId = "55acc4ee6f6e653fdc000099"; // Java Wrapper
         final String dealId = "575e8de59007ba0788493bd0"; // Big deal

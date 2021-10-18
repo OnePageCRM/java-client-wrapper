@@ -16,12 +16,12 @@ public class DealList extends ResourceList<Deal> implements Serializable {
     @Override
     public DealList nextPage(Map<String, Object> params) throws OnePageException {
         this.paginator.getNextPageNo();
-        return Account.loggedInUser.pipeline(params, paginator);
+        return Account.currentUser.pipeline(params, paginator);
     }
 
     @Override
     public DealList refresh(Map<String, Object> params) throws OnePageException {
-        DealList list = Account.loggedInUser.pipeline(params, new Paginator());
+        DealList list = Account.currentUser.pipeline(params, new Paginator());
         this.setList(list);
         return this;
     }

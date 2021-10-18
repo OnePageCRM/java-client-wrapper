@@ -2,6 +2,7 @@ package com.onepagecrm.samples;
 
 import com.onepagecrm.OnePageCRM;
 import com.onepagecrm.exceptions.OnePageException;
+import com.onepagecrm.models.Account;
 import com.onepagecrm.models.Contact;
 import com.onepagecrm.models.ContactList;
 import com.onepagecrm.models.User;
@@ -48,14 +49,10 @@ public class AddContactPhotoDriver {
         final String b64EncodedData = FileUtilities.encodeImage(imagePath);
         LOG.info("Base64 encoded String: " + b64EncodedData);
 
-        OnePageCRM.setServer(Request.STAGING_SERVER);
-        User loggedInUser = User.login(
-                prop.getProperty("username"),
-                prop.getProperty("password"));
-        LOG.info("Logged User: " + loggedInUser);
+        OnePageCRM.init(Request.STAGING_SERVER, prop.getProperty("user_id"), prop.getProperty("api_key"));
 
         final String name = "Bloggs";
-        final ContactList stream = loggedInUser.searchActionStream(name);
+        final ContactList stream = Account.getCurrentUser().searchActionStream(name);
         final Contact contact = stream.get(0);
         contact.addPhoto(b64EncodedData);
         LOG.info(contact.toString());

@@ -12,8 +12,8 @@ public class DeleteRequest extends SignedRequest {
         setType();
         setEndpointUrl(endpoint);
         setAuthData((!OnePageCRM.COMPLEX_AUTH) ?
-                new BasicAuthData(Account.loggedInUser) :
-                new OnePageAuthData(Account.loggedInUser, Request.DELETE, endpointUrl, requestBody));
+                new BasicAuthData(Account.currentUser) :
+                new OnePageAuthData(Account.currentUser, Request.DELETE, endpointUrl, requestBody));
     }
 
     public DeleteRequest(String endpoint, String query) {
@@ -40,7 +40,7 @@ public class DeleteRequest extends SignedRequest {
     public void authenticate() {
         setRequestBody();
         setAuthData((!OnePageCRM.COMPLEX_AUTH) ?
-                new BasicAuthData(Account.loggedInUser) :
-                new OnePageAuthData(Account.loggedInUser, Request.DELETE, endpointUrl, requestBody));
+                new BasicAuthData(Account.currentUser) :
+                new OnePageAuthData(Account.currentUser, Request.DELETE, endpointUrl, requestBody));
     }
 }

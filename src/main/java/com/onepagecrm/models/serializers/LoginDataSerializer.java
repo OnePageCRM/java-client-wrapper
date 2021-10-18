@@ -52,8 +52,6 @@ public class LoginDataSerializer extends BaseSerializer {
     public static JSONObject toJsonObject(LoginData loginData) {
         JSONObject loginDataObject = new JSONObject();
         if (loginData == null) return loginDataObject;
-        addJsonStringValue(loginData.getUsername(), loginDataObject, LOGIN_TAG);
-        addJsonStringValue(loginData.getPassword(), loginDataObject, PASSWORD_TAG);
         addJsonBooleanValue(loginData.isFullResponse(), loginDataObject, FULL_RESPONSE_TAG);
         addJsonStringValue(loginData.getSamlResponse(), loginDataObject, SAML_RESPONSE_TAG);
         addJsonStringValue(loginData.getRelayState(), loginDataObject, RELAY_STATE_TAG);

@@ -37,15 +37,15 @@ public class ContactList extends ResourceList<Contact> implements Serializable {
         this.paginator.getNextPageNo();
         switch (type) {
             case AS_LISTING: {
-                return Account.loggedInUser.actionStream(params, paginator);
+                return Account.currentUser.actionStream(params, paginator);
             }
             case AZ_LISTING:
             case AZ_MULTIPLE_LISTING: {
-                return Account.loggedInUser.contacts(params, paginator);
+                return Account.currentUser.contacts(params, paginator);
             }
             case AS_TEAM_LISTING:
             case AS_MULTIPLE_LISTING: {
-                return Account.loggedInUser.teamStream(params, paginator);
+                return Account.currentUser.teamStream(params, paginator);
             }
             default: {
                 throw new InvalidListingTypeException("Not a supported contact listing type.");
@@ -58,17 +58,17 @@ public class ContactList extends ResourceList<Contact> implements Serializable {
         ContactList list = new ContactList();
         switch (type) {
             case AS_LISTING: {
-                list = Account.loggedInUser.actionStream(params, (paginator = new Paginator()));
+                list = Account.currentUser.actionStream(params, (paginator = new Paginator()));
                 break;
             }
             case AZ_LISTING:
             case AZ_MULTIPLE_LISTING: {
-                list = Account.loggedInUser.contacts(params, (paginator = new Paginator()));
+                list = Account.currentUser.contacts(params, (paginator = new Paginator()));
                 break;
             }
             case AS_TEAM_LISTING:
             case AS_MULTIPLE_LISTING: {
-                list = Account.loggedInUser.teamStream(params, (paginator = new Paginator()));
+                list = Account.currentUser.teamStream(params, (paginator = new Paginator()));
                 break;
             }
             case MULTIPLE_CONTACTS_BY_IDS_LISTING: {

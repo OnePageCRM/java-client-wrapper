@@ -2,14 +2,7 @@ package com.onepagecrm.samples;
 
 import com.onepagecrm.OnePageCRM;
 import com.onepagecrm.exceptions.OnePageException;
-import com.onepagecrm.models.Address;
-import com.onepagecrm.models.Contact;
-import com.onepagecrm.models.ContactList;
-import com.onepagecrm.models.CustomField;
-import com.onepagecrm.models.Email;
-import com.onepagecrm.models.Phone;
-import com.onepagecrm.models.Url;
-import com.onepagecrm.models.User;
+import com.onepagecrm.models.*;
 import com.onepagecrm.models.helpers.DateTimeHelper;
 import com.onepagecrm.models.internal.CustomFieldValue;
 import com.onepagecrm.models.serializers.LocalDateSerializer;
@@ -51,16 +44,13 @@ public class EditContactDriver {
             }
         }
 
-        OnePageCRM.setServer(Request.DEV_SERVER);
+        OnePageCRM.init(Request.DEV_SERVER, prop.getProperty("user_id"), prop.getProperty("api_key"));
 
-        User loggedInUser = User.login(
-                prop.getProperty("username"),
-                prop.getProperty("password"));
+        User currentUser = Account.getCurrentUser();
 
-        LOG.info("Logged in User : " + loggedInUser);
-        LOG.info("User's Custom Fields : " + loggedInUser.getAccount().customFields);
+        LOG.info("User's Custom Fields : " + currentUser.getAccount().customFields);
 
-        ContactList stream = loggedInUser.actionStream();
+        ContactList stream = currentUser.actionStream();
 
         Contact contact = stream.get(0);
         LOG.info("Contact : " + contact);
@@ -72,9 +62,9 @@ public class EditContactDriver {
             contact.setJobTitle("Software Developer");
             contact.setCompanyName("OnePageCRM");
             contact.setBackground("Java is very verbose, we met in college.");
-            contact.setOwnerId(loggedInUser.getId());
-            contact.setStatusId(loggedInUser.getAccount().statuses.get(0).getId());
-            contact.setLeadSourceId(loggedInUser.getAccount().leadSources.get(0).getId());
+            contact.setOwnerId(currentUser.getId());
+            contact.setStatusId(currentUser.getAccount().statuses.get(0).getId());
+            contact.setLeadSourceId(currentUser.getAccount().leadSources.get(0).getId());
             contact.setStarred(true);
 
             Address address = new Address();
@@ -193,7 +183,7 @@ public class EditContactDriver {
             // Add list of urls to our Contact.
             contact.setUrls(urls);
 
-            List<CustomField> customFields = loggedInUser.getAccount().customFields;
+            List<CustomField> customFields = currentUser.getAccount().customFields;
 
             for (CustomField customField : customFields) {
 
